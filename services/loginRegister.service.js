@@ -44,7 +44,7 @@ LoginRegisterService.JWT_token = async (data) => {
    }
 }
 
-LoginRegisterService.email_sender = async (to_email, email_otp, feedback) => {
+LoginRegisterService.email_sender = async (to_email, email_otp, forgot_Password, feedback) => {
    try {
       const transporter = await nodemailer.createTransport({
          service: "gmail",
@@ -58,7 +58,15 @@ LoginRegisterService.email_sender = async (to_email, email_otp, feedback) => {
       if (email_otp) {
          subject_ = emailMessage.subject.verification
          html_ = `<p><b>${email_otp}</b></p>` + emailMessage.html.OTP_extension
-      } else {
+      }
+      else if(forgot_Password){
+         subject_ = emailMessage.subject
+         html_ = `<p><b>Dear ${forgot_Password.user_name},</b></p><br>` + emailMessage.html.forgot_pass1 + `<br><br><br>` +
+            emailMessage.html.forgot_pass_userName + `  ` + `<b>  ${forgot_Password.mail_id}</b>` + `<br><br>` +
+            emailMessage.html.forgot_pass_password + `  ` + `<b>  ${forgot_Password.password}</b>` + `<br><br><br>` +
+            emailMessage.html.forgot_pass2+ `<br>` + emailMessage.html.forgot_pass3
+      } 
+      else  {
          subject_ = emailMessage.subject.some
          html_ = emailMessage.html.some
       }

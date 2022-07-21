@@ -57,6 +57,15 @@ class BaseValidation {
 			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest);
 		}
 	};
+	validateForgotPasswordBody(req, res, next, employer_schema) {
+		try {
+			const { error } = employer_schema.validate(req.body);
+			if (error) return response.joierrors(req, res, error);
+			next();
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest);
+		}
+	};
 }
 
 module.exports = new BaseValidation();

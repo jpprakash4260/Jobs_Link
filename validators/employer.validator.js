@@ -35,6 +35,13 @@ class EmployeeValidation {
       });
       return BaseValidation.validateEmployeeLoginBody(req, res, next, employer_schema);
    }
+
+   empforgotPassword(req, res, next) {
+      const employer_schema = Joi.object({
+         mail_id: Joi.string().email().required()
+      });
+      return BaseValidation.validateForgotPasswordBody(req, res, next, employer_schema);
+   }
 }
 
 module.exports = new EmployeeValidation();

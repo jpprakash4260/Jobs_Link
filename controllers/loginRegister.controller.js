@@ -179,7 +179,7 @@ LoginRegisterController.employer_register = async (req, res) => {
       } else {
          const email_OTP = await loginRegisterService.gen_otp();
          const mobile_OTP = await loginRegisterService.gen_otp();
-         const data = await crudService.createEmployer(req, res, email_OTP, mobile_OTP );
+         const data = await crudService.createEmployer(req, res, email_OTP, mobile_OTP);
          console.log("email_OTP : ", email_OTP);
          console.log("mobile_OTP : ", mobile_OTP, "\n");
          if (data.message && data.field) {
@@ -239,16 +239,16 @@ LoginRegisterController.employer_Verify = async (req, res) => {
 LoginRegisterController.employer_login = async (req, res) => {
    try {
       let { key1, value1, key2, value2 } = ''
-      key1 = 'mobile_no'; value1 = req.body.mobile_no; key2 = 'mobile_verify'; value2 = 'Y';
+      key1 = 'mail_id'; value1 = req.body.mail_id; key2 = 'email_verify'; value2 = 'Y';
       const ext_email = await loginRegisterService.findemp_2Field(key1, value1, key2, value2);
       if (ext_email) {
-         if (ext_email.password == req.body.password) {
+         if (ext_email.comp_pass == req.body.comp_pass) {
             let data = { email: ext_email.email }
             const Token = await loginRegisterService.JWT_token(data);
             const settoLocalStorage = await LoginRegisterService.setToLocalstorage(Token)
-            const getLocalstorage = await LoginRegisterService.getToLocalstorage() 
-            console.log("settoLocalStorage : ", settoLocalStorage);
-            console.log("get : ", getLocalstorage);
+            const getLocalstorage = await LoginRegisterService.getToLocalstorage()
+            // console.log("set : ", settoLocalStorage);
+            // console.log("get : ", getLocalstorage);
             logger.info(loggerMessage.tokenSended);
             return response.success(req, res, statusCodes.HTTP_OK, Token, responseMessage.loginSuccess);
          } else {
@@ -256,12 +256,36 @@ LoginRegisterController.employer_login = async (req, res) => {
             return response.errors(req, res, statusCodes.HTTP_NOT_ACCEPTABLE, req.body.password, responseMessage.passwordIncorrect);
          }
       } else {
-         logger.error(loggerMessage.getDataFailure);
-         return response.errors(req, res, statusCodes.HTTP_NOT_FOUND, ext_email, responseMessage.loginFailure);
+         logger.error(loggerMessage.seekerNotFound);
+         return response.errors(req, res, statusCodes.HTTP_NOT_FOUND, ext_email, responseMessage.seekerNotFound);
       }
    } catch (err) {
       logger.error(loggerMessage.verificationFail);
-      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, responseMessage.loginFailure);
+      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.loginFailure);
+   }
+}
+
+LoginRegisterController.emp_forgot_Password = async (req, res) => {
+   try {
+      let { key1, value1, key2, value2 } = ''
+      key1 = 'mail_id'; value1 = req.body.mail_id; key2 = 'email_verify'; value2 = 'Y';
+      const ext_email = await loginRegisterService.findemp_2Field(key1, value1, key2, value2);
+      if (ext_email) {
+         const to_email = ext_email.mail_id
+         const forgot_Password = { user_name: ext_email.comp_name, mail_id: ext_email.mail_id, password: ext_email.comp_pass }
+         let email_OTP = null
+         const email = loginRegisterService.email_sender(to_email, email_OTP, forgot_Password)
+         logger.info(loggerMessage.passwordsended)
+         return response.success(req, res, statusCodes.HTTP_ACCEPTED, to_email, responseMessage.passwordsended)
+      }
+      else {
+         logger.warn(loggerMessage.userNotFound)
+         return response.errors(req, res, statusCodes.HTTP_NOT_FOUND, ext_email, responseMessage.userNotFound)
+      }
+   }
+   catch (err) {
+      logger.warn(loggerMessage.errorInFindOne)
+      return response.errors(req, res, statusCodes.HTTP_NOT_FOUND, err, responseMessage.notFound)
    }
 }
 
