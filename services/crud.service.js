@@ -1,5 +1,5 @@
 'use strict'
-const { date } = require("joi");
+const { date, object } = require("joi");
 const db = require("../Models");
 const { email_otp } = require("./loginRegister.service");
 
@@ -90,6 +90,15 @@ CrudService.findByPk = async (seeker_id) => {
     }
 }
 
+CrudService.Emp_findByPk = async (recut_id) => {
+    try {
+        const foundedEmployer = await db.RecutComp.findByPk(recut_id)
+        return foundedEmployer
+    } catch (err) {
+        return err
+    }
+}
+
 CrudService.findOneSeeker = async (key, value) => {
     try {
         const foundedSeeker = await db.JobSeeker.findOne({ where: { [key]: value } })
@@ -117,10 +126,16 @@ CrudService.updateSeeker_byId = async (seeker_id, key, value) => {
     }
 }
 
-CrudService.updateEmp_byId = async (employer_id, key, value) => {
+CrudService.updateEmp_byId = async (recut_id, key, value) => {
     try {
-        const updatedSeeker = await db.RecutComp.update({ [key]: value }, { where: { employer_id: employer_id } })
-        return updatedSeeker[0]
+        const foundedEmployer = await CrudService.Emp_findByPk(recut_id)
+        if(foundedEmployer[key] == value){
+            const updated = 2
+            return updated 
+        }else{
+            const updated = await db.RecutComp.update({ [key]: value }, { where: { recut_id: recut_id } })
+            return updated[0]
+        }
     } catch (err) {
         return err
     }

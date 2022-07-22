@@ -1,10 +1,12 @@
 'use strict'
 const db = require("../Models");
 var localStorage = require('local-storage')
-const { emailMessage } = require('../constants');
+const { emailMessage, smsMessage } = require('../constants');
 const nodemailer = require("nodemailer");
 const JWT = require("jsonwebtoken");
-
+const smsconfig = require("../config/sms.config");
+const Vonage = require('@vonage/server-sdk')
+// const fast2sms = require('fast-two-sms')
 
 class LoginRegisterService { };
 
@@ -84,6 +86,22 @@ LoginRegisterService.email_sender = async (to_email, email_otp, forgot_Password,
       }
    }
    catch (err) {
+      return err
+   }
+}
+
+LoginRegisterService.sms_sender = async (to_mobile, mobile_otp, feedback) =>{
+   try{
+      const vonage = new Vonage({
+         apiKey: smsconfig.VONAGE_API_KEY,
+         apiSecret: smsconfig.VONAGE_API_SECRET,
+      })
+      const text = mobile_otp
+      const from = smsconfig.VONAGE_NAME
+      const sms = await vonage.message.sendSms(from, to_mobile, text)
+      console.log("sms : ", sms);
+      return sms
+   }catch(err){
       return err
    }
 }

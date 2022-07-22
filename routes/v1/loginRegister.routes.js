@@ -13,7 +13,7 @@ loginRegisterRoutes.post('/seeker-login',       seeker_validate.seekerLogin,    
 loginRegisterRoutes.post('/employer-register',  employer_validate.employerRegister,   loginRegisterController.employer_register);
 loginRegisterRoutes.post('/employer-verify',    employer_validate.employerVerify,     loginRegisterController.employer_Verify);
 loginRegisterRoutes.post('/employer-login',     employer_validate.employerLogin,      loginRegisterController.employer_login);
-loginRegisterRoutes.post('/emp-forgot-password', employer_validate.empforgotPassword,     loginRegisterController.emp_forgot_Password);
+loginRegisterRoutes.post('/emp-forgot-password', employer_validate.empforgotPassword, loginRegisterController.emp_forgot_Password);
 
 
 

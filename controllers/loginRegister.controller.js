@@ -168,12 +168,14 @@ LoginRegisterController.employer_register = async (req, res) => {
          console.log("mobile_OTP : ", mobile_OTP, "\n");
          if (update_OTP == 1) {
             const to_email = req.body.mail_id
-            const data = loginRegisterService.email_sender(to_email, email_OTP)
+            const email_data = loginRegisterService.email_sender(to_email, email_OTP)
+            // let to_mobile = req.body.mobile_no
+            // const mobile_data = await loginRegisterService.sms_sender(to_mobile, mobile_OTP)
             logger.info(loggerMessage.otpResended);
-            return response.success(req, res, statusCodes.HTTP_OK, data, responseMessage.otpResended);
+            return response.success(req, res, statusCodes.HTTP_OK, email_data, responseMessage.otpResended);
          } else {
-            logger.warn(loggerMessage.otpNotSended);
-            return response.errors(req, res, statusCodes.HTTP_CONFLICT, data, responseMessage.otpNotUpdated);
+            logger.warn(loggerMessage.updateDataFailure);
+            return response.errors(req, res, statusCodes.HTTP_CONFLICT, update_OTP, responseMessage.otpNotUpdated);
          }
          // New Seeker OR sended_OTP
       } else {
@@ -188,9 +190,11 @@ LoginRegisterController.employer_register = async (req, res) => {
          } else {
             const to_email = req.body.mail_id
             const email_data = loginRegisterService.email_sender(to_email, email_OTP)
+            // const to_mobile = req.body.mobile_no
+            // const mobile_data = loginRegisterService.sms_sender(to_mobile, mobile_OTP)
             if (email_data) {
                logger.info(loggerMessage.otpSended);
-               return response.success(req, res, statusCodes.HTTP_OK, data, responseMessage.otpSended);
+               return response.success(req, res, statusCodes.HTTP_OK, email_data, responseMessage.otpSended);
             } else {
                logger.warn(loggerMessage.otpNotSended);
                return response.errors(req, res, statusCodes.HTTP_NOT_MODIFIED, data, responseMessage.otpNotSended);
@@ -243,7 +247,7 @@ LoginRegisterController.employer_login = async (req, res) => {
       const ext_email = await loginRegisterService.findemp_2Field(key1, value1, key2, value2);
       if (ext_email) {
          if (ext_email.comp_pass == req.body.comp_pass) {
-            let data = { email: ext_email.email }
+            let data = { email: ext_email.mail_id }
             const Token = await loginRegisterService.JWT_token(data);
             const settoLocalStorage = await LoginRegisterService.setToLocalstorage(Token)
             const getLocalstorage = await LoginRegisterService.getToLocalstorage()

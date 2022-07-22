@@ -42,6 +42,15 @@ class EmployeeValidation {
       });
       return BaseValidation.validateForgotPasswordBody(req, res, next, employer_schema);
    }
+
+   empChangePassword(req, res, next) {
+      const employer_schema = Joi.object({
+         comp_pass: Joi.string().min(6).required(),
+         new_pass: Joi.string().min(6).required(),
+         reNew_pass: Joi.string().min(6).required().valid(Joi.ref('new_pass'))
+      });
+      return BaseValidation.validateChangePasswordBody(req, res, next, employer_schema);
+   }
 }
 
 module.exports = new EmployeeValidation();

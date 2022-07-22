@@ -3,4 +3,5 @@ module.exports = {
     statusCodes: require('./statusCodes'),
     loggerMessage: require('./loggerMessage'),
     emailMessage: require("./emailMessage"),
+    smsMessage: require("./smsMessage")
 };
