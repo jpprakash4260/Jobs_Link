@@ -12,7 +12,7 @@ class LoginRegisterService { };
 
 LoginRegisterService.findseeker_2Field = async (key1, value1, key2, value2) => {
    try {
-      const findseeker_2Field = await db.JobSeeker.findOne({ where: { [key1]: value1, [key2]: value2 } })
+      const findseeker_2Field = await db.Employee.findOne({ where: { [key1]: value1, [key2]: value2 } })
       return findseeker_2Field
    } catch (err) {
       return err

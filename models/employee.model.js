@@ -15,12 +15,12 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
          emp_email: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING, 
             allowNull: false
          },
          mob_code: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          emp_mobile: {
             type: DataTypes.STRING,
@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
          email_verify: {
             type: DataTypes.ENUM,
             values: ["N", "Y"],
+            defaultValue: "N",
             allowNull: false
          },
          mobile_otp: {
@@ -46,71 +47,72 @@ module.exports = (sequelize, DataTypes) => {
          mobile_verify: {
             type: DataTypes.ENUM,
             values: ["N", "Y"],
+            defaultValue: "N",
             allowNull: false
          },
          emp_dob: {
             type: DataTypes.DATE,
-            allowNull: false
+            default: null
          },
          emp_gender: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          emp_cat: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          emp_subcat: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          cat_name: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          subcat_name: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          emp_desig: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          emp_typeval: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          emp_comp: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          min_sal: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            default: null
          },
          sal_lakh: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          sal_thousands: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          exp_year: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          exp_month: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          emp_photo: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          emp_resumeheadline: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          emp_country: {
             type: DataTypes.INTEGER,
@@ -126,80 +128,80 @@ module.exports = (sequelize, DataTypes) => {
          },
          city_name: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          high_qualif: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            default: null
          },
          high_course: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            default: null
          },
          high_special: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            default: null
          },
          high_college: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            default: null
          },
          colg_name: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          course_type: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          exp_type: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          high_pass_yr: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          emp_resume: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          emp_pincode: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          emp_marital: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          emp_address: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          user_type: {
             type: DataTypes.ENUM,
             values: ["E"],
-            allowNull: false
+            default: null
          },
          ipaddress: {
             type: DataTypes.STRING,
-            allowNull: false
+            default: null
          },
          emp_status: {
             type: DataTypes.ENUM,
             values: ["N", "Y", "D"],
-            allowNull: false
+            default: null
          },
          emp_date: {
             type: DataTypes.DATE,
-            allowNull: false
+            default: null
          },
          lastupdate: {
             type: DataTypes.DATE,
-            allowNull: false
+            default: null
          }
       },
-      { timestamps: true, tableName: "tbl__employee" }
+      { timestamps: false, tableName: "tbl__employee" }
    );
    return Employee;
 };

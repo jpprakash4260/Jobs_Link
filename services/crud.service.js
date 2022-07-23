@@ -4,21 +4,22 @@ const db = require("../Models");
 const { email_otp } = require("./loginRegister.service");
 
 class CrudService { };
-CrudService.createSeeker = async (req, res, gen_OTP) => {
+CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
     try {
         const created_ = {
-            seeker_name: req.body.seeker_name,
-            email: req.body.email,
-            password: req.body.password,
-            mobile: req.body.mobile,
-            country: req.body.country,
-            state: req.body.state,
-            city: req.body.city,
-            resume: req.body.resume,
-            OTP: gen_OTP,
-            account_status: "Not Verified"
+            emp_name: req.body.emp_name,
+            emp_email: req.body.emp_email,
+            emp_pass: req.body.emp_pass,
+            emp_mobile: req.body.emp_mobile,
+            emp_country: req.body.emp_country,
+            emp_state: req.body.emp_state,
+            emp_city: req.body.emp_city,
+            Filename: req.body.Filename,
+            agreechk: req.body.agreechk,
+            mobile_otp: mobile_OTP,
+            email_otp: email_OTP,
         }
-        let saved_seeker = await db.JobSeeker.create(created_)
+        let saved_seeker = await db.Employee.create(created_)
         return saved_seeker;
     } catch (err) {
         if (err.name == "SequelizeUniqueConstraintError" && err.errors[0].type == "unique violation"
@@ -83,7 +84,7 @@ CrudService.findAllSeeker = async () => {
 
 CrudService.findByPk = async (seeker_id) => {
     try {
-        const foundedSeeker = await db.JobSeeker.findByPk(seeker_id)
+        const foundedSeeker = await db.Employee.findByPk(seeker_id)
         return foundedSeeker
     } catch (err) {
         return err
@@ -110,17 +111,32 @@ CrudService.findOneSeeker = async (key, value) => {
 
 CrudService.findAllMatch = async (key, value) => {
     try {
-        const foundedSeeker = await db.JobSeeker.findAll({ where: { [key]: value } })
+        const foundedSeeker = await db.Employee.findAll({ where: { [key]: value } })
         return foundedSeeker
     } catch (err) {
         return err
     }
 }
 
-CrudService.updateSeeker_byId = async (seeker_id, key, value) => {
+CrudService.updateSeeker_byId = async (emp_id, key, value) => {
     try {
-        const updatedSeeker = await db.JobSeeker.update({ [key]: value }, { where: { seeker_id: seeker_id } })
+        const updatedSeeker = await db.Employee.update({ [key]: value }, { where: { emp_id: emp_id } })
         return updatedSeeker[0]
+    } catch (err) {
+        return err
+    }
+}
+
+CrudService.updateBulkSeeker_byId = async (emp_id, bulk) => {
+    try {
+        const finding = await CrudService.findByPk(emp_id)
+        let checked = 'all same'
+        for (let i = 0; i < Object.keys(bulk).length; i++) {
+            if (Object.values(bulk)[i] == (finding[Object.keys(bulk)[i]])) continue
+            else checked = 'all not same'; break
+        }
+        if (checked == 'all not same'){ const updated = await db.Employee.update(bulk, { where: { emp_id: emp_id } }); return updated[0] }
+        else return 2
     } catch (err) {
         return err
     }
@@ -129,10 +145,10 @@ CrudService.updateSeeker_byId = async (seeker_id, key, value) => {
 CrudService.updateEmp_byId = async (recut_id, key, value) => {
     try {
         const foundedEmployer = await CrudService.Emp_findByPk(recut_id)
-        if(foundedEmployer[key] == value){
+        if (foundedEmployer[key] == value) {
             const updated = 2
-            return updated 
-        }else{
+            return updated
+        } else {
             const updated = await db.RecutComp.update({ [key]: value }, { where: { recut_id: recut_id } })
             return updated[0]
         }
@@ -141,10 +157,19 @@ CrudService.updateEmp_byId = async (recut_id, key, value) => {
     }
 }
 
+CrudService.updateSeeker_byId_2Field = async (emp_id, key1, value1, key2, value2) => {
+    try {
+        const updatedSeeker = await db.Employee.update({ [key1]: value1, [key2]: value2 }, { where: { emp_id: emp_id } })
+        return updatedSeeker[0]
+    } catch (err) {
+        return err
+    }
+}
+
 CrudService.updateEmp_byId_2Field = async (recut_id, key1, value1, key2, value2) => {
     try {
-        const updatedSeeker = await db.RecutComp.update({ [key1]: value1 , [key2]: value2 }, { where: { recut_id: recut_id } })
-        return updatedSeeker[0]
+        const updatedEmployer = await db.RecutComp.update({ [key1]: value1, [key2]: value2 }, { where: { recut_id: recut_id } })
+        return updatedEmployer[0]
     } catch (err) {
         return err
     }

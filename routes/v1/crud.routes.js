@@ -5,7 +5,7 @@ const { seeker_validate } = require("../../validators");
 
 
 // USER Routes
-crudRoutes.post('/createSeeker', seeker_validate.seekerRegister, crudController.createSeeker);
+crudRoutes.post('/createSeeker', crudController.createSeeker);
 crudRoutes.get('/findAllSeeker', crudController.findAllSeeker);
 crudRoutes.get('/findByPk', crudController.findByPk);
 crudRoutes.get('/findOneSeeker', crudController.findOneSeeker);

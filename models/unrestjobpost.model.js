@@ -38,26 +38,25 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING
          },
          unrest_jquali: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING
          },
          unrest_jrequ: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING
          },
          high_qualif: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            default: null
          },
          high_course: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            default: null
          },
          high_special: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            default: null
          },
          unrest_jallow: {
-            type: DataTypes.STRING,
-            allowNull: false
+            type: DataTypes.STRING
          },
          sal_id: {
             type: DataTypes.STRING,

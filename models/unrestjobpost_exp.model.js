@@ -21,15 +21,15 @@ module.exports = (sequelize, DataTypes) => {
          },
          unrest_jcat: {
             type: DataTypes.INTEGER,
-            defaultValue: null,
+            allowNull: false
          },
          unrest_jsubcat: {
             type: DataTypes.INTEGER,
-            defaultValue: null,
+            allowNull: false
          },
          unrest_jcode: {
             type: DataTypes.STRING,
-            defaultValue: null,
+            defaultValue: null
          },
          verify: {
             type: DataTypes.ENUM,
@@ -47,25 +47,26 @@ module.exports = (sequelize, DataTypes) => {
          },
          high_qualif: {
             type: DataTypes.INTEGER,
-            defaultValue: null
+            default: null
          },
          high_course: {
             type: DataTypes.INTEGER,
-            defaultValue: null
+            default: null
          },
          high_special: {
             type: DataTypes.INTEGER,
-            defaultValue: null
+            default: null
          },
          unrest_jallow: {
             type: DataTypes.STRING
          },
          sal_id: {
-            type: DataTypes.STRING,
-            defaultValue: null
+            type: DataTypes.INTEGER,
+            allowNull: false
          },
          jtype_id: {
-            type: DataTypes.STRING
+            type: DataTypes.INTEGER,
+            allowNull: false
          },
          jtype_id_new: {
             type: DataTypes.STRING
@@ -83,15 +84,15 @@ module.exports = (sequelize, DataTypes) => {
          },
          country_id: {
             type: DataTypes.INTEGER,
-            defaultValue: null
+            allowNull: false
          },
          state: {
             type: DataTypes.INTEGER,
-            defaultValue: null
+            allowNull: false
          },
          unrest_jloct: {
             type: DataTypes.INTEGER,
-            defaultValue: null
+            allowNull: false
          },
          unrest_jcompany: {
             type: DataTypes.STRING
@@ -147,7 +148,7 @@ module.exports = (sequelize, DataTypes) => {
          },
          exp_date: {
             type: DataTypes.DATE,
-            defaultValue: null
+            allowNull:false
          },
          posted_status: {
             type: DataTypes.ENUM,
