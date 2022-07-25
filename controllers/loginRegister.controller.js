@@ -105,7 +105,7 @@ LoginRegisterController.seeker_Verify = async (req, res) => {
 
 LoginRegisterController.seeker_register_education = async (req, res) => {
    try {
-      var emp_id = req.emp_id ? req.emp_id : 2   // Dynamic value from seeker_register API
+      var emp_id = req.emp_id ? req.emp_id : 1   // Dynamic value from seeker_register API
       var bulk = req.body
       const updateregEdu = await crudService.updateBulkSeeker_byId(emp_id, bulk)
       if (updateregEdu == 1) {
@@ -137,7 +137,7 @@ LoginRegisterController.seeker_login = async (req, res) => {
       console.log("ext_email : ", ext_email);
       if (ext_email) {
          if (ext_email.emp_pass == req.body.emp_pass) {
-            let data = { email: ext_email.email }
+            let data = { email: ext_email.emp_email }
             const Token = await loginRegisterService.JWT_token(data);
             logger.info(loggerMessage.tokenSended);
             return response.success(req, res, statusCodes.HTTP_OK, Token, responseMessage.loginSuccess);

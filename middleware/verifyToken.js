@@ -20,15 +20,9 @@ class BaseValidation {
 					logger.error(loggerMessage.unauthorized);
 					response.errors(req, res, statusCodes.HTTP_UNAUTHORIZED, error, responseMessage.unauthorized);
 				} else {
-					let { key1, value1, key2, value2 } = ''
-					req.validated_user = decoded;
-					key1 = 'mail_id'; value1 = decoded.email; key2 = 'email_verify'; value2 = 'Y';
-					const ext_email = await loginRegisterService.findemp_2Field(key1, value1, key2, value2);
-					if(ext_email){
-						req.validated_user_id = ext_email.recut_id
-					}
-					logger.info(loggerMessage.tokenVerifed);
-					next();
+					req.validated_user = decoded
+					logger.info(loggerMessage.tokenVerifed)
+					next()
 				}
 			});
 		} catch (error) {

@@ -124,7 +124,7 @@ module.exports = (sequelize, DataTypes) => {
          },
          apply: {
             type: DataTypes.STRING,
-            defaultValue: null
+            allowNull: false
          },
          ip_address: {
             type: DataTypes.STRING,
@@ -147,7 +147,7 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: null
          },
          exp_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull:false
          },
          posted_status: {
@@ -161,7 +161,7 @@ module.exports = (sequelize, DataTypes) => {
          },
          posted_lastupdate: {
             type: DataTypes.DATE,
-            allowNull: false
+            default: null
          },
          comp_website: {
             type: DataTypes.STRING,
@@ -184,7 +184,7 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: null
          }
       },
-      { timestamps: true, tableName: "tbl__unrestjobpost_exp" }
+      { timestamps: false, tableName: "tbl__unrestjobpost_exp" }
    );
    return UnrestJobPostExp;
 };

@@ -16,6 +16,8 @@ module.exports = {
 	noSeeker:"No Seekers",
 	deletedData:"Deleted Successfully",
 	alreadyExited: "Already Exiting Value",
+	alreadyExitedJob: "Already Exiting Job",
+	jobPosted:"Job Posted Successfully",
 	notDeleted:"Not Deleted",
 	seekerNotFound: "Seeker Not Found",
 	badRequest: "Invalid Data Provided",

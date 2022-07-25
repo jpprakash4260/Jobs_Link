@@ -51,6 +51,33 @@ class EmployeeValidation {
       });
       return BaseValidation.validateChangePasswordBody(req, res, next, employer_schema);
    }
+
+   empPostJob(req, res, next) {
+      const employer_schema = Joi.object({
+         apply: Joi.string().min(1).max(1),
+         unrest_jcat: Joi.number().min(1).required(),
+         unrest_jsubcat: Joi.number().min(1).required(),
+         unrest_jquali: Joi.string().min(1),
+         unrest_jallow: Joi.string().min(1),
+         unrest_jdesc: Joi.string().min(1),
+         country_id: Joi.number().min(1).required(),
+         state: Joi.number().min(1).required(),
+         unrest_jloct: Joi.number().min(1).required(),
+         unrest_jcompany: Joi.string().min(4),
+         comp_detail: Joi.string().min(5),
+         comp_address: Joi.string().min(5),
+         unrest_jemail: Joi.string().email(),
+         unrest_jphone: Joi.string().min(10),
+         jtype_id: Joi.number().min(1).required(),
+         sal_id: Joi.number().min(1).required(),
+         job_exp: Joi.number().min(1),
+         exp_date: Joi.date().required(),
+         no_of_openings: Joi.string().min(1),
+         unrest_landline: Joi.string().min(1),
+         key_skills: Joi.string().min(1)
+      });
+      return BaseValidation.validateChangePasswordBody(req, res, next, employer_schema);
+   }
 }
 
 module.exports = new EmployeeValidation();

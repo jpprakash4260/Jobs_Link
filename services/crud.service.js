@@ -1,7 +1,5 @@
 'use strict'
-const { date, object } = require("joi");
 const db = require("../Models");
-const { email_otp } = require("./loginRegister.service");
 
 class CrudService { };
 CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
@@ -82,9 +80,9 @@ CrudService.findAllSeeker = async () => {
     }
 }
 
-CrudService.findByPk = async (seeker_id) => {
+CrudService.findByPk = async (emp_id, modelName) => {
     try {
-        const foundedSeeker = await db.Employee.findByPk(seeker_id)
+        const foundedSeeker = await db[modelName].findByPk(emp_id)
         return foundedSeeker
     } catch (err) {
         return err
@@ -100,19 +98,28 @@ CrudService.Emp_findByPk = async (recut_id) => {
     }
 }
 
-CrudService.findOneSeeker = async (key, value) => {
+CrudService.findOne = async (obj, modelName) => {
     try {
-        const foundedSeeker = await db.JobSeeker.findOne({ where: { [key]: value } })
+        const foundedSeeker = await db[modelName].findOne({ where: obj })
         return foundedSeeker
     } catch (err) {
         return err
     }
 }
 
-CrudService.findAllMatch = async (key, value) => {
+CrudService.findAllMatch = async (obj, modelName) => {
     try {
-        const foundedSeeker = await db.Employee.findAll({ where: { [key]: value } })
+        const foundedSeeker = await db[modelName].findAll({ where: obj })
         return foundedSeeker
+    } catch (err) {
+        return err
+    }
+}
+
+CrudService.findAll_job = async (bulk, modelName) => {
+    try {
+        const founded = await db[modelName].findAll({ where: bulk })
+        return founded
     } catch (err) {
         return err
     }
@@ -127,15 +134,24 @@ CrudService.updateSeeker_byId = async (emp_id, key, value) => {
     }
 }
 
-CrudService.updateBulkSeeker_byId = async (emp_id, bulk) => {
+CrudService.alreadyExtObj = async (obj1, obj2) => {
     try {
-        const finding = await CrudService.findByPk(emp_id)
         let checked = 'all same'
         for (let i = 0; i < Object.keys(bulk).length; i++) {
-            if (Object.values(bulk)[i] == (finding[Object.keys(bulk)[i]])) continue
+            if (Object.values(bulk)[i] == (finded[Object.keys(bulk)[i]])) continue
             else checked = 'all not same'; break
         }
-        if (checked == 'all not same'){ const updated = await db.Employee.update(bulk, { where: { emp_id: emp_id } }); return updated[0] }
+        console.log("checked => ", checked);
+        return checked
+    } catch (err) {
+        return err
+    }
+}
+
+CrudService.updateBulkSeeker_byId = async (emp_id, bulk) => {
+    try {
+        const checked = await CrudService.alreadyExtObj(emp_id, bulk)
+        if (checked == 'all not same') { const updated = await db.Employee.update(bulk, { where: { emp_id: emp_id } }); return updated[0] }
         else return 2
     } catch (err) {
         return err

@@ -1,6 +1,7 @@
 module.exports = {
 	getDataSuccess : 'Get Data Successfully',
 	alreadyExited:"Already Exiting Value",
+	alreadyExitedJob: "Already Exiting Job",
 	showedDataSuccess:"Seekers Showed",
 	tokenSended:"Token Sended Successfully",
 	showedDataFailure: "Show Data Failure",
@@ -9,6 +10,7 @@ module.exports = {
 	deleteDataSuccess:"Delete Data Successfuly",
 	deleteDataFailure:"Delete Data Failure",
 	getDataFailure : 'Get Data Failure',
+	jobPosted: "Job Posted Successfully",
 	unauthorized: "Unauthorized Request.",
 	passwordsended:"Password sent Registered Email",
 	not_unique:'fields are not Unique',
