@@ -5,12 +5,12 @@ const { seeker_validate } = require("../../validators");
 
 
 // USER Routes
-crudRoutes.post('/createSeeker', crudController.createSeeker);
-crudRoutes.get('/findAllSeeker', crudController.findAllSeeker);
+crudRoutes.post('/create', crudController.create);
+crudRoutes.get('/findAll', crudController.findAll);
 crudRoutes.get('/findByPk', crudController.findByPk);
-crudRoutes.get('/findOneSeeker', crudController.findOneSeeker);
-crudRoutes.get('/findAllMatchSeekers', crudController.findAllMatchSeekers);
-crudRoutes.put('/updateSeeker_byId', crudController.updateSeeker_byId);
-crudRoutes.delete('/deleteSeeker_byId', crudController.deleteSeeker_byId);
+crudRoutes.get('/findOne', crudController.findOne);
+crudRoutes.get('/findAllMatch', crudController.findAllMatch);
+crudRoutes.put('/update', crudController.update);
+crudRoutes.delete('/delete', crudController.delete);
 
 module.exports = crudRoutes;

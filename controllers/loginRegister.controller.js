@@ -10,19 +10,17 @@ const LoginRegisterService = require('../services/loginRegister.service');
 class LoginRegisterController { };
 LoginRegisterController.seeker_register = async (req, res) => {
    try {
-      let { key1, value1, key2, value2 } = ''
+      let obj = { emp_email: req.body.emp_email, email_verify: 'Y' }
+      const ext_email = await crudService.findOne(obj, 'RecutComp')
 
-      key1 = 'emp_email'; value1 = req.body.emp_email; key2 = 'email_verify'; value2 = 'Y';
-      const ext_email = await loginRegisterService.findseeker_2Field(key1, value1, key2, value2);
+      obj = { emp_mobile: req.body.emp_mobile, mobile_verify: 'Y' }
+      const ext_mobile = await crudService.findOne(obj, 'RecutComp')
 
-      key1 = 'emp_mobile'; value1 = req.body.emp_mobile; key2 = 'mobile_verify'; value2 = 'Y';
-      const ext_mobile = await loginRegisterService.findseeker_2Field(key1, value1, key2, value2);
+      obj = { emp_email: req.body.emp_email, mobile_verify: 'N' }
+      const temp_email = await crudService.findOne(obj, 'RecutComp')
 
-      key1 = 'emp_email'; value1 = req.body.emp_email; key2 = 'email_verify'; value2 = 'N';
-      const temp_email = await loginRegisterService.findseeker_2Field(key1, value1, key2, value2);
-
-      key1 = 'emp_mobile'; value1 = req.body.emp_mobile; key2 = 'mobile_verify'; value2 = 'N';
-      const temp_mobile = await loginRegisterService.findseeker_2Field(key1, value1, key2, value2);
+      obj = { emp_mobile: req.body.emp_mobile, mobile_verify: 'N' }
+      const temp_mobile = await crudService.findOne(obj, 'RecutComp')
 
       if (ext_email) {
          logger.info(loggerMessage.alreadyExited);
@@ -38,7 +36,7 @@ LoginRegisterController.seeker_register = async (req, res) => {
          console.log("email_OTP : ", email_OTP);
          console.log("mobile_OTP : ", mobile_OTP, "\n");
          const key1 = 'email_otp'; const value1 = email_OTP; const key2 = 'mobile_otp'; const value2 = mobile_OTP; const emp_id = temp_email.emp_id;
-         const update_OTP = await crudService.updateSeeker_byId_2Field(emp_id, key1, value1, key2, value2)
+         const update_OTP = await crudService.updateSeeker_byId_2Field(emp_id, key1, value1, key2, value)
          if (update_OTP == 1) {
             const to_email = req.body.emp_email
             const email_data = loginRegisterService.email_sender(to_email, email_OTP)
@@ -131,9 +129,8 @@ LoginRegisterController.seeker_register_education = async (req, res) => {
 
 LoginRegisterController.seeker_login = async (req, res) => {
    try {
-      let { key1, value1, key2, value2 } = ''
-      key1 = 'emp_email'; value1 = req.body.emp_email; key2 = 'email_verify'; value2 = 'Y';
-      const ext_email = await loginRegisterService.findseeker_2Field(key1, value1, key2, value2);
+      let obj ={ emp_email: req.body.emp_email, email_verify: 'Y' }
+      const ext_email = await crudService.findOne(obj, 'Employee')
       console.log("ext_email : ", ext_email);
       if (ext_email) {
          if (ext_email.emp_pass == req.body.emp_pass) {

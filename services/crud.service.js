@@ -17,11 +17,10 @@ CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
             mobile_otp: mobile_OTP,
             email_otp: email_OTP,
         }
-        let saved_seeker = await db.Employee.create(created_)
+        let saved_seeker = await db[modelName].create(created_)
         return saved_seeker;
     } catch (err) {
-        if (err.name == "SequelizeUniqueConstraintError" && err.errors[0].type == "unique violation"
-            && err.errors[0].validatorKey == "not_unique") {
+        if (err.name == "SequelizeUniqueConstraintError" && err.errors[0].type == "unique violation" && err.errors[0].validatorKey == "not_unique") {
             let unique_err = {
                 error: "unique_error",
                 message: err.errors[0].message,
@@ -31,7 +30,6 @@ CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
         } else {
             return err;
         }
-
     }
 }
 
@@ -71,10 +69,10 @@ CrudService.createEmployer = async (req, res, email_otp, mobile_otp) => {
     }
 }
 
-CrudService.findAllSeeker = async () => {
+CrudService.findAll = async (modelName) => {
     try {
-        const foundedAllSeekers = await db.JobSeeker.findAll({})
-        return foundedAllSeekers
+        const founded = await db[modelName].findAll({})
+        return founded
     } catch (err) {
         return err
     }
@@ -116,15 +114,6 @@ CrudService.findAllMatch = async (obj, modelName) => {
     }
 }
 
-CrudService.findAll_job = async (bulk, modelName) => {
-    try {
-        const founded = await db[modelName].findAll({ where: bulk })
-        return founded
-    } catch (err) {
-        return err
-    }
-}
-
 CrudService.updateSeeker_byId = async (emp_id, key, value) => {
     try {
         const updatedSeeker = await db.Employee.update({ [key]: value }, { where: { emp_id: emp_id } })
@@ -137,18 +126,18 @@ CrudService.updateSeeker_byId = async (emp_id, key, value) => {
 CrudService.alreadyExtObj = async (obj1, obj2) => {
     try {
         let checked = 'all same'
-        for (let i = 0; i < Object.keys(bulk).length; i++) {
-            if (Object.values(bulk)[i] == (finded[Object.keys(bulk)[i]])) continue
+        for (let i = 0; i < Object.keys(obj1).length; i++) {
+            if (Object.values(obj1)[i] == (obj2[Object.keys(obj1)[i]])) continue
             else checked = 'all not same'; break
         }
-        console.log("checked => ", checked);
+        console.log("checked => ", checked)
         return checked
     } catch (err) {
         return err
     }
 }
 
-CrudService.updateBulkSeeker_byId = async (emp_id, bulk) => {
+CrudService.update_byId = async (emp_id, bulk) => {
     try {
         const checked = await CrudService.alreadyExtObj(emp_id, bulk)
         if (checked == 'all not same') { const updated = await db.Employee.update(bulk, { where: { emp_id: emp_id } }); return updated[0] }
@@ -191,10 +180,10 @@ CrudService.updateEmp_byId_2Field = async (recut_id, key1, value1, key2, value2)
     }
 }
 
-CrudService.delete_byId = async (seeker_id) => {
+CrudService.delete_byId = async (obj, modelName) => {
     try {
-        const deletedSeeker = await db.JobSeeker.destroy({ where: { seeker_id: seeker_id } })
-        return deletedSeeker
+        const deleted = await db[modelName].destroy({ where: obj })
+        return deleted
     } catch (err) {
         return err
     }

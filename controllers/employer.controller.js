@@ -4,7 +4,6 @@ const { employerService, crudService } = require('../services');
 const { response } = require('../middleware');
 const { statusCodes, responseMessage, loggerMessage } = require('../constants');
 const { logger } = require('../helper');
-// const { loginFailure } = require('../constants/responseMessage');
 
 class EmployerController { };
 EmployerController.dashboard = async (req, res) => {
@@ -40,18 +39,15 @@ EmployerController.change_Password = async (req, res) => {
 }
 
 EmployerController.post_job = async (req, res) => {
-   try {
-      let crnt_email = req.validated_user
-      const obj = { emp_email : crnt_email.email}
-      const crnt_user_id = await crudService.findOne(obj, 'Employee'); 
-      console.log("crnt_user_id : ", crnt_user_id.emp_id);
-      const data = await employerService.postJob(req, 'UnrestJobPostExp')
-      if (Object.keys(data).length < 2 && Object.keys(data)[0] == 'unrst_jid') {
+   try {  
+      console.log("employer_id : ", req.employer_id);
+      const data = await employerService.postJob(req, 'UnrestJobPost')
+      if (Object.keys(data).length == 1 && Object.keys(data)[0] == 'unrst_jid') {
          logger.info(loggerMessage.alreadyExitedJob);
-         return response.success(req, res, statusCodes.HTTP_OK, data, responseMessage.alreadyExitedJob);
+         return response.success(req, res, statusCodes.HTTP_ALREADY_REPORTED, data, responseMessage.alreadyExitedJob);
       } else {
          logger.warn(loggerMessage.jobPosted);
-         return response.errors(req, res, statusCodes.HTTP_ALREADY_REPORTED, data, responseMessage.jobPosted);
+         return response.errors(req, res, statusCodes.HTTP_OK, data, responseMessage.jobPosted);
       }
    } catch (err) {
       console.log(err);

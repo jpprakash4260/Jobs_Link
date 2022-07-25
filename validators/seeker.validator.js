@@ -49,8 +49,6 @@ class SeekerValidation {
 	}
 }
 
-
-
 module.exports = new SeekerValidation();
 
 
