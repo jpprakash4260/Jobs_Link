@@ -11,16 +11,16 @@ class LoginRegisterController { };
 LoginRegisterController.seeker_register = async (req, res) => {
    try {
       let obj = { emp_email: req.body.emp_email, email_verify: 'Y' }
-      const ext_email = await crudService.findOne(obj, 'RecutComp')
+      const ext_email = await crudService.findOne(obj, 'Employee')
 
       obj = { emp_mobile: req.body.emp_mobile, mobile_verify: 'Y' }
-      const ext_mobile = await crudService.findOne(obj, 'RecutComp')
+      const ext_mobile = await crudService.findOne(obj, 'Employee')
 
       obj = { emp_email: req.body.emp_email, mobile_verify: 'N' }
-      const temp_email = await crudService.findOne(obj, 'RecutComp')
+      const temp_email = await crudService.findOne(obj, 'Employee')
 
       obj = { emp_mobile: req.body.emp_mobile, mobile_verify: 'N' }
-      const temp_mobile = await crudService.findOne(obj, 'RecutComp')
+      const temp_mobile = await crudService.findOne(obj, 'Employee')
 
       if (ext_email) {
          logger.info(loggerMessage.alreadyExited);
@@ -36,7 +36,7 @@ LoginRegisterController.seeker_register = async (req, res) => {
          console.log("email_OTP : ", email_OTP);
          console.log("mobile_OTP : ", mobile_OTP, "\n");
          const key1 = 'email_otp'; const value1 = email_OTP; const key2 = 'mobile_otp'; const value2 = mobile_OTP; const emp_id = temp_email.emp_id;
-         const update_OTP = await crudService.updateSeeker_byId_2Field(emp_id, key1, value1, key2, value)
+         const update_OTP = await crudService.updateSeeker_byId_2Field(emp_id, key1, value1, key2, value2)
          if (update_OTP == 1) {
             const to_email = req.body.emp_email
             const email_data = loginRegisterService.email_sender(to_email, email_OTP)
@@ -51,10 +51,10 @@ LoginRegisterController.seeker_register = async (req, res) => {
          const email_OTP = await loginRegisterService.gen_otp();
          const mobile_OTP = await loginRegisterService.gen_otp();
          const created_seeker = await crudService.createSeeker(req, res, email_OTP, mobile_OTP);
-         console.log("email_OTP : ", email_OTP);
-         console.log("mobile_OTP : ", mobile_OTP, "\n");
-         const to_email = req.body.emp_email
-         const email_data = loginRegisterService.email_sender(to_email, email_OTP)
+         console.log("mobile_OTP : ", mobile_OTP);
+         console.log("email_OTP : ", email_OTP, "\n");
+         const email_data = loginRegisterService.email_sender(req.body.emp_email, email_OTP)
+         email_data.then(() => { console.log("\n", "email_sended : ", email_data, "\n") })
          logger.info(loggerMessage.otpSended);
          return response.success(req, res, statusCodes.HTTP_CREATED, created_seeker, responseMessage.otpSended);
       }

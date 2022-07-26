@@ -1,9 +1,12 @@
 'use strict'
 const db = require("../Models");
+const upload = require("../validators/cloudinary.validator") 
 
 class CrudService { };
 CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
     try {
+        let resume = 'not Attached'
+        if (req.file) if(req.file.path) resume = (await upload.uploader.upload(req.file.path)).secure_url
         const created_ = {
             emp_name: req.body.emp_name,
             emp_email: req.body.emp_email,
@@ -12,12 +15,12 @@ CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
             emp_country: req.body.emp_country,
             emp_state: req.body.emp_state,
             emp_city: req.body.emp_city,
-            Filename: req.body.Filename,
+            emp_resume: resume,
             agreechk: req.body.agreechk,
             mobile_otp: mobile_OTP,
             email_otp: email_OTP,
         }
-        let saved_seeker = await db[modelName].create(created_)
+        let saved_seeker =  await db.Employee.create(created_)
         return saved_seeker;
     } catch (err) {
         if (err.name == "SequelizeUniqueConstraintError" && err.errors[0].type == "unique violation" && err.errors[0].validatorKey == "not_unique") {
@@ -28,6 +31,7 @@ CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
             }
             return unique_err;
         } else {
+            console.log("Error in catch : ", err);
             return err;
         }
     }
@@ -188,5 +192,7 @@ CrudService.delete_byId = async (obj, modelName) => {
         return err
     }
 }
+
+
 
 module.exports = CrudService;

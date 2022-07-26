@@ -12,7 +12,6 @@ class SeekerValidation {
 			emp_country: Joi.string().min(2).required(),
 			emp_state: Joi.string().required(),
 			emp_city: Joi.string().required(),
-			Filename: Joi.string().required(),
 			agreechk: Joi.boolean().required()
 		});
 		return BaseValidation.validateSeekerRegisterBody(req, res, next, seeker_schema);
