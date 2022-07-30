@@ -8,7 +8,7 @@ const { logger } = require('../helper');
 class EmployerController { };
 EmployerController.dashboard = async (req, res) => {
    try {
-      let data = req.validated_user
+      let data = req.valid_user
       logger.info(loggerMessage.getDataSuccess);
       return response.success(req, res, statusCodes.HTTP_OK, data, responseMessage.dashboard);
    } catch (err) {
@@ -16,25 +16,22 @@ EmployerController.dashboard = async (req, res) => {
    }
 }
 
-EmployerController.change_Password = async (req, res) => {
+EmployerController.emp_change_Password = async (req, res) => {
    try {
-      let recut_id = req.validated_user_id
-      const key = 'comp_pass'
-      const value = req.body.new_pass
-      const changed_Password = await crudService.updateEmp_byId(recut_id, key, value)
+      const changed_Password = await crudService.updateEmp_byId(req.employer_id, { comp_pass : req.body.new_pass})
       if (changed_Password == 1) {
          logger.info(loggerMessage.changedPassword)
-         return response.success(req, res, statusCodes.HTTP_OK, req.validated_user.email, responseMessage.changedPassword)
+         return response.success(req, res, statusCodes.HTTP_OK, req.valid_user.email, responseMessage.changedPassword)
       } else if (changed_Password == 2) {
          logger.error(loggerMessage.alreadyExited)
-         return response.errors(req, res, statusCodes.HTTP_EXPECTATION_FAILED, req.validated_user.email, responseMessage.alreadyExited)
+         return response.errors(req, res, statusCodes.HTTP_EXPECTATION_FAILED, req.valid_user.email, responseMessage.alreadyExited)
       } else {
          logger.error(loggerMessage.notchangedPass)
-         return response.errors(req, res, statusCodes.HTTP_EXPECTATION_FAILED, req.validated_user.email, responseMessage.notchangedPass)
+         return response.errors(req, res, statusCodes.HTTP_EXPECTATION_FAILED, req.valid_user.email, responseMessage.notchangedPass)
       }
    } catch (err) {
       logger.error(loggerMessage.errorInUpdating)
-      return response.errors(req, res, statusCodes.HTTP_EXPECTATION_FAILED, req.validated_user, responseMessage.errorInUpdating)
+      return response.errors(req, res, statusCodes.HTTP_EXPECTATION_FAILED, req.employer_id, responseMessage.errorInUpdating)
    }
 }
 

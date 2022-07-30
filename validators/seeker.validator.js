@@ -16,10 +16,17 @@ class SeekerValidation {
 		});
 		return BaseValidation.validateSeekerRegisterBody(req, res, next, seeker_schema);
 	};
-	seekerVerify(req,res, next){
+	seekerVerifyEmail(req,res, next){
 		const seeker_schema = Joi.object({
 			emp_email: Joi.string().email().required(),
-			email_otp: Joi.number().min(6).required(),
+			email_otp: Joi.number().min(6).required()
+		});
+		return BaseValidation.validateSeekerVerifyBody(req, res, next, seeker_schema);
+	}
+
+	seekerVerifyMobile(req, res, next) {
+		const seeker_schema = Joi.object({
+			emp_email: Joi.string().email().required(),
 			mobile_otp: Joi.number().min(6).required()
 		});
 		return BaseValidation.validateSeekerVerifyBody(req, res, next, seeker_schema);
@@ -43,6 +50,13 @@ class SeekerValidation {
 		const seeker_schema = Joi.object({
 			emp_email: Joi.string().email().required(),
 			emp_pass: Joi.string().min(6).required()
+		});
+		return BaseValidation.validateSeekerLoginBody(req, res, next, seeker_schema);
+	}
+
+	seekerforgotPassword(req, res, next) {
+		const seeker_schema = Joi.object({
+			emp_email: Joi.string().email().required()
 		});
 		return BaseValidation.validateSeekerLoginBody(req, res, next, seeker_schema);
 	}

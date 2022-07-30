@@ -7,5 +7,6 @@ const { verifyToken } = require("../../middleware");
 
 // Logged In USER
 seekerRoutes.get('/dashboard', verifyToken.validateToken, seekerController.dashboard);
+seekerRoutes.get('/search', seekerController.search);
 
 module.exports = seekerRoutes;

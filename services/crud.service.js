@@ -37,7 +37,7 @@ CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
     }
 }
 
-CrudService.createEmployer = async (req, res, email_otp, mobile_otp) => {
+CrudService.createEmployer = async (req, email_otp, mobile_otp) => {
     try {
         const created_ = {
             comp_name: req.body.comp_name,
@@ -82,10 +82,10 @@ CrudService.findAll = async (modelName) => {
     }
 }
 
-CrudService.findByPk = async (emp_id, modelName) => {
+CrudService.findByPk = async (_id, modelName) => {
     try {
-        const foundedSeeker = await db[modelName].findByPk(emp_id)
-        return foundedSeeker
+        const founded = await db[modelName].findByPk(_id)
+        return founded
     } catch (err) {
         return err
     }
@@ -102,8 +102,8 @@ CrudService.Emp_findByPk = async (recut_id) => {
 
 CrudService.findOne = async (obj, modelName) => {
     try {
-        const foundedSeeker = await db[modelName].findOne({ where: obj })
-        return foundedSeeker
+        const founded = await db[modelName].findOne({ where: obj })
+        return founded
     } catch (err) {
         return err
     }
@@ -111,18 +111,10 @@ CrudService.findOne = async (obj, modelName) => {
 
 CrudService.findAllMatch = async (obj, modelName) => {
     try {
-        const foundedSeeker = await db[modelName].findAll({ where: obj })
-        return foundedSeeker
+        const founded = await db[modelName].findAll({ where: obj })
+        return founded
     } catch (err) {
-        return err
-    }
-}
-
-CrudService.updateSeeker_byId = async (emp_id, key, value) => {
-    try {
-        const updatedSeeker = await db.Employee.update({ [key]: value }, { where: { emp_id: emp_id } })
-        return updatedSeeker[0]
-    } catch (err) {
+        console.log(err);
         return err
     }
 }
@@ -141,26 +133,65 @@ CrudService.alreadyExtObj = async (obj1, obj2) => {
     }
 }
 
-CrudService.update_byId = async (emp_id, bulk) => {
+CrudService.search = async (req, modelName) => {
     try {
-        const checked = await CrudService.alreadyExtObj(emp_id, bulk)
-        if (checked == 'all not same') { const updated = await db.Employee.update(bulk, { where: { emp_id: emp_id } }); return updated[0] }
+        const search = await db[modelName].findAll({
+            where: {
+                [Op.or]: [
+                    { emp_email: { [Op.like]: "%" + req.query.search + "%" } },
+                    { emp_mobile: { [Op.like]: "%" + req.query.search + "%" } }]
+            }
+        })
+        return search
+    } catch (err) {
+        return err
+    }
+}
+
+CrudService.updateSeeker_byId = async (emp_id, bulk) => {
+    try {
+        const founded = await db.Employee.findByPk(emp_id)
+        let checked = 'all same'
+        for (let i = 0; i < Object.keys(bulk).length; i++) {
+            if (Object.values(bulk)[i] == (founded[Object.keys(bulk)[i]])) continue
+            else checked = 'all not same'; break
+        }
+        if (checked == 'all not same') { const updated = await db.Employee.update(bulk, { where: { emp_id: emp_id } });  return updated[0] }
         else return 2
     } catch (err) {
         return err
     }
 }
 
-CrudService.updateEmp_byId = async (recut_id, key, value) => {
+CrudService.otp_seeker = async (_id, email_otp, mobile_otp) => {
     try {
-        const foundedEmployer = await CrudService.Emp_findByPk(recut_id)
-        if (foundedEmployer[key] == value) {
-            const updated = 2
-            return updated
-        } else {
-            const updated = await db.RecutComp.update({ [key]: value }, { where: { recut_id: recut_id } })
-            return updated[0]
+
+        const updated = await db.Employee.update({ mobile_otp: mobile_otp, email_otp: email_otp }, { where: { emp_id: _id } })
+        return updated[0]
+    } catch (err) {
+        return err
+    }
+}
+
+CrudService.otp_emp = async (_id, mobile_otp, email_otp) => {
+    try {
+        const updated = await db.RecutComp.update({ mobile_otp: mobile_otp, email_otp: email_otp } , { where: { recut_id : _id } })
+        return updated[0]
+    } catch (err) {
+        return err
+    }
+}
+
+CrudService.updateEmp_byId = async (recut_id, bulk) => {
+    try {
+        const founded = await db.RecutComp.findByPk(recut_id)
+        let checked = 'all same'
+        for (let i = 0; i < Object.keys(bulk).length; i++) {
+            if (Object.values(bulk)[i] == (founded[Object.keys(bulk)[i]])) continue
+            else checked = 'all not same'; break
         }
+        if (checked == 'all not same') { const updated = await db.RecutComp.update(bulk, { where: { recut_id: recut_id } }); return updated[0] }
+        else return 2
     } catch (err) {
         return err
     }

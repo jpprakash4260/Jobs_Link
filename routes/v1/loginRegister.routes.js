@@ -9,10 +9,13 @@ const { seeker_validate , employer_validate, upload } = require("../../validator
 
 loginRegisterRoutes.post('/seeker-register', seeker_validate.seekerRegister, upload.single("resume"), loginRegisterController.seeker_register);
 loginRegisterRoutes.post('/seeker-register-education',   seeker_validate.seekerRegEducation,          loginRegisterController.seeker_register_education);
-loginRegisterRoutes.post('/seeker-verify',               seeker_validate.seekerVerify,                loginRegisterController.seeker_Verify);
+loginRegisterRoutes.post('/seeker-verify-email',         seeker_validate.seekerVerifyEmail,           loginRegisterController.seeker_Verify_Email);
+loginRegisterRoutes.post('/seeker-verify-mobile',        seeker_validate.seekerVerifyMobile,          loginRegisterController.seeker_Verify_Mobile);
 loginRegisterRoutes.post('/seeker-login',                seeker_validate.seekerLogin,                 loginRegisterController.seeker_login);
+loginRegisterRoutes.post('/seeker-forgot-password',      seeker_validate.seekerforgotPassword,        loginRegisterController.seeker_forgot_Password);
 loginRegisterRoutes.post('/employer-register',           employer_validate.employerRegister,          loginRegisterController.employer_register);
-loginRegisterRoutes.post('/employer-verify',             employer_validate.employerVerify,            loginRegisterController.employer_Verify);
+loginRegisterRoutes.post('/employer-verify-email',       employer_validate.employerVerifyEmail,       loginRegisterController.employer_Verify_Email);
+loginRegisterRoutes.post('/employer-verify-mobile',      employer_validate.employerVerifyMobile,      loginRegisterController.employer_Verify_Mobile);
 loginRegisterRoutes.post('/employer-login',              employer_validate.employerLogin,             loginRegisterController.employer_login);
 loginRegisterRoutes.post('/emp-forgot-password',         employer_validate.empforgotPassword,         loginRegisterController.emp_forgot_Password);
 

@@ -1,18 +1,28 @@
 'use strict'
 
-const { seekerService } = require('../services');
+const { seekerService, crudService } = require('../services');
 const { response } = require('../middleware');
 const { statusCodes, responseMessage, loggerMessage } = require('../constants');
 const { logger } = require('../helper');
+const db = require('../Models');
 
-class SeekerController{ };
+class SeekerController { };
 SeekerController.dashboard = async (req, res) => {
    try {
-      let data = req.seeker_validate
       logger.info(loggerMessage.getDataSuccess);
-      return response.success(req, res, statusCodes.HTTP_OK, data, responseMessage.dashboard);
+      return response.success(req, res, statusCodes.HTTP_OK, req.valid_user, responseMessage.dashboard);
    } catch (err) {
       return err
+   }
+}
+SeekerController.search = async (req, res) => {
+   try{
+      const search = await crudService.search(req, 'Employee')
+      search ? search : search = ''
+      logger.info(loggerMessage.getDataSuccess);
+      return response.success(req, res, statusCodes.HTTP_OK, search, responseMessage.getDataSuccess);
+   }catch(err){
+
    }
 }
 

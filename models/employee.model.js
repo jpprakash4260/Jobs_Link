@@ -1,5 +1,7 @@
 //-------------------------- Employee Model Start ------------------------------//
 
+const moment = require("moment");
+
 module.exports = (sequelize, DataTypes) => {
    const Employee = sequelize.define(
       "Employee",
@@ -20,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
          },
          mob_code: {
             type: DataTypes.STRING,
-            default: null
+            allowNull: false,
+            defaultValue: '+91'
          },
          emp_mobile: {
             type: DataTypes.STRING,
@@ -180,8 +183,9 @@ module.exports = (sequelize, DataTypes) => {
          },
          user_type: {
             type: DataTypes.ENUM,
+            allowNull: false,
             values: ["E"],
-            default: null
+            defaultValue: 'E'
          },
          ipaddress: {
             type: DataTypes.STRING,
@@ -194,11 +198,12 @@ module.exports = (sequelize, DataTypes) => {
          },
          emp_date: {
             type: DataTypes.DATE,
-            default: null
+            allowNull: false
          },
          lastupdate: {
             type: DataTypes.DATE,
-            default: null
+            allowNull: false,
+            defaultValue: moment().format('Do MMMM YYYY, h:mm:ss a')
          }
       },
       { timestamps: false, tableName: "tbl__employee" }

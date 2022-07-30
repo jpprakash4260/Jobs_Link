@@ -1,6 +1,6 @@
 module.exports = {
    subject : {
-      verification: `Email Verification from Question Cloud`,
+      verification: `Email Verification from Jobs-Link`,
       some: `some subject`,
       forgotPassword: `forgoted Password - Jobs-Link `
    },

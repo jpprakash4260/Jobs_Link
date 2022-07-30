@@ -20,14 +20,22 @@ class EmployeeValidation {
       });
       return BaseValidation.validateEmployeeRegisterBody(req, res, next, employer_schema);
    };
-   employerVerify(req, res, next) {
+   employerVerifyEmail(req, res, next) {
       const employer_schema = Joi.object({
          mail_id: Joi.string().email().required(),
-         mail_otp: Joi.number().min(6).required(),
+         email_otp: Joi.number().min(6).required()
+      });
+      return BaseValidation.validateEmployeeVerifyBody(req, res, next, employer_schema);
+   }
+
+   employerVerifyMobile(req, res, next) {
+      const employer_schema = Joi.object({
+         mail_id: Joi.string().email().required(),
          mobile_otp: Joi.number().min(6).required()
       });
       return BaseValidation.validateEmployeeVerifyBody(req, res, next, employer_schema);
    }
+
    employerLogin(req, res, next) {
       const employer_schema = Joi.object({
          mail_id: Joi.string().email().required(),

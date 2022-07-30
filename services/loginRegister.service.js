@@ -4,9 +4,10 @@ var localStorage = require('local-storage')
 const { emailMessage, smsMessage } = require('../constants');
 const nodemailer = require("nodemailer");
 const JWT = require("jsonwebtoken");
+var unirest = require("unirest");
 const smsconfig = require("../config/sms.config");
 const Vonage = require('@vonage/server-sdk')
-// const fast2sms = require('fast-two-sms')
+const fast2sms = require('fast-two-sms')
 
 class LoginRegisterService { };
 
@@ -62,7 +63,7 @@ LoginRegisterService.email_sender = async (to_email, email_otp, forgot_Password,
          html_ = `<p><b>${email_otp}</b></p>` + emailMessage.html.OTP_extension
       }
       else if(forgot_Password){
-         subject_ = emailMessage.subject
+         subject_ = emailMessage.subject.forgotPassword
          html_ = `<p><b>Dear ${forgot_Password.user_name},</b></p><br>` + emailMessage.html.forgot_pass1 + `<br><br><br>` +
             emailMessage.html.forgot_pass_userName + `  ` + `<b>  ${forgot_Password.mail_id}</b>` + `<br><br>` +
             emailMessage.html.forgot_pass_password + `  ` + `<b>  ${forgot_Password.password}</b>` + `<br><br><br>` +
@@ -92,15 +93,14 @@ LoginRegisterService.email_sender = async (to_email, email_otp, forgot_Password,
 
 LoginRegisterService.sms_sender = async (to_mobile, mobile_otp, feedback) =>{
    try{
-      const vonage = new Vonage({
-         apiKey: smsconfig.VONAGE_API_KEY,
-         apiSecret: smsconfig.VONAGE_API_SECRET,
+      var req = unirest("POST", "https://www.fast2sms.com/dev/bulkV2");
+      req.headers({"authorization": smsconfig.SMS_API_KEY});
+      req.form( { "variables_values": mobile_otp, "route": "otp", "numbers": to_mobile } );
+      req.end((result) => { 
+         if (result.error) throw new Error(result.error)
+         else if (result.body.return == true && result.body.request_id && result.body.message[0] == 'SMS sent successfully.') console.log('\n',"sms_sended : ", result.body.request_id)
+         else console.log(result.body)
       })
-      const text = mobile_otp
-      const from = smsconfig.VONAGE_NAME
-      const sms = await vonage.message.sendSms(from, to_mobile, text)
-      console.log("sms : ", sms);
-      return sms
    }catch(err){
       return err
    }
