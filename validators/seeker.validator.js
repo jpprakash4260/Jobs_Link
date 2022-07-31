@@ -60,6 +60,17 @@ class SeekerValidation {
 		});
 		return BaseValidation.validateSeekerLoginBody(req, res, next, seeker_schema);
 	}
+
+	seekerPersonalDetails(req, res, next){
+		const seeker_schema = Joi.object({
+			emp_dob: Joi.date().required(),
+			emp_gender: Joi.string().min(4).required(),
+			emp_address: Joi.string().required(),
+			emp_pincode: Joi.string().required(),
+			emp_marital: Joi.string().required()
+		})
+		return BaseValidation.validatePersonalDetails(req, res, next, seeker_schema)
+	}
 }
 
 module.exports = new SeekerValidation();

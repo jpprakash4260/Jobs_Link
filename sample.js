@@ -67,17 +67,20 @@
 
 
 
-const moment = require('moment')
+// const { now } = require('moment');
+// const moment = require('moment')
+
+// const time = moment()
+// console.log('\n',"Time : ", time, "Type : ", typeof time , '\n');
+
+// const currentTime = now()
+// console.log("Date now : ",currentTime, "Type : ", typeof currentTime , '\n');
 
 
-console.log("Time : ",moment().format('Do MMMM YYYY, h:mm:ss a'));
 
 
 
 
-
-
-
-// // if (Object.toJSON(bulk) == Object.toJSON(finding)) console.log("same objects");
-// // else console.log("not same objects");
+// if (Object.toJSON(bulk) == Object.toJSON(finding)) console.log("same objects");
+// else console.log("not same objects");
 

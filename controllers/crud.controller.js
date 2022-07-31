@@ -25,7 +25,7 @@ CrudController.create = async (req, res) => {
 
 CrudController.findAll = async (req, res) => {
     try {
-        let data = await crudService.findAllSeeker();
+        let data = await crudService.findAll('Employee');
         if (data == null) {
             logger.info(loggerMessage.showedDataSuccess);
             return response.success(req, res, statusCodes.HTTP_OK, data, responseMessage.seekerFounded);
@@ -60,7 +60,7 @@ CrudController.findOne = async (req, res) => {
     try {
         const key = Object.keys(req.query);
         const value = Object.values(req.query);
-        let data = await crudService.findOneSeeker(key, value);
+        let data = await crudService.findOne({ [key] : value }, 'Employee');
         if (data) {
             logger.info(loggerMessage.showedDataSuccess);
             return response.success(req, res, statusCodes.HTTP_OK, data, responseMessage.seekerFounded);
@@ -128,5 +128,39 @@ CrudController.delete = async (req,res) => {
         return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR ,responseMessage.errorInDeleting);
     }
 };
+
+CrudController.truncate = async (req, res) => {
+    try {
+        let seeker_id = req.query.seeker_id
+        let data = await crudService.Truncate('Employee');
+        if (data == 1) {
+            logger.info(loggerMessage.deleteDataSuccess);
+            return response.success(req, res, statusCodes.HTTP_OK, data, responseMessage.deletedData);
+        } else {
+            logger.warn(loggerMessage.deleteDataFailure);
+            return response.errors(req, res, statusCodes.HTTP_NO_CONTENT, data, responseMessage.notDeleted);
+        }
+    } catch (err) {
+        logger.error(loggerMessage.deleteDataFailure);
+        return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, responseMessage.errorInDeleting);
+    }
+};
+
+CrudController.findOnesome = async (req, res) => {
+    try {
+        let data = await crudService.findAllQuery('tbl__employee');
+        if (data) {
+            logger.info(loggerMessage.showedDataSuccess);
+            return response.success(req, res, statusCodes.HTTP_OK, data, responseMessage.seekerFounded);
+        } else {
+            logger.warn(loggerMessage.showedDataFailure);
+            return response.errors(req, res, statusCodes.HTTP_NOT_FOUND, data, responseMessage.noSeeker);
+        }
+    } catch (err) {
+        logger.error(loggerMessage.getDataFailure);
+        return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errorInFindOne);
+    }
+};
+
 
 module.exports = CrudController;

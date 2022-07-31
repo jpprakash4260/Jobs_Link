@@ -1,5 +1,6 @@
 const winston = require('winston');
 const DailyRotateFile = require('winston-daily-rotate-file');
+const moment = require('moment')
 
 const logFormat = winston.format.combine(
     winston.format.timestamp(),
@@ -9,7 +10,7 @@ const logFormat = winston.format.combine(
 
 const transport = new DailyRotateFile({
     filename: process.env.LOG_FILE,
-    datePattern: 'YYYY-MM-DD',
+    datePattern: 'DD-MM-YYYY',
     zippedArchive: true,
     maxFiles: '14d',
     prepend: true,

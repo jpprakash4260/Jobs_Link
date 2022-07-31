@@ -6,7 +6,6 @@ const nodemailer = require("nodemailer");
 const JWT = require("jsonwebtoken");
 var unirest = require("unirest");
 const smsconfig = require("../config/sms.config");
-const Vonage = require('@vonage/server-sdk')
 const fast2sms = require('fast-two-sms')
 
 class LoginRegisterService { };

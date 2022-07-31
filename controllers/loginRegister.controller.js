@@ -4,12 +4,14 @@ const { loginRegisterService, crudService } = require('../services');
 const { response } = require('../middleware');
 const { statusCodes, responseMessage, loggerMessage } = require('../constants');
 const { logger } = require('../helper');
-const LoginRegisterService = require('../services/loginRegister.service');
+const moment = require('moment')
 
 
 class LoginRegisterController { };
 LoginRegisterController.seeker_register = async (req, res) => {
    try {
+      // const truncate = await crudService.Truncate('tbl__employee')
+
       let obj = { emp_email: req.body.emp_email, email_verify: 'Y' }
       const ext_email = await crudService.findOne(obj, 'Employee')
 
@@ -33,10 +35,12 @@ LoginRegisterController.seeker_register = async (req, res) => {
       } else if (temp_email && temp_mobile) {
          const email_OTP = await loginRegisterService.gen_otp()
          const mobile_OTP = await loginRegisterService.gen_otp()
-         const update_OTP = await crudService.otp_seeker(temp_email.emp_id, email_OTP, mobile_OTP); console.log("email_OTP : ", email_OTP,'', "mobile_OTP : ", mobile_OTP, '\n') 
+         const update_OTP = await crudService.otp_seeker(temp_email.emp_id, email_OTP, mobile_OTP);
+         //console.log("email_OTP : ", email_OTP,'', "mobile_OTP : ", mobile_OTP, '\n') 
          if (update_OTP == 1) {
             // const sms___data = (loginRegisterService.sms_sender(req.body.emp_mobile, mobile_OTP))
-            const email_data = loginRegisterService.email_sender(req.body.emp_email, email_OTP); //email_data.then(() => { console.log(" email_sended : ", email_data, '\n' })
+            const email_data = loginRegisterService.email_sender(req.body.emp_email, email_OTP);
+            //email_data.then(() => { console.log(" email_sended : ", email_data, '\n' )})
             logger.info(loggerMessage.otpResended);
             return response.success(req, res, statusCodes.HTTP_OK, update_OTP, responseMessage.otpResended);
          } else {
@@ -47,9 +51,11 @@ LoginRegisterController.seeker_register = async (req, res) => {
       } else {
          const email_OTP = await loginRegisterService.gen_otp();
          const mobile_OTP = await loginRegisterService.gen_otp();
-         const created_seeker = await crudService.createSeeker(req, res, email_OTP, mobile_OTP); console.log("email_OTP : ", email_OTP, '', "mobile_OTP : ", mobile_OTP, '\n')
+         const created_seeker = await crudService.createSeeker(req, res, email_OTP, mobile_OTP); 
+         //console.log("email_OTP : ", email_OTP, '', "mobile_OTP : ", mobile_OTP, '\n')
          // const sms_data =   loginRegisterService.sms_sender(req.body.emp_mobile, mobile_OTP)
-         const email_data = loginRegisterService.email_sender(req.body.emp_email, email_OTP); //email_data.then(() => { console.log('\n',"email_sended : ", email_data, '\n') })
+         const email_data = loginRegisterService.email_sender(req.body.emp_email, email_OTP);
+         //email_data.then(() => { console.log('\n',"email_sended : ", email_data, '\n') })
          logger.info(loggerMessage.otpSended);
          return response.success(req, res, statusCodes.HTTP_CREATED, created_seeker, responseMessage.otpSended);
       }

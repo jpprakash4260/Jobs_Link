@@ -1,7 +1,5 @@
 //-------------------------- Employee Model Start ------------------------------//
 
-const moment = require("moment");
-
 module.exports = (sequelize, DataTypes) => {
    const Employee = sequelize.define(
       "Employee",
@@ -202,8 +200,7 @@ module.exports = (sequelize, DataTypes) => {
          },
          lastupdate: {
             type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: moment().format('Do MMMM YYYY, h:mm:ss a')
+            allowNull: false
          }
       },
       { timestamps: false, tableName: "tbl__employee" }

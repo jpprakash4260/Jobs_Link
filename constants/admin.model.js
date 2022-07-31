@@ -57,8 +57,9 @@ module.exports = (sequelize, DataTypes) => {
             },
             lastupdate: {
                 type: DataTypes.DATE,
-                defaultValue: null
-            },
+                allowNull: false,
+                defaultValue: moment().format('Do MMMM YYYY, h:mm:ss a')
+            }
         },
         { timestamps: false, tableName: "tbl_admin" }
     );

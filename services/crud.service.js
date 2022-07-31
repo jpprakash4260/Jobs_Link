@@ -1,12 +1,15 @@
 'use strict'
 const db = require("../Models");
-const upload = require("../validators/cloudinary.validator") 
+const upload = require("../validators/cloudinary.validator")
+const moment = require('moment');
+const { sequelize } = require("../Models");
+const { QueryTypes } = require('sequelize');
 
 class CrudService { };
 CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
     try {
         let resume = 'not Attached'
-        if (req.file) if(req.file.path) resume = (await upload.uploader.upload(req.file.path)).secure_url
+        if (req.file) if (req.file.path) resume = (await upload.uploader.upload(req.file.path)).secure_url
         const created_ = {
             emp_name: req.body.emp_name,
             emp_email: req.body.emp_email,
@@ -19,8 +22,11 @@ CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
             agreechk: req.body.agreechk,
             mobile_otp: mobile_OTP,
             email_otp: email_OTP,
+            emp_date: currentTime,
+            lastupdate: '',
+            ipaddress: req.ip
         }
-        let saved_seeker =  await db.Employee.create(created_)
+        let saved_seeker = await db.Employee.create(created_)
         return saved_seeker;
     } catch (err) {
         if (err.name == "SequelizeUniqueConstraintError" && err.errors[0].type == "unique violation" && err.errors[0].validatorKey == "not_unique") {
@@ -53,7 +59,8 @@ CrudService.createEmployer = async (req, email_otp, mobile_otp) => {
             recut_address: req.body.recut_address,
             recut_desc: req.body.recut_desc,
             email_otp: email_otp,
-            mobile_otp: mobile_otp
+            mobile_otp: mobile_otp,
+            ipaddress: req.ip
         }
         let saved_employee = await db.RecutComp.create(created_)
         return saved_employee;
@@ -148,25 +155,27 @@ CrudService.search = async (req, modelName) => {
     }
 }
 
-CrudService.updateSeeker_byId = async (emp_id, bulk) => {
+CrudService.updateSeeker_byId = async (emp_id, obj) => {
     try {
         const founded = await db.Employee.findByPk(emp_id)
         let checked = 'all same'
-        for (let i = 0; i < Object.keys(bulk).length; i++) {
-            if (Object.values(bulk)[i] == (founded[Object.keys(bulk)[i]])) continue
+        for (let i = 0; i < Object.keys(obj).length; i++) {
+            console.log(Object.values(obj)[i], founded[Object.keys(obj)[i]] , ' <== is not same');
+            if (Object.values(obj)[i] == (founded[Object.keys(obj)[i]])) continue
             else checked = 'all not same'; break
         }
-        if (checked == 'all not same') { const updated = await db.Employee.update(bulk, { where: { emp_id: emp_id } });  return updated[0] }
+        // console.log("checked ==> ", checked);
+        if (checked == 'all not same') { const updated = await db.Employee.update(obj, { where: { emp_id: emp_id } }); return updated[0] }
         else return 2
     } catch (err) {
+        console.log("error in catch : ", err);
         return err
     }
 }
 
 CrudService.otp_seeker = async (_id, email_otp, mobile_otp) => {
     try {
-
-        const updated = await db.Employee.update({ mobile_otp: mobile_otp, email_otp: email_otp }, { where: { emp_id: _id } })
+        const updated = await db.Employee.update({ mobile_otp: mobile_otp, email_otp: email_otp, lastupdate: moment().format() }, { where: { emp_id: _id } })
         return updated[0]
     } catch (err) {
         return err
@@ -175,7 +184,7 @@ CrudService.otp_seeker = async (_id, email_otp, mobile_otp) => {
 
 CrudService.otp_emp = async (_id, mobile_otp, email_otp) => {
     try {
-        const updated = await db.RecutComp.update({ mobile_otp: mobile_otp, email_otp: email_otp } , { where: { recut_id : _id } })
+        const updated = await db.RecutComp.update({ mobile_otp: mobile_otp, email_otp: email_otp, lastupdate: moment() }, { where: { recut_id: _id } })
         return updated[0]
     } catch (err) {
         return err
@@ -224,6 +233,25 @@ CrudService.delete_byId = async (obj, modelName) => {
     }
 }
 
+CrudService.Truncate = async (tableName) => {
+    try {
+        const Truncate = await db.sequelize.query(`TRUNCATE TABLE ${tableName}`)
+        return Truncate
+    } catch (err) {
+        return err
+    }
+}
+
+CrudService.findAllQuery = async (tableName) => {
+    try {
+        const query = await db.sequelize.query(`SELECT tbl__employee.emp_id, tbl__employee.emp_name, tbl__city.city_name FROM tbl__employee
+        INNER JOIN tbl__city ON tbl__employee.emp_id = tbl__city.city_name`)
+        return query
+    } catch (err) {
+        console.log("error in catch : ", err);
+        return err
+    }
+}
 
 
 module.exports = CrudService;
