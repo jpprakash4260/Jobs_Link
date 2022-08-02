@@ -1,9 +1,28 @@
+
+// local PHPMYADMIN
+// module.exports = {
+//   HOST: process.env.DB_HOST,
+//   USER: process.env.DB_USER,
+//   PASSWORD: process.env.DB_PASS,
+//   DB: process.env.DB_NAME,
+//   PORT: process.env.DB_PORT,
+//   dialect: "mysql",
+//   pool: {
+//     max: 5,
+//     min: 0,
+//     acquire: 30000,
+//     idle: 10000
+//   }
+// };
+
+// Free SQL Database
+
 module.exports = {
-  HOST: process.env.DB_HOST,
-  USER: process.env.DB_USER,
-  PASSWORD: process.env.DB_PASS,
-  DB: process.env.DB_NAME,
-  PORT: process.env.DB_PORT,
+  HOST: process.env.ONLINE_DB_HOST,
+  USER: process.env.ONLINE_DB_USER,
+  PASSWORD: process.env.ONLINE_DB_PASS,
+  DB: process.env.ONLINE_DB_NAME,
+  PORT: process.env.ONLINE_DB_PORT,
   dialect: "mysql",
   pool: {
     max: 5,

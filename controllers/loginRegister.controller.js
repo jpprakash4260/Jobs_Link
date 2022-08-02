@@ -24,7 +24,10 @@ LoginRegisterController.seeker_register = async (req, res) => {
       obj = { emp_mobile: req.body.emp_mobile, mobile_verify: 'N' }
       const temp_mobile = await crudService.findOne(obj, 'Employee')
 
-      if (ext_email) {
+      if ((!ext_email) && (!ext_mobile) && (!temp_email) && (!temp_mobile)) {
+         const create = await newSeeker(req, res)
+      }
+      else if (ext_email) {
          logger.info(loggerMessage.alreadyExited);
          return response.success(req, res, statusCodes.HTTP_CONFLICT, ext_email.emp_email, responseMessage.ext_email);
 
@@ -33,85 +36,139 @@ LoginRegisterController.seeker_register = async (req, res) => {
          return response.success(req, res, statusCodes.HTTP_CONFLICT, ext_mobile.emp_mobile, responseMessage.ext_mobile);
 
       } else if (temp_email && temp_mobile) {
-         const email_OTP = await loginRegisterService.gen_otp()
-         const mobile_OTP = await loginRegisterService.gen_otp()
-         const update_OTP = await crudService.otp_seeker(temp_email.emp_id, email_OTP, mobile_OTP);
-         //console.log("email_OTP : ", email_OTP,'', "mobile_OTP : ", mobile_OTP, '\n') 
-         if (update_OTP == 1) {
-            // const sms___data = (loginRegisterService.sms_sender(req.body.emp_mobile, mobile_OTP))
-            const email_data = loginRegisterService.email_sender(req.body.emp_email, email_OTP);
-            //email_data.then(() => { console.log(" email_sended : ", email_data, '\n' )})
-            logger.info(loggerMessage.otpResended);
-            return response.success(req, res, statusCodes.HTTP_OK, update_OTP, responseMessage.otpResended);
-         } else {
-            logger.error(loggerMessage.updateDataFailure);
-            return response.errors(req, res, statusCodes.HTTP_NOT_MODIFIED, update_OTP, responseMessage.otpNotUpdated);
+         if (temp_email.emp_id == temp_mobile.emp_id) await LoginRegisterController.resendOTP(req, res, temp_email)
+         else {
+            const deleted_Mobile = await crudService.delete_User({ emp_mobile: temp_mobile.emp_mobile }, 'Employee')
+            const deleted_Email = await crudService.delete_User({ emp_email: temp_email.emp_email }, 'Employee')
+            if (deleted_Mobile && deleted_Email) await newSeeker(req, res)
+            else {
+               logger.warn(loggerMessage.deleteDataFailure);
+               return response.errors(req, res, statusCodes.HTTP_NO_CONTENT, deleted, responseMessage.notDeleted);
+            }
          }
-         // New Seeker OR sended_OTP
+      } else if (((!temp_email) && temp_mobile) || (temp_email && (!temp_mobile))) {
+         if ((!temp_email) && temp_mobile) {
+            const deleted = await crudService.delete_User({ emp_mobile: temp_mobile.emp_mobile }, 'Employee')
+            if (deleted) await newSeeker(req, res)
+            else {
+               logger.warn(loggerMessage.deleteDataFailure);
+               return response.errors(req, res, statusCodes.HTTP_NO_CONTENT, deleted, responseMessage.notDeleted);
+            }
+         }
+         else if (temp_email && (!temp_mobile)) {
+            const deleted = await crudService.delete_User({ emp_email: temp_email.emp_email }, 'Employee')
+            if (deleted) await newSeeker(req, res)
+            else {
+               logger.warn(loggerMessage.deleteDataFailure);
+               return response.errors(req, res, statusCodes.HTTP_NO_CONTENT, deleted, responseMessage.notDeleted);
+            }
+         }
       } else {
+         logger.error(loggerMessage.notCreated);
+         return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.notCreated);
+      }
+      async function newSeeker(req, res) {
          const email_OTP = await loginRegisterService.gen_otp();
          const mobile_OTP = await loginRegisterService.gen_otp();
-         const created_seeker = await crudService.createSeeker(req, res, email_OTP, mobile_OTP); 
+         const created_seeker = await crudService.createSeeker(req, res, email_OTP, mobile_OTP);
          //console.log("email_OTP : ", email_OTP, '', "mobile_OTP : ", mobile_OTP, '\n')
-         // const sms_data =   loginRegisterService.sms_sender(req.body.emp_mobile, mobile_OTP)
+         //const sms_data =   loginRegisterService.sms_sender(req.body.emp_mobile, mobile_OTP)
          const email_data = loginRegisterService.email_sender(req.body.emp_email, email_OTP);
          //email_data.then(() => { console.log('\n',"email_sended : ", email_data, '\n') })
          logger.info(loggerMessage.otpSended);
          return response.success(req, res, statusCodes.HTTP_CREATED, created_seeker, responseMessage.otpSended);
       }
+
    } catch (err) {
       console.log(err);
       logger.error(loggerMessage.errInCreate);
       return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errInCreate);
    }
-};
+}
+
+LoginRegisterController.resendOTP = async (req, res, temp_email) => {
+   try {
+      const email_OTP = await loginRegisterService.gen_otp()
+      const mobile_OTP = await loginRegisterService.gen_otp()
+      const update_OTP = await crudService.otp_seeker(temp_email.emp_id, email_OTP, mobile_OTP);
+      //console.log("email_OTP : ", email_OTP,'', "mobile_OTP : ", mobile_OTP, '\n') 
+      if (update_OTP == 1) {
+         //const sms___data = (loginRegisterService.sms_sender(req.body.emp_mobile, mobile_OTP))
+         const email_data = loginRegisterService.email_sender(req.body.emp_email, email_OTP);
+         //email_data.then(() => { console.log(" email_sended : ", email_data, '\n' )})
+         logger.info(loggerMessage.otpResended);
+         return response.success(req, res, statusCodes.HTTP_OK, update_OTP, responseMessage.otpResended);
+      } else {
+         logger.error(loggerMessage.updateDataFailure);
+         return response.errors(req, res, statusCodes.HTTP_NOT_MODIFIED, update_OTP, responseMessage.otpNotUpdated);
+      }
+   } catch (err) {
+      console.log(err);
+      logger.error(loggerMessage.errorInUpdating);
+      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errorInUpdating);
+   }
+}
 
 LoginRegisterController.seeker_Verify_Email = async (req, res) => {
    try {
       let obj = { emp_email: req.body.emp_email, email_verify: 'N' }
       const temp_email = await crudService.findOne(obj, 'Employee')
 
-      obj = { emp_email: req.body.emp_email }
-      const anyOne_email = await crudService.findAllMatch(obj, 'Employee')
+      obj = { emp_email: req.body.emp_email, email_verify: 'Y' }
+      const Verified_email = await crudService.findOne(obj, 'Employee')
 
-      if (temp_email) {
+      if ((!temp_email) && Verified_email) {
+         logger.warn(loggerMessage.alreadyVerified);
+         return response.errors(req, res, statusCodes.HTTP_NOT_FOUND, Verified_email.emp_email, responseMessage.alreadyVerified);
+      } else if (temp_email && (!Verified_email)) {
          if (temp_email.email_otp == req.body.email_otp) {
-            const Verified = await crudService.updateSeeker_byId(temp_email.emp_id, { email_verify: "Y" })
+            const Verified = await crudService.updateSeeker_byId(temp_email.emp_id, { email_verify: 'Y' })
             if (Verified == 1) {
-               logger.info(loggerMessage.updateDataSuccess);
-               return response.success(req, res, statusCodes.HTTP_OK, temp_email.emp_email, responseMessage.registerSuccess);
-            } else {
+               logger.info(loggerMessage.Verified);
+               return response.success(req, res, statusCodes.HTTP_OK, temp_email.emp_email, responseMessage.Verified);
+            } else if (Verified == 2) {
+               logger.warn(loggerMessage.alreadyVerified);
+               return response.errors(req, res, statusCodes.HTTP_NOT_FOUND, temp_email, responseMessage.alreadyVerified);
+            }
+            else {
                logger.error(loggerMessage.updateDataFailure);
                return response.errors(req, res, statusCodes.HTTP_NOT_MODIFIED, temp_email.emp_email, responseMessage.registerFailure);
             }
          } else {
-            logger.warn(loggerMessage.invalidOTP);
+            logger.warn(loggerMessage.invalidOTP)
             return response.errors(req, res, statusCodes.HTTP_NOT_ACCEPTABLE, responseMessage.invalidOTP);
          }
-      } else if (!temp_email && anyOne_email) {
-         logger.warn(loggerMessage.registerAlready);
-         return response.errors(req, res, statusCodes.HTTP_NOT_FOUND, temp_email, responseMessage.registerAlready);
+      } else {
+         logger.warn(loggerMessage.notFound)
+         return response.errors(req, res, statusCodes.HTTP_NOT_FOUND, temp_email, responseMessage.notFound);
       }
    } catch (err) {
-      logger.error(loggerMessage.verificationFail);
-      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, responseMessage.badRequest);
+      console.log(err);
+      logger.error(loggerMessage.verificationFail)
+      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.badRequest);
    }
-};
+}
 
 LoginRegisterController.seeker_Verify_Mobile = async (req, res) => {
    try {
       let obj = { emp_email: req.body.emp_email, mobile_verify: 'N' }
       const temp_email = await crudService.findOne(obj, 'Employee')
 
-      obj = { emp_email: req.body.emp_email }
-      const anyOne_email = await crudService.findAllMatch(obj, 'Employee')
+      obj = { emp_email: req.body.emp_email, mobile_verify: 'Y' }
+      const Verified_email = await crudService.findOne(obj, 'Employee')
 
-      if (temp_email) {
+      if ((!temp_email) && Verified_email) {
+         logger.warn(loggerMessage.alreadyVerified);
+         return response.errors(req, res, statusCodes.HTTP_ALREADY_REPORTED, Verified_email.emp_email, responseMessage.alreadyVerified);
+      } else if (temp_email) {
          if (temp_email.mobile_otp == req.body.mobile_otp) {
             const Verified = await crudService.updateSeeker_byId(temp_email.emp_id, { mobile_verify: "Y" })
             if (Verified == 1) {
-               logger.info(loggerMessage.updateDataSuccess);
-               return response.success(req, res, statusCodes.HTTP_OK, temp_email.emp_mobile, responseMessage.registerSuccess);
+               logger.info(loggerMessage.Verified);
+               return response.success(req, res, statusCodes.HTTP_OK, temp_email.emp_mobile, responseMessage.Verified);
+            } else if (Verified == 2) {
+               logger.warn(loggerMessage.registerAlready);
+               return response.errors(req, res, statusCodes.HTTP_NOT_FOUND, temp_email, responseMessage.registerAlready);
             } else {
                logger.error(loggerMessage.updateDataFailure);
                return response.errors(req, res, statusCodes.HTTP_NOT_MODIFIED, temp_email.emp_mobile, responseMessage.registerFailure);
@@ -120,15 +177,16 @@ LoginRegisterController.seeker_Verify_Mobile = async (req, res) => {
             logger.warn(loggerMessage.invalidOTP);
             return response.errors(req, res, statusCodes.HTTP_NOT_ACCEPTABLE, responseMessage.invalidOTP);
          }
-      } else if (!temp_email && anyOne_email) {
-         logger.warn(loggerMessage.registerAlready);
-         return response.errors(req, res, statusCodes.HTTP_NOT_FOUND, temp_email, responseMessage.registerAlready);
+      } else {
+         logger.warn(loggerMessage.notFound);
+         return response.errors(req, res, statusCodes.HTTP_NOT_FOUND, temp_email, responseMessage.notFound);
       }
    } catch (err) {
+      console.log(err);
       logger.error(loggerMessage.verificationFail);
-      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, responseMessage.badRequest);
+      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.badRequest);
    }
-};
+}
 
 LoginRegisterController.seeker_register_education = async (req, res) => {
    try {
@@ -223,8 +281,8 @@ LoginRegisterController.employer_register = async (req, res) => {
          return response.success(req, res, statusCodes.HTTP_CONFLICT, ext_mobile.mobile_no, responseMessage.ext_mobile);
       } else if (temp_email && temp_mobile) {
          const email_OTP = await loginRegisterService.gen_otp()
-         const mobile_OTP= await loginRegisterService.gen_otp()
-         const update_OTP = await crudService.otp_emp(temp_email.recut_id, email_OTP, mobile_OTP); console.log("email_OTP : ", email_OTP, " mobile_OTP", mobile_OTP , '\n')
+         const mobile_OTP = await loginRegisterService.gen_otp()
+         const update_OTP = await crudService.otp_emp(temp_email.recut_id, email_OTP, mobile_OTP); console.log("email_OTP : ", email_OTP, " mobile_OTP", mobile_OTP, '\n')
          if (update_OTP == 1) {
             // const sms___data = (loginRegisterService.sms_sender(req.body.emp_mobile, mobile_OTP))
             const email_data = (loginRegisterService.email_sender(req.body.mail_id, email_OTP))//; email_data.then(() => {console.log("email_sended : ", email_data);})
@@ -236,8 +294,8 @@ LoginRegisterController.employer_register = async (req, res) => {
          }
       } else {
          const email_OTP = await loginRegisterService.gen_otp()
-         const mobile_OTP= await loginRegisterService.gen_otp()
-         const created_ = await crudService.createEmployer(req, email_OTP, mobile_OTP); console.log("email_otp : ", email_OTP, " mobile_otp : ", mobile_OTP ,'\n');
+         const mobile_OTP = await loginRegisterService.gen_otp()
+         const created_ = await crudService.createEmployer(req, email_OTP, mobile_OTP); console.log("email_otp : ", email_OTP, " mobile_otp : ", mobile_OTP, '\n');
          // const sms___data = (loginRegisterService.sms_sender(req.body.emp_mobile, mobile_OTP))
          const email_data = (loginRegisterService.email_sender(req.body.mail_id, email_OTP)); //email_data.then(() => { console.log("email_sended : ", email_data);})
          logger.info(loggerMessage.otpSended);
@@ -255,7 +313,7 @@ LoginRegisterController.employer_Verify_Email = async (req, res) => {
       const temp_email = await crudService.findOne(obj, 'RecutComp')
 
       obj = { mail_id: req.body.mail_id }
-      const anyOne_email = await crudService.findAllMatch(obj, 'RecutComp')
+      const Verifed_email = await crudService.findAllMatch(obj, 'RecutComp')
 
       if (temp_email) {
          if (temp_email.email_otp == req.body.email_otp) {
@@ -271,7 +329,7 @@ LoginRegisterController.employer_Verify_Email = async (req, res) => {
             logger.warn(loggerMessage.invalidOTP);
             return response.errors(req, res, statusCodes.HTTP_NOT_ACCEPTABLE, responseMessage.invalidOTP);
          }
-      } else if (!temp_email && anyOne_email) {
+      } else if (!temp_email && Verifed_email) {
          logger.warn(loggerMessage.registerAlready);
          return response.errors(req, res, statusCodes.HTTP_NOT_FOUND, temp_email, responseMessage.registerAlready);
       }
@@ -279,7 +337,7 @@ LoginRegisterController.employer_Verify_Email = async (req, res) => {
       logger.error(loggerMessage.verificationFail);
       return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, responseMessage.badRequest);
    }
-};
+}
 
 LoginRegisterController.employer_Verify_Mobile = async (req, res) => {
    try {
@@ -287,7 +345,7 @@ LoginRegisterController.employer_Verify_Mobile = async (req, res) => {
       const temp_email = await crudService.findOne(obj, 'RecutComp')
 
       obj = { mail_id: req.body.mail_id }
-      const anyOne_email = await crudService.findAllMatch(obj, 'RecutComp')
+      const Verifed_email = await crudService.findAllMatch(obj, 'RecutComp')
 
       if (temp_email) {
          if (temp_email.mobile_otp == req.body.mobile_otp) {
@@ -303,7 +361,7 @@ LoginRegisterController.employer_Verify_Mobile = async (req, res) => {
             logger.warn(loggerMessage.invalidOTP);
             return response.errors(req, res, statusCodes.HTTP_NOT_ACCEPTABLE, responseMessage.invalidOTP);
          }
-      } else if (!temp_email && anyOne_email) {
+      } else if (!temp_email && Verifed_email) {
          logger.warn(loggerMessage.registerAlready);
          return response.errors(req, res, statusCodes.HTTP_NOT_FOUND, temp_email, responseMessage.registerAlready);
       }
@@ -311,7 +369,7 @@ LoginRegisterController.employer_Verify_Mobile = async (req, res) => {
       logger.error(loggerMessage.verificationFail);
       return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, responseMessage.badRequest);
    }
-};
+}
 
 LoginRegisterController.employer_login = async (req, res) => {
    try {
@@ -343,7 +401,7 @@ LoginRegisterController.emp_forgot_Password = async (req, res) => {
       const ext_email = await crudService.findOne(obj, 'RecutComp')
       if (ext_email) {
          const forgot_Password = { user_name: ext_email.comp_name, mail_id: ext_email.mail_id, password: ext_email.comp_pass }
-         const email = loginRegisterService.email_sender(ext_email.mail_id, null, forgot_Password); email.then(() => { console.log('\n',"email_sended : ", email); })
+         const email = loginRegisterService.email_sender(ext_email.mail_id, null, forgot_Password); email.then(() => { console.log('\n', "email_sended : ", email); })
          logger.info(loggerMessage.passwordsended)
          return response.success(req, res, statusCodes.HTTP_ACCEPTED, ext_email.mail_id, responseMessage.passwordsended)
       }

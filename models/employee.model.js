@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
          emp_dob: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             default: null
          },
          emp_gender: {
@@ -196,11 +196,13 @@ module.exports = (sequelize, DataTypes) => {
          },
          emp_date: {
             type: DataTypes.DATE,
-            allowNull: false
+            allowNull: false,
+            // get: function () { return this.getDataValue('emp_date').toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) }
          },
          lastupdate: {
             type: DataTypes.DATE,
-            allowNull: false
+            allowNull: false,
+            // get: function () { return this.getDataValue('lastupdate').toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) }
          }
       },
       { timestamps: false, tableName: "tbl__employee" }

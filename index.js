@@ -7,10 +7,9 @@ const path = require("path");
 require("dotenv").config();
 const moment = require('moment')
 
-const DB_Name = process.env.DB_Name
-const PORT = process.env.APP_PORT;
 const routers = require("./routes");
 const db = require("./models");
+const dbConfig = require("./config/db.config");
 require('./config');
 
 // Express Application
@@ -27,11 +26,11 @@ const server = http.createServer(app);
 //DB connection
 db.sequelize.sync()
 	.then(() => {
-		console.log(`\nDB connected  : ${DB_Name}`);
-		server.listen(PORT, () => {
-			console.log(`Serveron port : ${PORT} \n`);
-		});
+		console.log(`\nDB connected   : ${dbConfig.DB}`)
+		server.listen(process.env.APP_PORT, () => {
+			console.log(`Server on port : ${process.env.APP_PORT} \n`)
+		})
 	})
 	.catch((err) => {
-		console.log("\nFailed to connect db: " + err.message,"\n");
+		console.log("\nFailed to connect db: " + err.message,"\n")
 	});

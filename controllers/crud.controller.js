@@ -26,7 +26,7 @@ CrudController.create = async (req, res) => {
 CrudController.findAll = async (req, res) => {
     try {
         let data = await crudService.findAll('Employee');
-        if (data == null) {
+        if (data) {
             logger.info(loggerMessage.showedDataSuccess);
             return response.success(req, res, statusCodes.HTTP_OK, data, responseMessage.seekerFounded);
         } else {
@@ -132,13 +132,13 @@ CrudController.delete = async (req,res) => {
 CrudController.truncate = async (req, res) => {
     try {
         let seeker_id = req.query.seeker_id
-        let data = await crudService.Truncate('Employee');
-        if (data == 1) {
+        const truncate = await crudService.Truncate('tbl__employee')
+        if (truncate[0]  && truncate[0].fieldCount == 0 && truncate[0].affectedRows == 0 && truncate[0].insertId == 0 && truncate[0].info == '' && truncate[0].serverStatus == 2 && truncate[0].warningStatus == 0 ) {
             logger.info(loggerMessage.deleteDataSuccess);
-            return response.success(req, res, statusCodes.HTTP_OK, data, responseMessage.deletedData);
+            return response.success(req, res, statusCodes.HTTP_OK, truncate[0], responseMessage.deletedData);
         } else {
             logger.warn(loggerMessage.deleteDataFailure);
-            return response.errors(req, res, statusCodes.HTTP_NO_CONTENT, data, responseMessage.notDeleted);
+            return response.errors(req, res, statusCodes.HTTP_NO_CONTENT, truncate, responseMessage.notDeleted);
         }
     } catch (err) {
         logger.error(loggerMessage.deleteDataFailure);

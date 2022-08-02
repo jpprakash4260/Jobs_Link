@@ -84,3 +84,12 @@
 // if (Object.toJSON(bulk) == Object.toJSON(finding)) console.log("same objects");
 // else console.log("not same objects");
 
+
+
+// var dt = new Date();
+// var x = dt.toLocaleDateString();
+// console.log(x.replace('/,/','-'));
+// console.log("length : " + x.length);
+// var arr = x.split("/");
+// console.log(arr);
+// console.log("month : " + parseInt(arr[0], 10));

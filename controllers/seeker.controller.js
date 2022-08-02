@@ -28,13 +28,12 @@ SeekerController.search = async (req, res) => {
 SeekerController.updatePersonal = async (req, res) => {
    try{
       const updated = await crudService.updateSeeker_byId(req.seeker_id, req.body)
-      console.log("updated : ", updated);
       if (updated == 1) {
          logger.info(loggerMessage.updateDataSuccess);
          return response.success(req, res, statusCodes.HTTP_OK, updated, responseMessage.seekerUpdated);
       } else if(updated == 2){
          logger.warn(loggerMessage.alreadyExited);
-         return response.errors(req, res, statusCodes.HTTP_NOT_MODIFIED, updated, responseMessage.alreadyExited);
+         return response.errors(req, res, statusCodes.HTTP_ALREADY_REPORTED, updated, responseMessage.alreadyExited);
       }
       else {
          logger.error(loggerMessage.updateDataFailure);

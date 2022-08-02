@@ -2,10 +2,9 @@
 const db = require("../Models");
 const upload = require("../validators/cloudinary.validator")
 const moment = require('moment');
-const { sequelize } = require("../Models");
-const { QueryTypes } = require('sequelize');
-
+const sequelize = require('sequelize')
 class CrudService { };
+
 CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
     try {
         let resume = 'not Attached'
@@ -22,7 +21,7 @@ CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
             agreechk: req.body.agreechk,
             mobile_otp: mobile_OTP,
             email_otp: email_OTP,
-            emp_date: currentTime,
+            emp_date: moment().format(),
             lastupdate: '',
             ipaddress: req.ip
         }
@@ -160,15 +159,43 @@ CrudService.updateSeeker_byId = async (emp_id, obj) => {
         const founded = await db.Employee.findByPk(emp_id)
         let checked = 'all same'
         for (let i = 0; i < Object.keys(obj).length; i++) {
-            console.log(Object.values(obj)[i], founded[Object.keys(obj)[i]] , ' <== is not same');
-            if (Object.values(obj)[i] == (founded[Object.keys(obj)[i]])) continue
-            else checked = 'all not same'; break
+            if (Object.values(obj)[i] == (founded[Object.keys(obj)[i]])) {
+                console.log(Object.values(obj)[i], founded[Object.keys(obj)[i]])
+                continue
+            }
+            else checked = 'all not same';  //console.log(Object.values(obj)[i], '  ,  ', founded[Object.keys(obj)[i]], ' <== is not same'); 
+            break
         }
         // console.log("checked ==> ", checked);
-        if (checked == 'all not same') { const updated = await db.Employee.update(obj, { where: { emp_id: emp_id } }); return updated[0] }
+        if (checked == 'all not same') {
+            obj['lastupdate'] = moment().format()
+            const updated = await db.Employee.update( obj, { where: { emp_id: emp_id } }); //console.log(updated[0]);
+            return updated[0] 
+        }
         else return 2
     } catch (err) {
-        console.log("error in catch : ", err);
+        console.log(err);
+        return err
+    }
+}
+
+CrudService.updateEmp_byId = async (recut_id, obj) => {
+    try {
+        const founded = await db.RecutComp.findByPk(recut_id)
+        let checked = 'all same'
+        for (let i = 0; i < Object.keys(obj).length; i++) {
+            if (Object.values(obj)[i] == (founded[Object.keys(obj)[i]])) continue
+            else checked = 'all not same' //console.log(Object.values(obj)[i], founded[Object.keys(obj)[i]], ' <== is not same');
+            break
+        }
+        // console.log("checked ==> ", checked);
+        if (checked == 'all not same') {
+            obj['lastupdate'] = moment().format()
+            const updated = await db.RecutComp.update( obj, { where: { recut_id: recut_id } }); //console.log(updated[0]); 
+            return updated[0]
+        }
+        else return 2
+    } catch (err) {
         return err
     }
 }
@@ -191,41 +218,9 @@ CrudService.otp_emp = async (_id, mobile_otp, email_otp) => {
     }
 }
 
-CrudService.updateEmp_byId = async (recut_id, bulk) => {
+CrudService.delete_User = async (obj, modelName) => {
     try {
-        const founded = await db.RecutComp.findByPk(recut_id)
-        let checked = 'all same'
-        for (let i = 0; i < Object.keys(bulk).length; i++) {
-            if (Object.values(bulk)[i] == (founded[Object.keys(bulk)[i]])) continue
-            else checked = 'all not same'; break
-        }
-        if (checked == 'all not same') { const updated = await db.RecutComp.update(bulk, { where: { recut_id: recut_id } }); return updated[0] }
-        else return 2
-    } catch (err) {
-        return err
-    }
-}
-
-CrudService.updateSeeker_byId_2Field = async (emp_id, key1, value1, key2, value2) => {
-    try {
-        const updatedSeeker = await db.Employee.update({ [key1]: value1, [key2]: value2 }, { where: { emp_id: emp_id } })
-        return updatedSeeker[0]
-    } catch (err) {
-        return err
-    }
-}
-
-CrudService.updateEmp_byId_2Field = async (recut_id, key1, value1, key2, value2) => {
-    try {
-        const updatedEmployer = await db.RecutComp.update({ [key1]: value1, [key2]: value2 }, { where: { recut_id: recut_id } })
-        return updatedEmployer[0]
-    } catch (err) {
-        return err
-    }
-}
-
-CrudService.delete_byId = async (obj, modelName) => {
-    try {
+        // console.log('obj : ',obj, 'modelName : ', modelName);
         const deleted = await db[modelName].destroy({ where: obj })
         return deleted
     } catch (err) {

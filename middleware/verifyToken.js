@@ -24,7 +24,7 @@ class BaseValidation {
 					let obj2 = { mail_id: decoded.email }; const employer = await crudService.findOne(obj2, 'RecutComp')
 					req.valid_user = decoded
 					if(seeker) req.seeker_id = seeker.emp_id
-					else req.employer_id = employer.recut_id	
+					else if(employer) req.employer_id = employer.recut_id	
 					logger.info(loggerMessage.tokenVerifed)
 					next()
 				}
