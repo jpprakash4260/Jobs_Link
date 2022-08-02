@@ -2,7 +2,8 @@
 const db = require("../Models");
 const upload = require("../validators/cloudinary.validator")
 const moment = require('moment');
-const sequelize = require('sequelize')
+const { networkInterfaces } = require('os');
+const sequelize = require('sequelize');
 class CrudService { };
 
 CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
@@ -23,7 +24,7 @@ CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
             email_otp: email_OTP,
             emp_date: moment().format(),
             lastupdate: '',
-            ipaddress: req.ip
+            ipaddress: await CrudService.get_IP()
         }
         let saved_seeker = await db.Employee.create(created_)
         return saved_seeker;
@@ -160,7 +161,7 @@ CrudService.updateSeeker_byId = async (emp_id, obj) => {
         let checked = 'all same'
         for (let i = 0; i < Object.keys(obj).length; i++) {
             if (Object.values(obj)[i] == (founded[Object.keys(obj)[i]])) {
-                console.log(Object.values(obj)[i], founded[Object.keys(obj)[i]])
+                // console.log(Object.values(obj)[i], founded[Object.keys(obj)[i]])
                 continue
             }
             else checked = 'all not same';  //console.log(Object.values(obj)[i], '  ,  ', founded[Object.keys(obj)[i]], ' <== is not same'); 
@@ -169,8 +170,8 @@ CrudService.updateSeeker_byId = async (emp_id, obj) => {
         // console.log("checked ==> ", checked);
         if (checked == 'all not same') {
             obj['lastupdate'] = moment().format()
-            const updated = await db.Employee.update( obj, { where: { emp_id: emp_id } }); //console.log(updated[0]);
-            return updated[0] 
+            const updated = await db.Employee.update(obj, { where: { emp_id: emp_id } }); //console.log(updated[0]);
+            return updated[0]
         }
         else return 2
     } catch (err) {
@@ -191,7 +192,7 @@ CrudService.updateEmp_byId = async (recut_id, obj) => {
         // console.log("checked ==> ", checked);
         if (checked == 'all not same') {
             obj['lastupdate'] = moment().format()
-            const updated = await db.RecutComp.update( obj, { where: { recut_id: recut_id } }); //console.log(updated[0]); 
+            const updated = await db.RecutComp.update(obj, { where: { recut_id: recut_id } }); //console.log(updated[0]); 
             return updated[0]
         }
         else return 2
@@ -232,6 +233,26 @@ CrudService.Truncate = async (tableName) => {
     try {
         const Truncate = await db.sequelize.query(`TRUNCATE TABLE ${tableName}`)
         return Truncate
+    } catch (err) {
+        return err
+    }
+}
+
+CrudService.get_IP = async () => {
+    try {
+        const nets = networkInterfaces();
+        const results = Object.create(null); // Or just '{}', an empty object
+
+        for (const name of Object.keys(nets)) {
+            for (const net of nets[name]) {
+                // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+                if (net.family === 'IPv4' && !net.internal) {
+                    if (!results[name]) { results[name] = [] }
+                    results[name].push(net.address)
+                    return results.WiFi ? results.WiFi[0] : results
+                }
+            }
+        }
     } catch (err) {
         return err
     }

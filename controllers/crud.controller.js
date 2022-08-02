@@ -162,5 +162,17 @@ CrudController.findOnesome = async (req, res) => {
     }
 };
 
+CrudController.get_IP = async (req, res) =>{
+    try{
+        const IP_address = await crudService.get_IP()
+        logger.info(loggerMessage.showedDataSuccess);
+        return response.success(req, res, statusCodes.HTTP_OK, IP_address, responseMessage.seekerFounded);
+    }catch(err){
+        console.log(err);
+        logger.error(loggerMessage.getDataFailure);
+        return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errorInFindOne);
+    }
+}
+
 
 module.exports = CrudController;

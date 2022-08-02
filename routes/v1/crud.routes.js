@@ -1,6 +1,7 @@
 const express = require("express");
 const crudRoutes = express.Router();
 const { crudController } = require("../../controllers");
+const CrudController = require("../../controllers/crud.controller");
 const { seeker_validate } = require("../../validators");
 
 
@@ -14,6 +15,7 @@ crudRoutes.put('/update', crudController.update)
 crudRoutes.delete('/delete', crudController.delete)
 crudRoutes.get('/truncate', crudController.truncate)
 crudRoutes.get('/query', crudController.findOnesome)
+crudRoutes.get('/get_IP', CrudController.get_IP)
 
 
 module.exports = crudRoutes;

@@ -78,7 +78,6 @@ LoginRegisterController.seeker_register = async (req, res) => {
          logger.info(loggerMessage.otpSended);
          return response.success(req, res, statusCodes.HTTP_CREATED, created_seeker, responseMessage.otpSended);
       }
-
    } catch (err) {
       console.log(err);
       logger.error(loggerMessage.errInCreate);
