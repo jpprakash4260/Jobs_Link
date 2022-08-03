@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
          },
          keysk_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            default: 1
          },
          keysk_name: {
             type: DataTypes.STRING,
@@ -36,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
       },
-      { timestamps: true, tableName: "tbl__empkskills" }
+      { timestamps: false, tableName: "tbl__empkskills" }
    );
    return EmployeeKeyskills;
 };

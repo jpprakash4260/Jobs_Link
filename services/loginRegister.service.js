@@ -1,36 +1,18 @@
 'use strict'
-const db = require("../Models");
+const db = require("../Models")
 var localStorage = require('local-storage')
-const { emailMessage, smsMessage } = require('../constants');
-const nodemailer = require("nodemailer");
-const JWT = require("jsonwebtoken");
-var unirest = require("unirest");
-const smsconfig = require("../config/sms.config");
+const { emailMessage, smsMessage } = require('../constants')
+const nodemailer = require("nodemailer")
+const JWT = require("jsonwebtoken")
+var unirest = require("unirest")
+const smsconfig = require("../config/sms.config")
 const fast2sms = require('fast-two-sms')
 
-class LoginRegisterService { };
-
-LoginRegisterService.findseeker_2Field = async (key1, value1, key2, value2) => {
-   try {
-      const findseeker_2Field = await db.Employee.findOne({ where: { [key1]: value1, [key2]: value2 } })
-      return findseeker_2Field
-   } catch (err) {
-      return err
-   }
-}
-
-LoginRegisterService.findemp_2Field = async (key1, value1, key2, value2) => {
-   try {
-      const findemp_2Field = await db.RecutComp.findOne({ where: { [key1]: value1, [key2]: value2 } })
-      return findemp_2Field
-   } catch (err) {
-      return err
-   }
-}
+class LoginRegisterService { }
 
 LoginRegisterService.gen_otp = async () => {
    try {
-      let generated_OTP = await Math.floor(100000 + Math.random() * 900000) + 1;
+      let generated_OTP = await Math.floor(100000 + Math.random() * 900000) + 1
       return generated_OTP
    } catch (err) {
       return err
@@ -39,7 +21,7 @@ LoginRegisterService.gen_otp = async () => {
 
 LoginRegisterService.JWT_token = async (data) => {
    try{
-      const Token = await JWT.sign(data, process.env.JWT_SECRET, { expiresIn: process.env.TOKEN_EXPIRESIN });
+      const Token = await JWT.sign(data, process.env.JWT_SECRET, { expiresIn: process.env.TOKEN_EXPIRESIN })
       return Token
    }catch(err){
       return err
@@ -92,12 +74,13 @@ LoginRegisterService.email_sender = async (to_email, email_otp, forgot_Password,
 
 LoginRegisterService.sms_sender = async (to_mobile, mobile_otp, feedback) =>{
    try{
-      var req = unirest("POST", "https://www.fast2sms.com/dev/bulkV2");
-      req.headers({"authorization": smsconfig.SMS_API_KEY});
-      req.form( { "variables_values": mobile_otp, "route": "otp", "numbers": to_mobile } );
+      var req = unirest("POST", "https://www.fast2sms.com/dev/bulkV2")
+      req.headers({"authorization": smsconfig.SMS_API_KEY})
+      req.form( { "variables_values": mobile_otp, "route": "otp", "numbers": to_mobile } )
       req.end((result) => { 
          if (result.error) throw new Error(result.error)
-         else if (result.body.return == true && result.body.request_id && result.body.message[0] == 'SMS sent successfully.') console.log('\n',"sms_sended : ", result.body.request_id)
+         else if (result.body.return == true && result.body.request_id && result.body.message[0] == 'SMS sent successfully.')
+         console.log('\n',"sms_sended : ", result.body.request_id)
          else console.log(result.body)
       })
    }catch(err){

@@ -3,9 +3,9 @@ const db = require("../Models");
 const upload = require("../validators/cloudinary.validator")
 const moment = require('moment');
 const { networkInterfaces } = require('os');
-const sequelize = require('sequelize');
-class CrudService { };
+const { sequelize } = require('sequelize')
 
+class CrudService { };
 CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
     try {
         let resume = 'not Attached'
@@ -77,6 +77,45 @@ CrudService.createEmployer = async (req, email_otp, mobile_otp) => {
             return err;
         }
 
+    }
+}
+
+CrudService.createKeySkills = async (req, res) => {
+    try{
+        let obj = {
+            emp_id: req.seeker_id,
+            keysk_id: 1,
+            keysk_name: req.body.keysk_name,
+            empkskil_status: 'Y',
+            empkskil_date: moment().format(),
+            lastupdate: ''
+        }
+        let KeySkills = await db.EmployeeKeyskills.create(obj)
+        return KeySkills
+    }catch(err){
+        return err
+    }
+}
+
+CrudService.createEmployement = async (req, res) => {
+    try {
+        let obj = {
+            emp_id: req.seeker_id,
+            emp_desig: req.body.emp_desig,
+            emp_org: req.body.emp_org,
+            cur_comp: 'Y',
+            exp_yr: req.body.exp_yr,
+            exp_month: req.body.exp_month,
+            exp_yr_to: req.body.exp_yr_to,
+            exp_month_to: req.body.exp_month_to,
+            emp_detail: req.body.emp_detail,
+            wrk_date: moment().format(),
+            lastupdate: ''
+        }
+        let KeySkills = await db.EmployeeOfficialDetails.create(obj)
+        return KeySkills
+    } catch (err) {
+        return err
     }
 }
 
@@ -164,13 +203,40 @@ CrudService.updateSeeker_byId = async (emp_id, obj) => {
                 // console.log(Object.values(obj)[i], founded[Object.keys(obj)[i]])
                 continue
             }
-            else checked = 'all not same';  //console.log(Object.values(obj)[i], '  ,  ', founded[Object.keys(obj)[i]], ' <== is not same'); 
+            else checked = 'all not same';
             break
         }
-        // console.log("checked ==> ", checked);
         if (checked == 'all not same') {
             obj['lastupdate'] = moment().format()
-            const updated = await db.Employee.update(obj, { where: { emp_id: emp_id } }); //console.log(updated[0]);
+            const updated = await db.Employee.update(obj, { where: { emp_id: emp_id } });
+            return updated[0]
+        }
+        else return 2
+    } catch (err) {
+        console.log(err);
+        return err
+    }
+}
+
+CrudService.update_byId = async (_id, obj, modelName) => {
+    try {
+        var tableName = db.EmployeeOfficialDetails.getTableName()
+        var Query = 'show columns from '+ tableName +' where `Key` = "PRI" '
+        const primaryKey = await db.sequelize.query(Query)
+        var pk = ((primaryKey[0])[0]).Field
+        const founded = await db.EmployeeOfficialDetails.findByPk(_id)
+        let checked = 'all same'
+        for (let i = 0; i < Object.keys(obj).length; i++) {
+            if (Object.values(obj)[i] == (founded[Object.keys(obj)[i]])) {
+                // console.log(Object.values(obj)[i], founded[Object.keys(obj)[i]])
+                continue
+            }
+            else checked = 'all not same'
+            break
+        }
+        if (checked == 'all not same') {
+            obj['lastupdate'] = moment().format()
+            const updated = await db.EmployeeOfficialDetails.update(obj, { where: { [pk] : _id } });
             return updated[0]
         }
         else return 2
@@ -192,7 +258,7 @@ CrudService.updateEmp_byId = async (recut_id, obj) => {
         // console.log("checked ==> ", checked);
         if (checked == 'all not same') {
             obj['lastupdate'] = moment().format()
-            const updated = await db.RecutComp.update(obj, { where: { recut_id: recut_id } }); //console.log(updated[0]); 
+            const updated = await db.RecutComp.update(obj, { where: { recut_id: recut_id } }) //console.log(updated[0]); 
             return updated[0]
         }
         else return 2
@@ -258,16 +324,16 @@ CrudService.get_IP = async () => {
     }
 }
 
-CrudService.findAllQuery = async (tableName) => {
+CrudService.getEmployement = async (tableName) => {
     try {
-        const query = await db.sequelize.query(`SELECT tbl__employee.emp_id, tbl__employee.emp_name, tbl__city.city_name FROM tbl__employee
-        INNER JOIN tbl__city ON tbl__employee.emp_id = tbl__city.city_name`)
+        const query = await db.sequelize.query(`SELECT tbl__employee.emp_id, tbl__employee.emp_name, tbl__empoffdetails.emp_desig,tbl__empoffdetails._id  FROM tbl__employee
+        INNER JOIN tbl__empoffdetails ON tbl__employee.emp_id = tbl__empoffdetails.emp_id`)
         return query
     } catch (err) {
-        console.log("error in catch : ", err);
+        console.log("error in catch : ", err)
         return err
     }
-}
+} 
 
 
 module.exports = CrudService;

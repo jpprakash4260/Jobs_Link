@@ -50,6 +50,16 @@ class BaseValidation {
 		}
 	};
 
+	validateResumeHeadlines(req, res, next, seeker_schema) {
+		try {
+			const { error } = seeker_schema.validate(req.body);
+			if (error) return response.joierrors(req, res, error);
+			next();
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest);
+		}
+	};
+
 
 
 

@@ -44,15 +44,15 @@ module.exports = (sequelize, DataTypes) => {
          },
          sal_type: {
             type: DataTypes.STRING,
-            allowNull : false
+            default: null
          },
          sal_lakhs: {
             type: DataTypes.STRING,
-            allowNull : false
+            default: null
          },
          sal_thousand: {
             type: DataTypes.STRING,
-            allowNull : false
+            default: null
          },
          emp_detail: {
             type: DataTypes.STRING,
@@ -60,18 +60,18 @@ module.exports = (sequelize, DataTypes) => {
          },
          wrk_status:{
             type: DataTypes.STRING,
-            allowNull : false
+            default: null
          },
          wrk_date: {
             type: DataTypes.DATE,
-            allowNull : false
+            default: null
          },
          lastupdate:{
             type:DataTypes.DATE,
             allowNull : false
          }
       },
-      { timestamps: true, tableName: "tbl__empoffdetails" }
+      { timestamps: false, tableName: "tbl__empoffdetails" }
    );
    return EmployeeOfficialDetails;
 };

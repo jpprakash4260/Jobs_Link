@@ -14,6 +14,7 @@ SeekerController.dashboard = async (req, res) => {
       return err
    }
 }
+
 SeekerController.search = async (req, res) => {
    try {
       const search = await crudService.search(req, 'Employee')
@@ -25,7 +26,7 @@ SeekerController.search = async (req, res) => {
    }
 }
 
-SeekerController.updatePersonal = async (req, res) => {
+SeekerController.updateSeekerDetails = async (req, res) => {
    try{
       const updated = await crudService.updateSeeker_byId(req.seeker_id, req.body)
       if (updated == 1) {
@@ -40,6 +41,61 @@ SeekerController.updatePersonal = async (req, res) => {
          return response.errors(req, res, statusCodes.HTTP_NOT_MODIFIED, updated, responseMessage.seekerNotUpdated);
       }
    }catch(err){
+      logger.error(loggerMessage.errorInUpdating);
+      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errorInUpdating);
+   }
+}
+
+SeekerController.updateKeySkills = async (req, res) => {
+   try {
+      const KeySkills = await crudService.createKeySkills(req, res)
+      console.log("KeysSkills : ", KeySkills.empkskil_id);
+      logger.info(loggerMessage.getDataSuccess);
+      return response.success(req, res, statusCodes.HTTP_OK, KeySkills, responseMessage.getDataSuccess);
+   } catch (err) {
+      logger.error(loggerMessage.errorInUpdating);
+      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errorInUpdating);
+   }
+}
+
+SeekerController.createEmployement = async (req, res) => {
+   try {
+      const createEmployement = await crudService.createEmployement(req, res)
+      // console.log("Employement : ", Employement);
+      logger.info(loggerMessage.createdSuccess);
+      return response.success(req, res, statusCodes.HTTP_OK, createEmployement, responseMessage.createdSuccess);
+   } catch (err) {
+      logger.error(loggerMessage.errInCreate);
+      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errInCreate);
+   }
+}
+
+SeekerController.getEmployement = async (req, res) => {
+   try {
+      const getEmployement = await crudService.getEmployement(req, res)
+      logger.info(loggerMessage.getDataSuccess);
+      return response.success(req, res, statusCodes.HTTP_OK, getEmployement[0], responseMessage.getDataSuccess);
+   } catch (err) {
+      logger.error(loggerMessage.errorInFindingAll);
+      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errorInFindOne);
+   }
+}
+
+SeekerController.update_byId = async (req, res) => {
+   try {
+      const updated = await crudService.update_byId(1, req.body)
+      if (updated == 1) {
+         logger.info(loggerMessage.updateDataSuccess);
+         return response.success(req, res, statusCodes.HTTP_OK, updated, responseMessage.seekerUpdated);
+      } else if (updated == 2) {
+         logger.warn(loggerMessage.alreadyExited);
+         return response.errors(req, res, statusCodes.HTTP_ALREADY_REPORTED, updated, responseMessage.alreadyExited);
+      }
+      else {
+         logger.error(loggerMessage.updateDataFailure);
+         return response.errors(req, res, statusCodes.HTTP_NOT_MODIFIED, updated, responseMessage.seekerNotUpdated);
+      }
+   } catch (err) {
       logger.error(loggerMessage.errorInUpdating);
       return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errorInUpdating);
    }

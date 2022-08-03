@@ -71,6 +71,48 @@ class SeekerValidation {
 		})
 		return BaseValidation.validatePersonalDetails(req, res, next, seeker_schema)
 	}
+
+	seekerResumeHeadlines(req, res, next) {
+		const seeker_schema = Joi.object({
+			emp_resumeheadline: Joi.string().required()
+		})
+		return BaseValidation.validateResumeHeadlines(req, res, next, seeker_schema)
+	}
+
+	seekerKeySkills(req, res, next) {
+		const seeker_schema = Joi.object({
+			keysk_name: Joi.string().required()
+		})
+		return BaseValidation.validateResumeHeadlines(req, res, next, seeker_schema)
+	}
+
+	seekerCreateEmployement(req, res, next) {
+		const seeker_schema = Joi.object({
+			emp_desig: Joi.string().required(),
+			emp_org: Joi.string().required(),
+			cur_comp: Joi.string().required(),
+			exp_yr: Joi.string().required(),
+			exp_month: Joi.string().required(),
+			exp_yr_to: Joi.string().required(),
+			exp_month_to: Joi.string().required(),
+			emp_detail: Joi.string().required()
+		})
+		return BaseValidation.validateResumeHeadlines(req, res, next, seeker_schema)
+	}
+
+	seekerUpdateEmployement(req, res, next) {
+		const seeker_schema = Joi.object({
+			emp_desig: Joi.string(),
+			emp_org: Joi.string(),
+			cur_comp: Joi.string(),
+			exp_yr: Joi.string(),
+			exp_month: Joi.string(),
+			exp_yr_to: Joi.string(),
+			exp_month_to: Joi.string(),
+			emp_detail: Joi.string()
+		})
+		return BaseValidation.validateResumeHeadlines(req, res, next, seeker_schema)
+	}
 }
 
 module.exports = new SeekerValidation();

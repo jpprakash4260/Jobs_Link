@@ -68,8 +68,8 @@ LoginRegisterController.seeker_register = async (req, res) => {
          return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.notCreated);
       }
       async function newSeeker(req, res) {
-         const email_OTP = await loginRegisterService.gen_otp();
-         const mobile_OTP = await loginRegisterService.gen_otp();
+         const email_OTP = await loginRegisterService.gen_otp()
+         const mobile_OTP = await loginRegisterService.gen_otp()
          const created_seeker = await crudService.createSeeker(req, res, email_OTP, mobile_OTP);
          //console.log("email_OTP : ", email_OTP, '', "mobile_OTP : ", mobile_OTP, '\n')
          //const sms_data =   loginRegisterService.sms_sender(req.body.emp_mobile, mobile_OTP)
