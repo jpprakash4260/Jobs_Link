@@ -102,7 +102,6 @@ AdminMenuController.updateStatus = async (req, res) => {
          menu_icon: req.body.menu_icon
       }
       const updateStatus = await adminMenuService.updateStatus(req.body.menu_id, obj)
-      console.log('updateStatus : ', updateStatus)
       if (updateStatus == 1) {
          logger.info(loggerMessage.updateDataSuccess)
          return response.success(req, res, statusCodes.HTTP_OK, updateStatus, responseMessage.updateDataSuccess)
