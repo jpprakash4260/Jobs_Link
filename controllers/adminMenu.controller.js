@@ -109,11 +109,11 @@ AdminMenuController.updateStatus = async (req, res) => {
       }
       else if (updateStatus == 'Exited Values') {
          logger.info(loggerMessage.alreadyExited)
-         return response.success(req, res, statusCodes.HTTP_NOT_MODIFIED, updateStatus, responseMessage.alreadyExited)
+         return response.success(req, res, statusCodes.HTTP_ALREADY_REPORTED, updateStatus, responseMessage.alreadyExited)
       } 
       else {
          logger.info(loggerMessage.updateDataFailure)
-         return response.success(req, res, statusCodes.HTTP_NOT_MODIFIED, updateStatus, responseMessage.updateDataFailure)
+         return response.success(req, res, statusCodes.HTTP_NOT_ACCEPTABLE, updateStatus, responseMessage.updateDataFailure)
       }
    } catch (error) {
       console.log(error);
