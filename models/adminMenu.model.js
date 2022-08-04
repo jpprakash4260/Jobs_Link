@@ -47,10 +47,10 @@ module.exports = (sequelize, DataTypes) => {
          },
          menu_lastupdate: {
             type: DataTypes.DATE,
-            allowNull: false
-         },
+            default: null
+         }
       },
-      { timestamps: true, tableName: "tbl__adminmenu" }
+      { timestamps: false, tableName: "tbl__adminmenu" }
    );
    return AdminMenu;
 };

@@ -81,7 +81,7 @@ CrudService.createEmployer = async (req, email_otp, mobile_otp) => {
 }
 
 CrudService.createKeySkills = async (req, res) => {
-    try{
+    try {
         let obj = {
             emp_id: req.seeker_id,
             keysk_id: 1,
@@ -92,7 +92,7 @@ CrudService.createKeySkills = async (req, res) => {
         }
         let KeySkills = await db.EmployeeKeyskills.create(obj)
         return KeySkills
-    }catch(err){
+    } catch (err) {
         return err
     }
 }
@@ -221,7 +221,7 @@ CrudService.updateSeeker_byId = async (emp_id, obj) => {
 CrudService.update_byId = async (_id, obj, modelName) => {
     try {
         var tableName = db.EmployeeOfficialDetails.getTableName()
-        var Query = 'show columns from '+ tableName +' where `Key` = "PRI" '
+        var Query = 'show columns from ' + tableName + ' where `Key` = "PRI" '
         const primaryKey = await db.sequelize.query(Query)
         var pk = ((primaryKey[0])[0]).Field
         const founded = await db.EmployeeOfficialDetails.findByPk(_id)
@@ -236,7 +236,7 @@ CrudService.update_byId = async (_id, obj, modelName) => {
         }
         if (checked == 'all not same') {
             obj['lastupdate'] = moment().format()
-            const updated = await db.EmployeeOfficialDetails.update(obj, { where: { [pk] : _id } });
+            const updated = await db.EmployeeOfficialDetails.update(obj, { where: { [pk]: _id } });
             return updated[0]
         }
         else return 2
@@ -333,7 +333,7 @@ CrudService.getEmployement = async (tableName) => {
         console.log("error in catch : ", err)
         return err
     }
-} 
+}
 
 
 module.exports = CrudService;

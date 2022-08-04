@@ -57,10 +57,10 @@ module.exports = (sequelize, DataTypes) => {
          },
          lastupdate: {
             type: DataTypes.DATE,
-            allowNull: false
+            default: null
          },
       },
-      { timestamps: true, tableName: "tbl__admin" }
+      { timestamps: false, tableName: "tbl__admin" }
    );
    return Admin;
 };

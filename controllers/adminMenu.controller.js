@@ -1,14 +1,14 @@
 'use strict'
-const { adminService } = require('../services')
+const { adminMenuService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const moment = require('moment')
 
-class AdminController { }
-AdminController.createAdmin = async (req, res) => {
+class AdminMenuController { }
+AdminMenuController.createAdminMenu = async (req, res) => {
    try {
-      const created = await adminService.createAdmin(req)
+      const created = await adminMenuService.createAdmin(req)
       if (created) {
          logger.info(loggerMessage.createdSuccess)
          return response.success(req, res, statusCodes.HTTP_OK, created, responseMessage.createdSuccess)
@@ -22,9 +22,9 @@ AdminController.createAdmin = async (req, res) => {
    }
 }
 
-AdminController.findAllandCount = async (req, res) => {
+AdminMenuController.findAllandCount = async (req, res) => {
    try {
-      const founded = await adminService.findAllAndCount()
+      const founded = await adminMenuService.findAllAndCount()
       if (founded) {
          logger.info(loggerMessage.getDataSuccess)
          return response.success(req, res, statusCodes.HTTP_OK, founded, responseMessage.getDataSuccess)
@@ -39,16 +39,14 @@ AdminController.findAllandCount = async (req, res) => {
    }
 }
 
-AdminController.findOne = async (req, res) => {
+AdminMenuController.findOne = async (req, res) => {
    try {
       let obj = {
-         admin_name: req.body.admin_name,
-         admin_pass: req.body.admin_pass,
-         admin_status: req.body.admin_status,
-         sitename: req.body.sitename,
-         set_url: req.body.set_url
+         menu_title: req.body.menu_title,
+         menu_type: req.body.menu_type,
+         pid: req.body.pid,
       }
-      const foundOne = await adminService.findOne(obj)
+      const foundOne = await adminMenuService.findOne(obj)
       if (foundOne) {
          logger.info(loggerMessage.getDataSuccess)
          return response.success(req, res, statusCodes.HTTP_OK, foundOne, responseMessage.getDataSuccess)
@@ -57,22 +55,20 @@ AdminController.findOne = async (req, res) => {
          return response.success(req, res, statusCodes.HTTP_NOT_FOUND, foundOne, responseMessage.getDataFailure)
       }
    } catch (error) {
-      console.log(error);
       logger.error(loggerMessage.errorInFindOne)
       return response.success(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, error, responseMessage.errorInFindOne)
    }
 }
 
-AdminController.findByPk = async (req, res) => {
+AdminMenuController.findByPk = async (req, res) => {
    try {
-      console.log(req.params.id);
-      const findByPk = await adminService.findByPk(req.params.id)
+      const findByPk = await adminMenuService.findByPk(req.params.id)
       if (findByPk) {
          logger.info(loggerMessage.getDataSuccess)
          return response.success(req, res, statusCodes.HTTP_OK, findByPk, responseMessage.getDataSuccess)
       } else {
-         logger.info(loggerMessage.notFound)
-         return response.success(req, res, statusCodes.HTTP_NOT_FOUND, findByPk, responseMessage.notFound)
+         logger.info(loggerMessage.getDataFailure)
+         return response.success(req, res, statusCodes.HTTP_NOT_FOUND, findByPk, responseMessage.getDataFailure)
       }
    } catch (error) {
       logger.error(loggerMessage.errorInFindOne)
@@ -80,41 +76,44 @@ AdminController.findByPk = async (req, res) => {
    }
 }
 
-AdminController.updateById = async (req, res) => {
+AdminMenuController.updateById = async (req, res) => {
    try {
-      const updateById = await adminService.updateById(req.params.id, req.body)
+      const updateById = await adminMenuService.updateById(req.params.id, req.body)
       if (updateById == 1) {
          logger.info(loggerMessage.updateDataSuccess)
          return response.success(req, res, statusCodes.HTTP_OK, updateById, responseMessage.updateDataSuccess)
-      } else if (updateById == 2) {
+      } else if (updateById == 'Exited Values') {
          logger.info(loggerMessage.alreadyExited)
-         return response.success(req, res, statusCodes.HTTP_NOT_FOUND, updateById, responseMessage.alreadyExited)
+         return response.success(req, res, statusCodes.HTTP_OK, updateById, responseMessage.alreadyExited)
       } else {
-         logger.info(loggerMessage.updateDataFailure)
-         return response.success(req, res, statusCodes.HTTP_NOT_FOUND, updateById, responseMessage.updateDataFailure)
+         logger.error(loggerMessage.updateDataFailure)
+         return response.success(req, res, statusCodes.HTTP_OK, updateById, responseMessage.updateDataFailure)
       }
    } catch (error) {
-      console.log(error);
+      console.log(error)
       logger.error(loggerMessage.errorInUpdating)
-      return response.success(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, error, responseMessage.errorInUpdating)
+      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, error, responseMessage.errorInUpdating)
    }
 }
 
-AdminController.updateStatus = async (req, res) => {
+AdminMenuController.updateStatus = async (req, res) => {
    try {
       var obj = {
-         admin_status: req.body.admin_status
+         menu_icon: req.body.menu_icon
       }
-      const updateStatus = await adminService.updateStatus(req.body.admin_id, obj)
+      const updateStatus = await adminMenuService.updateStatus(req.body.menu_id, obj)
+      console.log('updateStatus : ', updateStatus)
       if (updateStatus == 1) {
          logger.info(loggerMessage.updateDataSuccess)
          return response.success(req, res, statusCodes.HTTP_OK, updateStatus, responseMessage.updateDataSuccess)
-      } else if (updateStatus == 'Exited Values') {
+      }
+      else if (updateStatus == 'Exited Values') {
          logger.info(loggerMessage.alreadyExited)
-         return response.success(req, res, statusCodes.HTTP_NOT_FOUND, updateStatus, responseMessage.alreadyExited)
-      } else {
+         return response.success(req, res, statusCodes.HTTP_NOT_MODIFIED, updateStatus, responseMessage.alreadyExited)
+      } 
+      else {
          logger.info(loggerMessage.updateDataFailure)
-         return response.success(req, res, statusCodes.HTTP_NOT_FOUND, updateStatus, responseMessage.updateDataFailure)
+         return response.success(req, res, statusCodes.HTTP_NOT_MODIFIED, updateStatus, responseMessage.updateDataFailure)
       }
    } catch (error) {
       console.log(error);
@@ -123,21 +122,20 @@ AdminController.updateStatus = async (req, res) => {
    }
 }
 
-AdminController.delete = async (req, res) => {
+AdminMenuController.delete = async (req, res) => {
    try {
-      const deleted = await adminService.delete(req.params.id)
-      if (deleted) {
+      const deleted = await adminMenuService.delete(req.params.id)
+      if (deleted == 1) {
          logger.info(loggerMessage.deletedData)
          return response.success(req, res, statusCodes.HTTP_OK, deleted, responseMessage.deletedData)
       } else {
          logger.info(loggerMessage.deleteDataFailure)
-         return response.success(req, res, statusCodes.HTTP_NOT_FOUND, deleted, responseMessage.notDeleted)
+         return response.success(req, res, statusCodes.HTTP_NOT_IMPLEMENTED, deleted, responseMessage.notDeleted)
       }
    } catch (error) {
-      console.log(error);
       logger.error(loggerMessage.errorInDeleting)
       return response.success(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, error, responseMessage.errorInDeleting)
    }
 }
 
-module.exports = AdminController
+module.exports = AdminMenuController

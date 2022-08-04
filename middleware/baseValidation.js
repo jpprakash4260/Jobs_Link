@@ -60,21 +60,6 @@ class BaseValidation {
 		}
 	};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	validateEmployeeRegisterBody(req, res, next, employer_schema) {
 		try {
 			const { error } = employer_schema.validate(req.body);

@@ -2,7 +2,7 @@
 class Response {
     // triggering a success response
     success(req, res, status, data, message) {
-        data = !data ? null: data
+        data = data ? data: null
         message = message ? message : "Success"
         let response = {
             status,
@@ -17,7 +17,7 @@ class Response {
             status,
             message,
             data
-        };
+        }
         return res.status(status).json(response);
     }
     // triggering a joi error response
