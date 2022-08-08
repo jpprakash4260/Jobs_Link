@@ -137,7 +137,7 @@ AdminController.update = async (req, res) => {
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
-         return response.success(req, res, statusCodes.HTTP_OK, update, responseMessage.updateDataSuccess)
+         return response.success(req, res, statusCodes.HTTP_OK, obj, responseMessage.updateDataSuccess)
       }
       else if (update == 'Exited Values') {
          logger.warn(loggerMessage.alreadyExited)

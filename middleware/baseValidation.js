@@ -146,6 +146,16 @@ class BaseValidation {
 		}
 	}
 
+	ChatBody(req, res, next, chat_schema) {
+		try {
+			const { error } = chat_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
 }
 
 module.exports = new BaseValidation();

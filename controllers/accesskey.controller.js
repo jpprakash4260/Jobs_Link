@@ -50,7 +50,7 @@ AccessKeyController.get = async (req, res) => {
       const { rows, count } = await accessKeyService.findAllAndCount(access_id)
 
       logger.info(loggerMessage.getDataSuccess)
-      return response.success(req, res, statusCodes.HTTP_OK, rows, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
+      return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
    }
    catch (error) {
       logger.error(loggerMessage.errorInFindAllMatch)
@@ -116,12 +116,8 @@ AccessKeyController.update = async (req, res) => {
          access_status: "Y",
          access_expdt: moment(new Date(req.body.access_expdt)).format("YYYY-MM-DD HH:mm:ss"),
          access_dt: moment(new Date(req.body.access_dt)).format("YYYY-MM-DD HH:mm:ss"),
-         access_ip: req.ip,
-         access_lastupdate: moment(Date.now()).format("YYYY-MM-DD h:mm:ss a")
+         access_ip: req.ip
       }
-
-      // console.log("new expdt: ", moment(new Date(req.body.access_expdt)).format("YYYY-MM-DD HH:mm:ss"))
-      // console.log("new dt   : ", moment(new Date(req.body.access_dt)).format("YYYY-MM-DD HH:mm:ss"), '\n')
       const update = await accessKeyService.update(access_id, obj)
 
       if (update == 1) {

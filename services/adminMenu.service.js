@@ -61,7 +61,7 @@ AdminMenuService.update = async (_id, obj) => {
 
          let checked = 'same'
 
-         for (let i = 0; i < ((Object.keys(obj).length) - 1); i++) {
+         for (let i = 0; i < (Object.keys(obj).length); i++) {
 
             var exited_ = (founded[Object.keys(obj)[i]])
             var new_ = Object.values(obj)[i]
@@ -69,13 +69,18 @@ AdminMenuService.update = async (_id, obj) => {
             if (new_ == exited_) {
                continue
             } else
-               checked = 'not same'
-            // console.error(new_, exited_);
-            break
+               if (Object.keys(obj)[i] == 'menu_lastupdate') {
+                  continue
+               }
+               else {
+                  checked = 'not same'
+                  console.error('notsame : ', Object.keys(obj)[i], " : ", exited_, ' = ', new_)
+                  break
+               }
          }
          if (checked == 'not same') {
 
-            obj.lastupdate = moment().format()
+            obj.menu_lastupdate = moment().format()
             const updateById = await db.AdminMenu.update(obj, { where: { menu_id: _id } })
             return updateById[0]
 

@@ -1,37 +1,40 @@
 'use strict'
 const db = require("../Models")
-const sequelize = require('../Models')
 const moment = require('moment')
 
-class AccessKeyService { }
 
-AccessKeyService.create = async (obj) => {
+class CampusService { }
+
+CampusService.create = async (obj) => {
    try {
-      const saved = await db.AccessKey.create(obj)
+      const saved = await db.Chat.create(obj)
       return saved
-   } catch (error) {
+   }
+   catch (error) {
       return error
    }
 }
 
-AccessKeyService.findAllAndCount = async (access_id) => {
+CampusService.findAllAndCount = async (chat_id) => {
    try {
-      const findAllandCount = await db.AccessKey.findAndCountAll({ where: { access_id: access_id } })
+      const findAllandCount = await db.Chat.findAndCountAll({ where: { chat_id: chat_id } })
       return findAllandCount
-   } catch (err) {
+   }
+   catch (err) {
       return err
    }
 }
 
-AccessKeyService.getAccessDetails = async (access_id, _start, _limit) => {
+CampusService.getCampusDetails = async (chat_id, chat_status, _start, _limit) => {
+
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__accessKey as a 
+                    tbl__chat as a 
                 where 
-                a.access_id=${access_id} and a.access_status='Y'
+                a.chat_id=${chat_id} and a.chat_status='${chat_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )
@@ -41,32 +44,33 @@ AccessKeyService.getAccessDetails = async (access_id, _start, _limit) => {
    }
 }
 
-AccessKeyService.findByPk = async (access_id) => {
+CampusService.findByPk = async (chat_id) => {
    try {
-      const findByPk = await db.AccessKey.findByPk(access_id)
+      const findByPk = await db.Chat.findByPk(chat_id)
       return findByPk
-   } catch (err) {
+   }
+   catch (err) {
       return err
    }
 }
 
-AccessKeyService.update = async (_id, obj) => {
+CampusService.update = async (_id, obj) => {
    try {
-      const founded = await db.AccessKey.findByPk(_id)
+      const founded = await db.Chat.findByPk(_id)
       if (founded) {
 
          let checked = 'same'
 
-         for (let i = 0; i < (Object.keys(obj).length); i++) {
+         for (let i = 0; i < Object.keys(obj).length; i++) {
 
             var exited_ = (founded[Object.keys(obj)[i]])
             var new_ = Object.values(obj)[i]
 
             if (new_ == exited_) {
-               console.error('same    : ', Object.keys(obj)[i], " : ", exited_, ' = ', new_)
+               // console.error('same ==> ', Object.keys(obj)[i], " : ", exited_, ' == ', new_)
                continue
-            } else
-               if (Object.keys(obj)[i] == 'access_lastupdate') {
+            } else {
+               if (Object.keys(obj)[i] == 'lastupdate') {
                   continue
                }
                else {
@@ -74,11 +78,12 @@ AccessKeyService.update = async (_id, obj) => {
                   console.error('notsame : ', Object.keys(obj)[i], " : ", exited_, ' = ', new_)
                   break
                }
+            }
          }
          if (checked == 'not same') {
 
-            obj.lastupdate = moment()
-            const updateById = await db.AccessKey.update(obj, { where: { access_id: _id } })
+            obj.lastupdate = moment().format()
+            const updateById = await db.Chat.update(obj, { where: { chat_id: _id } })
             return updateById[0]
 
          }
@@ -91,11 +96,11 @@ AccessKeyService.update = async (_id, obj) => {
    }
 }
 
-AccessKeyService.delete = async (access_id) => {
+CampusService.delete = async (chat_id) => {
    try {
-      const founded = await db.AccessKey.findByPk(access_id)
+      const founded = await db.Chat.findByPk(chat_id)
       if (founded) {
-         const deleted = await db.AccessKey.destroy({ where: { access_id: access_id } })
+         const deleted = await db.Chat.destroy({ where: { chat_id: chat_id } })
          return deleted
       }
       else {
@@ -107,4 +112,4 @@ AccessKeyService.delete = async (access_id) => {
 }
 
 
-module.exports = AccessKeyService
+module.exports = CampusService

@@ -61,17 +61,24 @@ CampusService.update = async (_id, obj) => {
 
          let checked = 'same'
 
-         for (let i = 0; i < ((Object.keys(obj).length) - 1); i++) {
+         for (let i = 0; i < Object.keys(obj).length; i++) {
 
             var exited_ = (founded[Object.keys(obj)[i]])
             var new_ = Object.values(obj)[i]
 
             if (new_ == exited_) {
+               // console.error('same ==> ', Object.keys(obj)[i], " : ", exited_, ' == ', new_)
                continue
-            } else
-               checked = 'not same'
-            console.log(new_, exited_);
-            break
+            } else {
+               if (Object.keys(obj)[i] == 'lastupdate') {
+                  continue
+               }
+               else {
+                  checked = 'not same'
+                  console.error('notsame : ', Object.keys(obj)[i], " : ", exited_, ' = ', new_)
+                  break
+               }
+            }
          }
          if (checked == 'not same') {
 

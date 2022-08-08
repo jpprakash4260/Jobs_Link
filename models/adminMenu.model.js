@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
          menu_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            allowNull:false,
+            allowNull: false,
             autoIncrement: true
          },
          menu_title: {

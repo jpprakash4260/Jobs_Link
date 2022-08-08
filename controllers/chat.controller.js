@@ -1,6 +1,6 @@
 'use strict'
 
-const { campusService } = require('../services')
+const { chatService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
@@ -8,28 +8,31 @@ const { Op } = require('sequelize')
 const moment = require('moment')
 const createError = require('http-errors')
 
-class CampusController { }
+class ChatController { }
 
-CampusController.create = async (req, res) => {
+ChatController.create = async (req, res) => {
 
    try {
 
       let obj = {
-         notify: req.body.notify,
-         camp_title: req.body.camp_title,
-         camp_date: req.body.camp_date,
-         camp_org: req.body.camp_org,
-         camp_venue: req.body.camp_venue,
-         camp_logo: req.body.camp_logo,
-         camp_qualif: req.body.camp_qualif,
-         camp_exp: req.body.camp_exp,
-         notif_link: req.body.notif_link,
-         camp_status: req.body.camp_status,
-         added_date: req.body.added_date,
+         job_id: req.body.job_id,
+         applyid: req.body.applyid,
+         chat_from: req.body.chat_from,
+         chat_fname: req.body.chat_fname,
+         chat_ftype: req.body.chat_ftype,
+         chat_to: req.body.chat_to,
+         chat_tname: req.body.chat_tname,
+         chat_ttype: req.body.chat_ttype,
+         chat_msg: req.body.chat_msg,
+         chat_status: req.body.chat_status,
+         chat_date: req.body.chat_date,
+         read_status: req.body.read_status,
+         read_date: req.body.read_date,
+         ipaddr: req.body.ipaddr,
          lastupdate: ''
       }
 
-      const created = await campusService.create(obj)
+      const created = await chatService.create(obj)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
@@ -46,13 +49,13 @@ CampusController.create = async (req, res) => {
    }
 }
 
-CampusController.get = async (req, res) => {
+ChatController.get = async (req, res) => {
 
    try {
-      let { camp_id } = req.query
-      if (!camp_id) throw createError.BadRequest()
+      let { chat_id } = req.query
+      if (!chat_id) throw createError.BadRequest()
 
-      const { rows, count } = await campusService.findAllAndCount(camp_id)
+      const { rows, count } = await chatService.findAllAndCount(chat_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -63,13 +66,13 @@ CampusController.get = async (req, res) => {
    }
 }
 
-CampusController.getByPk = async (req, res) => {
+ChatController.getByPk = async (req, res) => {
 
    try {
-      let { camp_id } = req.params
-      if (!camp_id) throw createError.BadRequest()
+      let { chat_id } = req.params
+      if (!chat_id) throw createError.BadRequest()
 
-      const founded = await campusService.findByPk(camp_id)
+      const founded = await chatService.findByPk(chat_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -81,24 +84,25 @@ CampusController.getByPk = async (req, res) => {
    }
 }
 
-CampusController.getAdminDetails = async (req, res) => {
+ChatController.getAdminDetails = async (req, res) => {
 
    try {
 
-      const { camp_id, camp_title, camp_status } = req.body
-      if (!camp_id || !camp_title || !camp_status) throw createError.BadRequest()
+      const { chat_id, chat_fname, job_id, chat_status } = req.body
+      if (!chat_fname || !job_id || !chat_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
       let search = req.body && req.body.search ? req.body.search : ''
 
       if (search) {
-         where['camp_title'] = {
+         where['chat_fname'] = {
             [Op.like]: `%${search}%`
          }
       }
 
-      const totalAccess = await campusService.getCampusDetails(camp_id, camp_status, _start, _limit)
+      const totalAccess = await chatService.getCampusDetails(chat_id, chat_status, _start, _limit)
+      console.log(totalAccess);
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -111,28 +115,32 @@ CampusController.getAdminDetails = async (req, res) => {
    }
 }
 
-CampusController.update = async (req, res) => {
+ChatController.update = async (req, res) => {
 
    try {
 
-      let { camp_id } = req.params
-      if (!camp_id) throw createError.BadRequest()
+      let { chat_id } = req.params
+      if (!chat_id) throw createError.BadRequest()
 
       let obj = {
-         notify: req.body.notify,
-         camp_title: req.body.camp_title,
-         camp_date: req.body.camp_date,
-         camp_org: req.body.camp_org,
-         camp_venue: req.body.camp_venue,
-         camp_logo: req.body.camp_logo,
-         camp_qualif: req.body.camp_qualif,
-         camp_exp: req.body.camp_exp,
-         notif_link: req.body.notif_link,
-         camp_status: req.body.camp_status,
-         added_date: moment(new Date(req.body.added_date)).format("YYYY-MM-DD HH:mm:ss")
+         job_id: req.body.job_id,
+         applyid: req.body.applyid,
+         chat_from: req.body.chat_from,
+         chat_fname: req.body.chat_fname,
+         chat_ftype: req.body.chat_ftype,
+         chat_to: req.body.chat_to,
+         chat_tname: req.body.chat_tname,
+         chat_ttype: req.body.chat_ttype,
+         chat_msg: req.body.chat_msg,
+         chat_status: req.body.chat_status,
+         chat_date: moment(new Date(req.body.chat_date)).format("YYYY-MM-DD HH:mm:ss"),
+         read_status: req.body.read_status,
+         read_date: moment(new Date(req.body.read_date)).format("YYYY-MM-DD HH:mm:ss"),
+         ipaddr: req.body.ipaddr,
+         lastupdate: ''
       }
 
-      const update = await campusService.update(camp_id, obj)
+      const update = await chatService.update(chat_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -162,14 +170,14 @@ CampusController.update = async (req, res) => {
    }
 }
 
-CampusController.delete = async (req, res) => {
+ChatController.delete = async (req, res) => {
 
    try {
 
-      let { camp_id } = req.query
-      if (!camp_id) throw createError.BadRequest()
+      let { chat_id } = req.query
+      if (!chat_id) throw createError.BadRequest()
 
-      const deleted = await campusService.delete(camp_id)
+      const deleted = await chatService.delete(chat_id)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)
@@ -191,4 +199,4 @@ CampusController.delete = async (req, res) => {
    }
 }
 
-module.exports = CampusController
+module.exports = ChatController
