@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
          camp_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
          },
          camp_org: {
@@ -61,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
       },
-      { timestamps: true, tableName: "tbl__campus" }
+      { timestamps: false, tableName: "tbl__campus" }
    );
    return Campus;
 };

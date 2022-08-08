@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__resumescore" }
+      { timestamps: false, tableName: "tbl__resumescore" }
    );
    return ResumeScore;
 };

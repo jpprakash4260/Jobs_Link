@@ -1,14 +1,13 @@
 'use strict'
 const db = require("../Models")
 const moment = require('moment')
-const createError = require('http-errors')
 
 
-class AdminService { }
+class CampusService { }
 
-AdminService.create = async (obj) => {
+CampusService.create = async (obj) => {
    try {
-      const saved = await db.Admin.create(obj)
+      const saved = await db.Campus.create(obj)
       return saved
    }
    catch (error) {
@@ -16,9 +15,9 @@ AdminService.create = async (obj) => {
    }
 }
 
-AdminService.findAllAndCount = async (admin_id) => {
+CampusService.findAllAndCount = async (camp_id) => {
    try {
-      const findAllandCount = await db.Admin.findAndCountAll({ where: { admin_id: admin_id } })
+      const findAllandCount = await db.Campus.findAndCountAll({ where: { camp_id: camp_id } })
       return findAllandCount
    }
    catch (err) {
@@ -26,16 +25,16 @@ AdminService.findAllAndCount = async (admin_id) => {
    }
 }
 
-AdminService.getAdminDetails = async (admin_id, _start, _limit) => {
+CampusService.getCampusDetails = async (camp_id, camp_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__admin as a 
+                    tbl__campus as a 
                 where 
-                a.admin_id=${admin_id} and a.admin_status='Y'
+                a.camp_org='${camp_id}' and a.camp_status='${camp_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )
@@ -45,9 +44,9 @@ AdminService.getAdminDetails = async (admin_id, _start, _limit) => {
    }
 }
 
-AdminService.findByPk = async (admin_id) => {
+CampusService.findByPk = async (camp_id) => {
    try {
-      const findByPk = await db.Admin.findByPk(admin_id)
+      const findByPk = await db.Campus.findByPk(camp_id)
       return findByPk
    }
    catch (err) {
@@ -55,9 +54,9 @@ AdminService.findByPk = async (admin_id) => {
    }
 }
 
-AdminService.update = async (_id, obj) => {
+CampusService.update = async (_id, obj) => {
    try {
-      const founded = await db.Admin.findByPk(_id)
+      const founded = await db.Campus.findByPk(_id)
       if (founded) {
 
          let checked = 'same'
@@ -71,13 +70,13 @@ AdminService.update = async (_id, obj) => {
                continue
             } else
                checked = 'not same'
-            // console.error(new_, exited_);
+            console.log(new_, exited_);
             break
          }
          if (checked == 'not same') {
 
             obj.lastupdate = moment().format()
-            const updateById = await db.Admin.update(obj, { where: { admin_id: _id } })
+            const updateById = await db.Campus.update(obj, { where: { camp_id: _id } })
             return updateById[0]
 
          }
@@ -90,11 +89,11 @@ AdminService.update = async (_id, obj) => {
    }
 }
 
-AdminService.delete = async (admin_id) => {
+CampusService.delete = async (camp_id) => {
    try {
-      const founded = await db.Admin.findByPk(admin_id)
+      const founded = await db.Campus.findByPk(camp_id)
       if (founded) {
-         const deleted = await db.Admin.destroy({ where: { admin_id: admin_id } })
+         const deleted = await db.Campus.destroy({ where: { camp_id: camp_id } })
          return deleted
       }
       else {
@@ -106,4 +105,4 @@ AdminService.delete = async (admin_id) => {
 }
 
 
-module.exports = AdminService
+module.exports = CampusService

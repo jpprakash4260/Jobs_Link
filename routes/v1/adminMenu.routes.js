@@ -1,15 +1,12 @@
-const express = require("express")
-const adminMenuRoutes = express.Router()
-const { adminMenuController } = require("../../controllers")
-// const { verifyToken } = require("../../middleware");
-// const { admin_validate } = require("../../validators");
+const AdminMenuRoute = require("express").Router()
+const { adminMenu_validate } = require("../../validators")
+const { adminMenuController } = require('../../controllers')
 
-adminMenuRoutes.post('/create', adminMenuController.createAdminMenu)
-adminMenuRoutes.post('/findAllandCount', adminMenuController.findAllandCount)
-adminMenuRoutes.get('/findOne', adminMenuController.findOne)
-adminMenuRoutes.get('/findByPk/:id', adminMenuController.findByPk)
-adminMenuRoutes.put('/updateById/:id', adminMenuController.updateById)
-adminMenuRoutes.put('/updateStatus', adminMenuController.updateStatus)
-adminMenuRoutes.delete('/delete/:id', adminMenuController.delete)
+AdminMenuRoute.post("/", adminMenu_validate.create, adminMenuController.create)
+AdminMenuRoute.get("/", adminMenuController.get)
+AdminMenuRoute.get("/:menu_id", adminMenuController.getByPk)
+AdminMenuRoute.post("/Details", adminMenuController.getAdminDetails)
+AdminMenuRoute.put("/:menu_id", adminMenu_validate.update, adminMenuController.update)
+AdminMenuRoute.delete("/delete", adminMenuController.delete)
 
-module.exports = adminMenuRoutes
+module.exports = AdminMenuRoute

@@ -1,5 +1,3 @@
-//-------------------------- AccessKey Model Start ------------------------------//
-
 module.exports = (sequelize, DataTypes) => {
    const AccessKey = sequelize.define(
       "AccessKey",
@@ -20,13 +18,13 @@ module.exports = (sequelize, DataTypes) => {
          },
          user_type: {
             type: DataTypes.ENUM,
-            values: ['J','E' ],
+            values: ['J', 'E'],
             comment: 'J-jobseeker, E-Employer',
-            allowNull: false
          },
          access_status: {
             type: DataTypes.ENUM,
             values: ['Y', 'N', 'D'],
+            defaultValues: 'Y',
             allowNull: false
          },
          access_expdt: {
@@ -43,12 +41,10 @@ module.exports = (sequelize, DataTypes) => {
          },
          access_lastupdate: {
             type: DataTypes.DATE,
-            allowNull:false
+            allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__accessKey" }
+      { timestamps: false, tableName: "tbl__accessKey" }
    );
-   return AccessKey;
+   return AccessKey
 };
-
-//-------------------------- AccessKey Model End ------------------------------//

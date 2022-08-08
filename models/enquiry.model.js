@@ -34,10 +34,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             alloNull: false
          },
-         lastupdate: {
-            type: DataTypes.DATE,
-            alloNull: false
-         },
          enq_altmobile: {
             type: DataTypes.STRING,
             alloNull: false
@@ -57,9 +53,13 @@ module.exports = (sequelize, DataTypes) => {
          enq_loc: {
             type: DataTypes.STRING,
             alloNull: false
+         },
+         lastupdate: {
+            type: DataTypes.DATE,
+            alloNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__enquiry" }
+      { timestamps: false, tableName: "tbl__enquiry" }
    );
    return Enquiry;
 };

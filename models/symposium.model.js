@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
          symp_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
          },
          symp_desc: {
@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__symposium" }
+      { timestamps: false, tableName: "tbl__symposium" }
    );
    return Symposium;
 };

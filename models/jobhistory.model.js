@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
          job_type: {
             type: DataTypes.ENUM,
             allowNull: false,
-            values:["P","G"]
+            values: ["P", "G"]
          },
          job_id: {
             type: DataTypes.INTEGER,
@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__jobhistory" }
+      { timestamps: false, tableName: "tbl__jobhistory" }
    );
    return JobHistory;
 };

@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__empedudetail" }
+      { timestamps: false, tableName: "tbl__empedudetail" }
    );
    return EmployeeEducationDetails;
 };

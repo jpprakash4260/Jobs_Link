@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__govtlevel" }
+      { timestamps: false, tableName: "tbl__govtlevel" }
    );
    return GovernmentLevel;
 };

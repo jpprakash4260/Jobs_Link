@@ -68,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
          },
          jtype_id_new: {
             type: DataTypes.STRING,
-            default :  null
+            default: null
          },
          job_type: {
             type: DataTypes.STRING,
@@ -156,14 +156,6 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: null,
             values: ["W", "Y", "N", "D", "C"]
          },
-         posted_date: {
-            type: DataTypes.DATE,
-            default: null
-         },
-         posted_lastupdate: {
-            type: DataTypes.DATE,
-            default: Date.now()
-         },
          comp_website: {
             type: DataTypes.STRING,
             defaultValue: null
@@ -183,6 +175,14 @@ module.exports = (sequelize, DataTypes) => {
          gender: {
             type: DataTypes.STRING,
             defaultValue: null
+         },
+         posted_date: {
+            type: DataTypes.DATE,
+            default: null
+         },
+         posted_lastupdate: {
+            type: DataTypes.DATE,
+            allowNull: false
          }
       },
       { timestamps: false, tableName: "tbl__unrestjobpost" }

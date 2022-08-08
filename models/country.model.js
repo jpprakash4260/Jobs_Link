@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
       },
-      { timestamps: true, tableName: "tbl__country" }
+      { timestamps: false, tableName: "tbl__country" }
    );
    return Country;
 };

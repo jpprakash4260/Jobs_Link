@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
          },
-         exp_slug: {
+         exp_status: {
             type: DataTypes.ENUM,
             values: ["Y", "N", "D"],
             allowNull: false
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__experince" }
+      { timestamps: false, tableName: "tbl__experince" }
    );
    return Experince;
 };

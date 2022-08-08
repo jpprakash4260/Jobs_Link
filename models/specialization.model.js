@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
       },
-      { timestamps: true, tableName: "tbl__specialization" }
+      { timestamps: false, tableName: "tbl__specialization" }
    );
    return Specialization;
 };

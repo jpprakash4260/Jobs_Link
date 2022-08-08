@@ -148,7 +148,7 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: null
          },
          exp_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             defaultValue: null
          },
          posted_status: {
@@ -165,7 +165,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__govtjobpost_exp" }
+      { timestamps: false, tableName: "tbl__govtjobpost_exp" }
    );
    return GovernmentJobPostExp;
 };

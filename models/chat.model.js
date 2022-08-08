@@ -73,7 +73,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__chat" }
+      { timestamps: false, tableName: "tbl__chat" }
    );
    return Chat;
 };

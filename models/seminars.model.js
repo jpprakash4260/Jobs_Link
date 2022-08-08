@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
          start_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
          },
          semi_org: {
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__seminars" }
+      { timestamps: false, tableName: "tbl__seminars" }
    );
    return Seminars;
 };

@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
          },
          gcm_status: {
             type: DataTypes.ENUM,
-            values:["Y","N","D"],
+            values: ["Y", "N", "D"],
             defaultValue: "Y",
          },
          gcm_dt: {
@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__gcmregister" }
+      { timestamps: false, tableName: "tbl__gcmregister" }
    );
    return GcmRegister;
 };

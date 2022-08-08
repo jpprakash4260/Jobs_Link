@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__industrytype" }
+      { timestamps: false, tableName: "tbl__industrytype" }
    );
    return IndustryType;
 };

@@ -2,104 +2,103 @@
 const db = require("../Models")
 const moment = require('moment')
 
+
 class AdminMenuService { }
-AdminMenuService.createAdmin = async (req) => {
+
+AdminMenuService.create = async (obj) => {
    try {
-      const obj = {
-         menu_title: req.body.menu_title,
-         menu_type: req.body.menu_type,
-         pid: req.body.pid,
-         menu_link: req.body.menu_link,
-         menu_icon: req.body.menu_icon,
-         menu_home: req.body.menu_home,
-         menu_pos: req.body.menu_pos,
-         menu_status: req.body.menu_status
-      }
-      const saved_adminMenu = await db.AdminMenu.create(obj)
-      return saved_adminMenu
-   } catch (err) {
-      return err
+      const saved = await db.AdminMenu.create(obj)
+      return saved
+   }
+   catch (error) {
+      return error
    }
 }
 
-AdminMenuService.findAllAndCount = async () => {
+AdminMenuService.findAllAndCount = async (menu_id) => {
    try {
-      const findAllandCount = await db.AdminMenu.findAndCountAll({})
+      const findAllandCount = await db.AdminMenu.findAndCountAll({ where: { menu_link: menu_id } })
       return findAllandCount
-   } catch (err) {
+   }
+   catch (err) {
       return err
    }
 }
 
-AdminMenuService.findOne = async (obj) => {
+AdminMenuService.getAdminDetails = async (menu_id, _start, _limit) => {
+
    try {
-      const findOne = await db.AdminMenu.findOne({ where: obj })
-      return findOne
-   } catch (err) {
-      return err
+      const [totalAccess] = await db.sequelize.query(
+         `select 
+                    COUNT(*) as total
+                from 
+                    tbl__adminmenu as a 
+                where 
+                a.menu_id=${menu_id} and a.menu_status='Y'
+            limit ${_limit} 
+            OFFSET ${_start}`
+      )
+      return totalAccess[0].total
+   } catch (error) {
+      return error
    }
 }
 
-AdminMenuService.findByPk = async (_id) => {
+AdminMenuService.findByPk = async (menu_id) => {
    try {
-      const findByPk = await db.AdminMenu.findByPk(_id)
+      const findByPk = await db.AdminMenu.findByPk(menu_id)
       return findByPk
-   } catch (err) {
+   }
+   catch (err) {
       return err
    }
 }
 
-AdminMenuService.updateById = async (_id, obj) => {
+AdminMenuService.update = async (_id, obj) => {
    try {
-      const founded = await db.AdminMenu.findByPk(_id);
-      let checked = 'same'
-      for (let i = 0; i < Object.keys(obj).length; i++) {
-         if (Object.values(obj)[i] == (founded[Object.keys(obj)[i]])) {
-            // console.log("new : " , Object.values(obj)[i], ", ext : ", founded[Object.keys(obj)[i]])
-            continue
-         } else checked = 'not same';
-         // console.log("new : ", Object.values(obj)[i], ", ext : " , founded[Object.keys(obj)[i]])
-         break
+      const founded = await db.AdminMenu.findByPk(_id)
+      if (founded) {
+
+         let checked = 'same'
+
+         for (let i = 0; i < ((Object.keys(obj).length) - 1); i++) {
+
+            var exited_ = (founded[Object.keys(obj)[i]])
+            var new_ = Object.values(obj)[i]
+
+            if (new_ == exited_) {
+               continue
+            } else
+               checked = 'not same'
+            // console.error(new_, exited_);
+            break
+         }
+         if (checked == 'not same') {
+
+            obj.lastupdate = moment().format()
+            const updateById = await db.AdminMenu.update(obj, { where: { menu_id: _id } })
+            return updateById[0]
+
+         }
+         return 'Exited Values'
       }
-      if (checked == 'not same') {
-         obj.lastupdate = moment().format()
-         const updateById = await db.AdminMenu.update(obj, { where: { menu_id: _id } })
-         return updateById[0]
-      }
-      else return 'Exited Values'
-   } catch (err) {
+      return 'Access Not Found'
+   }
+   catch (err) {
       return err
    }
 }
 
-AdminMenuService.updateStatus = async (_id, obj) => {
+AdminMenuService.delete = async (menu_id) => {
    try {
-      const founded = await db.AdminMenu.findByPk(_id);
-      let checked = 'same'
-      for (let i = 0; i < Object.keys(obj).length; i++) {
-         if (Object.values(obj)[i] == (founded[Object.keys(obj)[i]])) {
-            // console.log("new : " , Object.values(obj)[i], ", ext : ", founded[Object.keys(obj)[i]])
-            continue
-         } else checked = 'not same';
-         // console.log("new : ", Object.values(obj)[i], ", ext : " , founded[Object.keys(obj)[i]])
-         break
+      const founded = await db.AdminMenu.findByPk(menu_id)
+      if (founded) {
+         const deleted = await db.AdminMenu.destroy({ where: { menu_id: menu_id } })
+         return deleted
       }
-      if (checked == 'not same') {
-         obj.lastupdate = moment().format()
-         const updateStatus = await db.AdminMenu.update(obj, { where: { menu_id: _id } })
-         return updateStatus[0]
+      else {
+         return 'Access not found'
       }
-      else return 'Exited Values'
-   } catch (err) {
-      console.log(err);
-      return err
-   }
-}
-
-AdminMenuService.delete = async (_id) => {
-   try {
-      const deleted = await db.AdminMenu.destroy({ where: { menu_id: _id } })
-      return deleted
    } catch (err) {
       return err
    }

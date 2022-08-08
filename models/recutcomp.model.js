@@ -118,18 +118,18 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
          },
+         ipaddress: {
+            type: DataTypes.STRING,
+            default: null
+         },
          recut_date: {
             type: DataTypes.DATE,
-            default: null //Date.now().toString()
+            default: null
          },
          lastupdate: {
             type: DataTypes.DATE,
             default: null
          },
-         ipaddress: {
-            type: DataTypes.STRING,
-            default: null
-         }
       },
       { timestamps: false, tableName: "tbl__recutcomp" }
    );

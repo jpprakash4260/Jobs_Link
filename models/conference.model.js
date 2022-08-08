@@ -23,19 +23,19 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
          start_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false,
          },
          exp_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
          },
          end_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
          },
          dead_line: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
          },
          enq_email: {
@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
          conf_status: {
             type: DataTypes.ENUM,
             allowNull: false,
-            values: ["Y", "N","D"]
+            values: ["Y", "N", "D"]
          },
          added_date: {
             type: DataTypes.DATE,
@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__conference" }
+      { timestamps: false, tableName: "tbl__conference" }
    );
    return Conference;
 };

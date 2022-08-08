@@ -4,5 +4,16 @@ const seekerController = require("./seeker.controller")
 const employerController = require("./employer.controller")
 const adminController = require("./admin.controller")
 const adminMenuController = require("./adminMenu.controller")
+const accessKeyController = require("./accesskey.controller")
+const campusController = require('./campus.controller')
 
-module.exports = { crudController, loginRegisterController , seekerController, employerController, adminController, adminMenuController }
+module.exports = {
+   accessKeyController,
+   crudController,
+   loginRegisterController,
+   seekerController,
+   employerController,
+   adminController,
+   adminMenuController,
+   campusController
+}

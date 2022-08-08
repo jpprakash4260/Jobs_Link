@@ -1,41 +1,37 @@
 'use strict'
 const db = require("../Models")
+const sequelize = require('../Models')
 const moment = require('moment')
-const createError = require('http-errors')
 
+class AccessKeyService { }
 
-class AdminService { }
-
-AdminService.create = async (obj) => {
+AccessKeyService.create = async (obj) => {
    try {
-      const saved = await db.Admin.create(obj)
+      const saved = await db.AccessKey.create(obj)
       return saved
-   }
-   catch (error) {
+   } catch (error) {
       return error
    }
 }
 
-AdminService.findAllAndCount = async (admin_id) => {
+AccessKeyService.findAllAndCount = async (access_id) => {
    try {
-      const findAllandCount = await db.Admin.findAndCountAll({ where: { admin_id: admin_id } })
+      const findAllandCount = await db.AccessKey.findAndCountAll({ where: { access_id: access_id } })
       return findAllandCount
-   }
-   catch (err) {
+   } catch (err) {
       return err
    }
 }
 
-AdminService.getAdminDetails = async (admin_id, _start, _limit) => {
-
+AccessKeyService.getAccessDetails = async (access_id, _start, _limit) => {
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__admin as a 
+                    tbl__accessKey as a 
                 where 
-                a.admin_id=${admin_id} and a.admin_status='Y'
+                a.access_id=${access_id} and a.access_status='Y'
             limit ${_limit} 
             OFFSET ${_start}`
       )
@@ -45,19 +41,18 @@ AdminService.getAdminDetails = async (admin_id, _start, _limit) => {
    }
 }
 
-AdminService.findByPk = async (admin_id) => {
+AccessKeyService.findByPk = async (access_id) => {
    try {
-      const findByPk = await db.Admin.findByPk(admin_id)
+      const findByPk = await db.AccessKey.findByPk(access_id)
       return findByPk
-   }
-   catch (err) {
+   } catch (err) {
       return err
    }
 }
 
-AdminService.update = async (_id, obj) => {
+AccessKeyService.update = async (_id, obj) => {
    try {
-      const founded = await db.Admin.findByPk(_id)
+      const founded = await db.AccessKey.findByPk(_id)
       if (founded) {
 
          let checked = 'same'
@@ -71,13 +66,13 @@ AdminService.update = async (_id, obj) => {
                continue
             } else
                checked = 'not same'
-            // console.error(new_, exited_);
+            console.error(Object.keys(obj)[i], " : ", exited_, ' == ', new_)
             break
          }
          if (checked == 'not same') {
 
-            obj.lastupdate = moment().format()
-            const updateById = await db.Admin.update(obj, { where: { admin_id: _id } })
+            obj.lastupdate = moment()
+            const updateById = await db.AccessKey.update(obj, { where: { access_id: _id } })
             return updateById[0]
 
          }
@@ -90,11 +85,11 @@ AdminService.update = async (_id, obj) => {
    }
 }
 
-AdminService.delete = async (admin_id) => {
+AccessKeyService.delete = async (access_id) => {
    try {
-      const founded = await db.Admin.findByPk(admin_id)
+      const founded = await db.AccessKey.findByPk(access_id)
       if (founded) {
-         const deleted = await db.Admin.destroy({ where: { admin_id: admin_id } })
+         const deleted = await db.AccessKey.destroy({ where: { access_id: access_id } })
          return deleted
       }
       else {
@@ -106,4 +101,4 @@ AdminService.delete = async (admin_id) => {
 }
 
 
-module.exports = AdminService
+module.exports = AccessKeyService

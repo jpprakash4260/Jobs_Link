@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__colg" }
+      { timestamps: false, tableName: "tbl__colg" }
    );
    return Colg;
 };

@@ -2,8 +2,12 @@ const winston = require('winston');
 const DailyRotateFile = require('winston-daily-rotate-file');
 const moment = require('moment')
 
+const timezoned = () => {
+    return new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
+}
+
 const logFormat = winston.format.combine(
-    winston.format.timestamp(),
+    winston.format.timestamp({ format: timezoned }),
     winston.format.label({ label: "Jobs Link" }),
     winston.format.prettyPrint()
 );
@@ -23,6 +27,5 @@ const logger = winston.createLogger({
         transport,
         new winston.transports.Console()
     ]
-});
-
-module.exports = logger;
+})
+module.exports = logger

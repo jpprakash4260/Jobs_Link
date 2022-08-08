@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__intschedule" }
+      { timestamps: false, tableName: "tbl__intschedule" }
    );
    return InterviewSchedule;
 };

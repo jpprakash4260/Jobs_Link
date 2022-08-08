@@ -1,6 +1,6 @@
 'use strict'
 
-const { adminMenuService } = require('../services')
+const { campusService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
@@ -8,25 +8,28 @@ const { Op } = require('sequelize')
 const moment = require('moment')
 const createError = require('http-errors')
 
-class AdminController { }
+class CampusController { }
 
-AdminController.create = async (req, res) => {
+CampusController.create = async (req, res) => {
 
    try {
 
       let obj = {
-         menu_title: req.body.menu_title,
-         menu_type: req.body.menu_type,
-         pid: req.body.pid,
-         menu_link: req.body.menu_link,
-         menu_icon: req.body.menu_icon,
-         menu_home: req.body.menu_home,
-         menu_pos: req.body.menu_pos,
-         menu_status: req.body.menu_status,
-         menu_lastupdate: ''
+         notify: req.body.notify,
+         camp_title: req.body.camp_title,
+         camp_date: req.body.camp_date,
+         camp_org: req.body.camp_org,
+         camp_venue: req.body.camp_venue,
+         camp_logo: req.body.camp_logo,
+         camp_qualif: req.body.camp_qualif,
+         camp_exp: req.body.camp_exp,
+         notif_link: req.body.notif_link,
+         camp_status: req.body.camp_status,
+         added_date: req.body.added_date,
+         lastupdate: ''
       }
 
-      const created = await adminMenuService.create(obj)
+      const created = await campusService.create(obj)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
@@ -43,13 +46,13 @@ AdminController.create = async (req, res) => {
    }
 }
 
-AdminController.get = async (req, res) => {
+CampusController.get = async (req, res) => {
 
    try {
-      let { menu_id } = req.query
-      if (!menu_id) throw createError.BadRequest()
+      let { camp_id } = req.query
+      if (!camp_id) throw createError.BadRequest()
 
-      const { rows, count } = await adminMenuService.findAllAndCount(menu_id)
+      const { rows, count } = await campusService.findAllAndCount(camp_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -60,13 +63,13 @@ AdminController.get = async (req, res) => {
    }
 }
 
-AdminController.getByPk = async (req, res) => {
+CampusController.getByPk = async (req, res) => {
 
    try {
-      let { menu_id } = req.params
-      if (!menu_id) throw createError.BadRequest()
+      let { camp_id } = req.params
+      if (!camp_id) throw createError.BadRequest()
 
-      const founded = await adminMenuService.findByPk(menu_id)
+      const founded = await campusService.findByPk(camp_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -78,25 +81,24 @@ AdminController.getByPk = async (req, res) => {
    }
 }
 
-AdminController.getAdminDetails = async (req, res) => {
+CampusController.getAdminDetails = async (req, res) => {
 
    try {
 
-      const { menu_id, menu_home, menu_status } = req.body
-      if (!menu_id || !menu_home || !menu_status) throw createError.BadRequest()
+      const { camp_id, camp_title, camp_status } = req.body
+      if (!camp_id || !camp_title || !camp_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
       let search = req.body && req.body.search ? req.body.search : ''
 
       if (search) {
-         where['menu_title'] = {
+         where['camp_title'] = {
             [Op.like]: `%${search}%`
          }
       }
 
-      const totalAccess = await adminMenuService.getAdminDetails(menu_id, _start, _limit)
-      console.log(totalAccess);
+      const totalAccess = await campusService.getCampusDetails(camp_id, camp_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -109,25 +111,28 @@ AdminController.getAdminDetails = async (req, res) => {
    }
 }
 
-AdminController.update = async (req, res) => {
+CampusController.update = async (req, res) => {
 
    try {
 
-      let { menu_id } = req.params
-      if (!menu_id) throw createError.BadRequest()
+      let { camp_id } = req.params
+      if (!camp_id) throw createError.BadRequest()
 
       let obj = {
-         menu_title: req.body.menu_title,
-         menu_type: req.body.menu_type,
-         pid: req.body.pid,
-         menu_link: req.body.menu_link,
-         menu_icon: req.body.menu_icon,
-         menu_home: req.body.menu_home,
-         menu_pos: req.body.menu_pos,
-         menu_status: req.body.menu_status
+         notify: req.body.notify,
+         camp_title: req.body.camp_title,
+         camp_date: req.body.camp_date,
+         camp_org: req.body.camp_org,
+         camp_venue: req.body.camp_venue,
+         camp_logo: req.body.camp_logo,
+         camp_qualif: req.body.camp_qualif,
+         camp_exp: req.body.camp_exp,
+         notif_link: req.body.notif_link,
+         camp_status: req.body.camp_status,
+         added_date: req.body.added_date
       }
 
-      const update = await adminMenuService.update(menu_id, obj)
+      const update = await campusService.update(camp_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -157,14 +162,14 @@ AdminController.update = async (req, res) => {
    }
 }
 
-AdminController.delete = async (req, res) => {
+CampusController.delete = async (req, res) => {
 
    try {
 
-      let { menu_id } = req.query
-      if (!menu_id) throw createError.BadRequest()
+      let { camp_id } = req.query
+      if (!camp_id) throw createError.BadRequest()
 
-      const deleted = await adminMenuService.delete(menu_id)
+      const deleted = await campusService.delete(camp_id)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)
@@ -186,4 +191,4 @@ AdminController.delete = async (req, res) => {
    }
 }
 
-module.exports = AdminController
+module.exports = CampusController

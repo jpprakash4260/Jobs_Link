@@ -72,11 +72,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
          job_expdate: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
          },
          job_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
          },
          ipaddress: {
@@ -88,7 +88,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__jobposting" }
+      { timestamps: false, tableName: "tbl__jobposting" }
    );
    return JobPosting;
 };

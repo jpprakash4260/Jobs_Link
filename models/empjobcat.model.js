@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__empjobcat" }
+      { timestamps: false, tableName: "tbl__empjobcat" }
    );
    return EmployeeJobCategory;
 };

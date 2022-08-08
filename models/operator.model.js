@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__operator" }
+      { timestamps: false, tableName: "tbl__operator" }
    );
    return Operator;
 };

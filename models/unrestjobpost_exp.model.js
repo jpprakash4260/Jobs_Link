@@ -148,20 +148,12 @@ module.exports = (sequelize, DataTypes) => {
          },
          exp_date: {
             type: DataTypes.DATEONLY,
-            allowNull:false
+            allowNull: false
          },
          posted_status: {
             type: DataTypes.ENUM,
             defaultValue: null,
             values: ["W", "Y", "N", "D", "C"]
-         },
-         posted_date: {
-            type: DataTypes.DATE,
-            defaultValue: null
-         },
-         posted_lastupdate: {
-            type: DataTypes.DATE,
-            default: null
          },
          comp_website: {
             type: DataTypes.STRING,
@@ -182,6 +174,14 @@ module.exports = (sequelize, DataTypes) => {
          gender: {
             type: DataTypes.STRING,
             defaultValue: null
+         },
+         posted_date: {
+            type: DataTypes.DATE,
+            defaultValue: null
+         },
+         posted_lastupdate: {
+            type: DataTypes.DATE,
+            default: null
          }
       },
       { timestamps: false, tableName: "tbl__unrestjobpost_exp" }

@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__jobtype" }
+      { timestamps: false, tableName: "tbl__jobtype" }
    );
    return JobType;
 };

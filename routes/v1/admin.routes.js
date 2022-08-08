@@ -1,15 +1,12 @@
-const express = require("express")
-const adminRoutes = express.Router()
-const { adminController } = require("../../controllers")
-// const { verifyToken } = require("../../middleware");
-// const { admin_validate } = require("../../validators");
+const AdminRoute = require("express").Router()
+const { admin_validate } = require("../../validators")
+const { adminController } = require('../../controllers')
 
-adminRoutes.post('/create', adminController.createAdmin)
-adminRoutes.post('/findAllandCount', adminController.findAllandCount)
-adminRoutes.get('/findOne', adminController.findOne)
-adminRoutes.get('/findByPk/:id', adminController.findByPk)
-adminRoutes.put('/updateById/:id', adminController.updateById)
-adminRoutes.put('/updateStatus', adminController.updateStatus)
-adminRoutes.delete('/delete/:id', adminController.delete)
+AdminRoute.post("/", admin_validate.create, adminController.create)
+AdminRoute.get("/", adminController.get)
+AdminRoute.get("/:access_id", adminController.getByPk)
+AdminRoute.post("/Details", adminController.getAdminDetails)
+AdminRoute.put("/:admin_id", admin_validate.update, adminController.update)
+AdminRoute.delete("/delete", adminController.delete)
 
-module.exports = adminRoutes
+module.exports = AdminRoute

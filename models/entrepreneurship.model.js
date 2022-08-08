@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
          start_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
          },
          ending_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
          },
          ent_venue: {
@@ -51,11 +51,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
          reg_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
          },
          close_date: {
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: false
          },
          ent_status: {
@@ -72,7 +72,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__entrepreneurship" }
+      { timestamps: false, tableName: "tbl__entrepreneurship" }
    );
    return Entrepreneurship;
 };

@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false
             },
             start_date: {
-                type: DataTypes.DATE,
+                type: DataTypes.DATEONLY,
                 allowNull: false
             },
             work_time: {
@@ -43,20 +43,20 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.DATE,
                 allowNull: false
             },
+            about: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
             exp_date: {
-                type: DataTypes.DATE,
+                type: DataTypes.DATEONLY,
                 allowNull: false
             },
             lastupdate: {
                 type: DataTypes.DATE,
                 allowNull: false
-            },
-            about: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
+            }
         },
-        { timestamps: true, tableName: "tbl__workshops" }
+        { timestamps: false, tableName: "tbl__workshops" }
     );
     return Workshops;
 };

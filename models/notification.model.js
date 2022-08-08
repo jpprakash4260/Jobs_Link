@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: true, tableName: "tbl__notification" }
+      { timestamps: false, tableName: "tbl__notification" }
    );
    return Notification;
 };

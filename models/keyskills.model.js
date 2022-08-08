@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
          keysk_status: {
             type: DataTypes.ENUM,
             allowNull: false,
-            values:["Y", "N", "D"]
+            values: ["Y", "N", "D"]
          },
          keysk_dt: {
             type: DataTypes.DATE,
@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
       },
-      { timestamps: true, tableName: "tbl__keyskills" }
+      { timestamps: false, tableName: "tbl__keyskills" }
    );
    return KeySkills;
 };

@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
          cont_type: {
             type: DataTypes.ENUM,
             allowNull: false,
-            values:['C','S']
+            values: ['C', 'S']
          },
          cont_date: {
             type: DataTypes.DATE,
@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          },
       },
-      { timestamps: true, tableName: "tbl__contactresume" }
+      { timestamps: false, tableName: "tbl__contactresume" }
    );
    return ContactResume;
 };
