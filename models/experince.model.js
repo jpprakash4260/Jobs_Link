@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__experince" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__experince" }
    );
    return Experince;
 };

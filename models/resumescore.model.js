@@ -45,13 +45,9 @@ module.exports = (sequelize, DataTypes) => {
          resume_date: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__resumescore" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__resumescore" }
    );
    return ResumeScore;
 };

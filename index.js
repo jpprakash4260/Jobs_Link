@@ -28,9 +28,9 @@ db.sequelize.sync()
 	.then(() => {
 		console.log(`\nDB connected   : ${dbConfig.DB}`)
 		server.listen(process.env.APP_PORT, () => {
-			console.log(`Server on port : ${process.env.APP_PORT} \n`)
+			console.log(`Server on port : ${process.env.APP_PORT}\n`)
 		})
 	})
 	.catch((err) => {
-		console.log("\nFailed to connect db: " + err.message,"\n")
+		console.log("\nFailed to connect db: " + err.message, "\n")
 	});

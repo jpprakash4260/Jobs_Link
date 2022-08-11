@@ -39,13 +39,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.ENUM,
             allowNull: false,
             values: ["Y", "N", "D"]
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__operator" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__operator" }
    );
    return Operator;
 };

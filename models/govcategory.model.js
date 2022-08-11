@@ -55,13 +55,9 @@ module.exports = (sequelize, DataTypes) => {
          gcat_dt: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         gcat_lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__govcategory" }
+      { updatedAt: 'gcat_lastupdate', createdAt: false, tableName: "tbl__govcategory" }
    );
    return GovernmentCategory;
 };

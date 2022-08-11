@@ -1,7 +1,5 @@
 'use strict'
 const db = require("../Models")
-const moment = require('moment')
-
 
 class AdminMenuService { }
 
@@ -39,7 +37,8 @@ AdminMenuService.getAdminDetails = async (menu_id, _start, _limit) => {
             OFFSET ${_start}`
       )
       return totalAccess[0].total
-   } catch (error) {
+   }
+   catch (error) {
       return error
    }
 }
@@ -54,40 +53,20 @@ AdminMenuService.findByPk = async (menu_id) => {
    }
 }
 
-AdminMenuService.update = async (_id, obj) => {
+AdminMenuService.update = async (menu_id, obj) => {
    try {
-      const founded = await db.AdminMenu.findByPk(_id)
-      if (founded) {
 
-         let checked = 'same'
+      const ext_access = await db.AdminMenu.findOne({ where: obj })
+      const founded = await db.AdminMenu.findByPk(menu_id)
 
-         for (let i = 0; i < (Object.keys(obj).length); i++) {
-
-            var exited_ = (founded[Object.keys(obj)[i]])
-            var new_ = Object.values(obj)[i]
-
-            if (new_ == exited_) {
-               continue
-            } else
-               if (Object.keys(obj)[i] == 'menu_lastupdate') {
-                  continue
-               }
-               else {
-                  checked = 'not same'
-                  console.error('notsame : ', Object.keys(obj)[i], " : ", exited_, ' = ', new_)
-                  break
-               }
-         }
-         if (checked == 'not same') {
-
-            obj.menu_lastupdate = moment().format()
-            const updateById = await db.AdminMenu.update(obj, { where: { menu_id: _id } })
-            return updateById[0]
-
-         }
+      if (founded && ext_access) {
          return 'Exited Values'
       }
-      return 'Access Not Found'
+      else if (!ext_access && founded) {
+         const updateById = await db.AdminMenu.update(obj, { where: { menu_id: menu_id } })
+         return updateById[0]
+      }
+      else return 'AdminMenu Not Found'
    }
    catch (err) {
       return err

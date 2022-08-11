@@ -56,13 +56,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.ENUM,
             allowNull: false,
             values: ["Y", "N"]
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__notification" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__notification" }
    );
    return Notification;
 };

@@ -2,7 +2,7 @@
 
 module.exports = (sequelize, DataTypes) => {
    const Colg = sequelize.define(
-      "Colg",
+      "College",
       {
          colg_id: {
             type: DataTypes.INTEGER,
@@ -30,13 +30,9 @@ module.exports = (sequelize, DataTypes) => {
          colg_date: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__colg" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__colg" }
    );
    return Colg;
 };

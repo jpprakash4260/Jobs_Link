@@ -37,13 +37,9 @@ module.exports = (sequelize, DataTypes) => {
          mail_date: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__intschedule" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__intschedule" }
    );
    return InterviewSchedule;
 };

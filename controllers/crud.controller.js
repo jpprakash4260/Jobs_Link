@@ -60,7 +60,7 @@ CrudController.findOne = async (req, res) => {
     try {
         const key = Object.keys(req.query);
         const value = Object.values(req.query);
-        let data = await crudService.findOne({ [key] : value }, 'Employee');
+        let data = await crudService.findOne({ [key]: value }, 'Employee');
         if (data) {
             logger.info(loggerMessage.showedDataSuccess);
             return response.success(req, res, statusCodes.HTTP_OK, data, responseMessage.seekerFounded);
@@ -108,32 +108,32 @@ CrudController.update = async (req, res) => {
         }
     } catch (err) {
         logger.error(loggerMessage.updateDataFailure);
-        return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR , responseMessage.errorInUpdating);
+        return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, responseMessage.errorInUpdating);
     }
 };
 
-CrudController.delete = async (req,res) => {
+CrudController.delete = async (req, res) => {
     try {
         let seeker_id = req.query.seeker_id
         let data = await crudService.deleteSeeker_byId(obj, modelName);
         if (data == 1) {
             logger.info(loggerMessage.deleteDataSuccess);
             return response.success(req, res, statusCodes.HTTP_OK, data, responseMessage.deletedData);
-        } else{
+        } else {
             logger.warn(loggerMessage.deleteDataFailure);
             return response.errors(req, res, statusCodes.HTTP_NO_CONTENT, data, responseMessage.notDeleted);
         }
     } catch (err) {
         logger.error(loggerMessage.deleteDataFailure);
-        return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR ,responseMessage.errorInDeleting);
+        return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, responseMessage.errorInDeleting);
     }
 };
 
 CrudController.truncate = async (req, res) => {
     try {
-        let seeker_id = req.query.seeker_id
-        const truncate = await crudService.Truncate('tbl__employee')
-        if (truncate[0]  && truncate[0].fieldCount == 0 && truncate[0].affectedRows == 0 && truncate[0].insertId == 0 && truncate[0].info == '' && truncate[0].serverStatus == 2 && truncate[0].warningStatus == 0 ) {
+        var tableName = req.params
+        const truncate = await crudService.Truncate(tableName.tableName)
+        if (truncate[0] && truncate[0].fieldCount == 0 && truncate[0].affectedRows == 0 && truncate[0].insertId == 0 && truncate[0].info == '' && truncate[0].serverStatus == 2 && truncate[0].warningStatus == 0) {
             logger.info(loggerMessage.deleteDataSuccess);
             return response.success(req, res, statusCodes.HTTP_OK, truncate[0], responseMessage.deletedData);
         } else {
@@ -162,12 +162,12 @@ CrudController.findOnesome = async (req, res) => {
     }
 };
 
-CrudController.get_IP = async (req, res) =>{
-    try{
+CrudController.get_IP = async (req, res) => {
+    try {
         const IP_address = await crudService.get_IP()
         logger.info(loggerMessage.showedDataSuccess);
         return response.success(req, res, statusCodes.HTTP_OK, IP_address, responseMessage.seekerFounded);
-    }catch(err){
+    } catch (err) {
         console.log(err);
         logger.error(loggerMessage.getDataFailure);
         return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errorInFindOne);

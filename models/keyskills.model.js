@@ -34,13 +34,9 @@ module.exports = (sequelize, DataTypes) => {
          keysk_dt: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         keysk_lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
-         },
+         }
       },
-      { timestamps: false, tableName: "tbl__keyskills" }
+      { updatedAt: 'keysk_lastupdate', createdAt: false, tableName: "tbl__keyskills" }
    );
    return KeySkills;
 };

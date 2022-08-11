@@ -88,7 +88,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__jobposting" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__jobposting" }
    );
    return JobPosting;
 };

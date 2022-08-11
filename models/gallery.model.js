@@ -39,13 +39,9 @@ module.exports = (sequelize, DataTypes) => {
          gal_date: {
             type: DataTypes.DATE,
             defaultValue: null
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__gallery" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__gallery" }
    );
    return Gallery;
 };

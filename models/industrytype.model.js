@@ -30,13 +30,9 @@ module.exports = (sequelize, DataTypes) => {
          indust_date: {
             type: DataTypes.STRING,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__industrytype" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__industrytype" }
    );
    return IndustryType;
 };

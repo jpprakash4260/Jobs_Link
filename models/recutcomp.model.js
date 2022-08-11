@@ -125,13 +125,9 @@ module.exports = (sequelize, DataTypes) => {
          recut_date: {
             type: DataTypes.DATE,
             default: null
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            default: null
-         },
+         }
       },
-      { timestamps: false, tableName: "tbl__recutcomp" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__recutcomp" }
    );
    return RecutComp;
 };

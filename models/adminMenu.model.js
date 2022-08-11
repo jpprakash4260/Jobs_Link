@@ -44,13 +44,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             values: ["Y", "N", "D"]
-         },
-         menu_lastupdate: {
-            type: DataTypes.DATE,
-            default: null
          }
       },
-      { timestamps: false, tableName: "tbl__adminmenu" }
+      { updatedAt: 'menu_lastupdate', createdAt: false, tableName: "tbl__adminmenu" }
    );
    return AdminMenu;
 };

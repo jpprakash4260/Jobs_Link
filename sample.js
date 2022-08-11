@@ -61,7 +61,7 @@
 //    lastupdate: null
 // }
 
-// for (let i = 0; i < Object.keys(bulk).length; i++) { 
+// for (let i = 0; i < Object.keys(bulk).length; i++) {
 //    Object.values(bulk)[i] == (finding[Object.keys(bulk)[i]]) ? console.log("same") :  console.log("not same")
 // }
 
@@ -86,10 +86,15 @@
 
 
 
-// var dt = new Date();
-// var x = dt.toLocaleDateString();
-// console.log(x.replace('/,/','-'));
+var dt = new Date();
+var x = dt.toLocaleString();
+console.log(x);
+var y = x.replace('/,/', '-')
+console.log(y);
 // console.log("length : " + x.length);
 // var arr = x.split("/");
 // console.log(arr);
 // console.log("month : " + parseInt(arr[0], 10));
+
+
+

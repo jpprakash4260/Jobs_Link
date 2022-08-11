@@ -54,13 +54,9 @@ module.exports = (sequelize, DataTypes) => {
          explanation: {
             type: DataTypes.STRING,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
-         },
+         }
       },
-      { timestamps: false, tableName: "tbl__admin" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__admin" }
    );
    return Admin;
 };

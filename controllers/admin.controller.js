@@ -5,7 +5,6 @@ const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const { Op } = require('sequelize')
-const moment = require('moment')
 const createError = require('http-errors')
 
 class AdminController { }
@@ -26,14 +25,14 @@ AdminController.create = async (req, res) => {
          setting_banner: req.body.setting_banner,
          type: req.body.type,
          explanation: req.body.explanation,
-         lastupdate: ''
       }
 
       const created = await adminService.create(obj)
+      const founded = await adminService.findByPk(created.admin_id)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -116,7 +115,6 @@ AdminController.update = async (req, res) => {
    try {
 
       let { admin_id } = req.params
-      console.log(admin_id)
       if (!admin_id) throw createError.BadRequest()
 
       let obj = {
@@ -134,10 +132,11 @@ AdminController.update = async (req, res) => {
       }
 
       const update = await adminService.update(admin_id, obj)
+      const founded = await adminService.findByPk(admin_id)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
-         return response.success(req, res, statusCodes.HTTP_OK, obj, responseMessage.updateDataSuccess)
+         return response.success(req, res, statusCodes.HTTP_OK, founded, responseMessage.updateDataSuccess)
       }
       else if (update == 'Exited Values') {
          logger.warn(loggerMessage.alreadyExited)

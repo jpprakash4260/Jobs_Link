@@ -25,13 +25,9 @@ module.exports = (sequelize, DataTypes) => {
          jtype_date: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__jobtype" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__jobtype" }
    );
    return JobType;
 };

@@ -1,29 +1,29 @@
 'use strict'
 const db = require("../Models")
-const sequelize = require('../Models')
-const moment = require('moment')
 
-class AccessKeyService { }
+class AccessService { }
 
-AccessKeyService.create = async (obj) => {
+AccessService.create = async (obj) => {
    try {
-      const saved = await db.AccessKey.create(obj)
+      const saved = await db.Access.create(obj)
       return saved
-   } catch (error) {
+   }
+   catch (error) {
       return error
    }
 }
 
-AccessKeyService.findAllAndCount = async (access_id) => {
+AccessService.findAllAndCount = async (access_id) => {
    try {
-      const findAllandCount = await db.AccessKey.findAndCountAll({ where: { access_id: access_id } })
+      const findAllandCount = await db.Access.findAndCountAll({ where: { access_id: access_id } })
       return findAllandCount
-   } catch (err) {
+   }
+   catch (err) {
       return err
    }
 }
 
-AccessKeyService.getAccessDetails = async (access_id, _start, _limit) => {
+AccessService.getAccessDetails = async (access_id, _start, _limit) => {
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
@@ -36,75 +36,61 @@ AccessKeyService.getAccessDetails = async (access_id, _start, _limit) => {
             OFFSET ${_start}`
       )
       return totalAccess[0].total
-   } catch (error) {
+   }
+   catch (error) {
       return error
    }
 }
 
-AccessKeyService.findByPk = async (access_id) => {
+AccessService.findByPk = async (access_id) => {
    try {
-      const findByPk = await db.AccessKey.findByPk(access_id)
+
+      const findByPk = await db.Access.findByPk(access_id)
       return findByPk
-   } catch (err) {
-      return err
-   }
-}
 
-AccessKeyService.update = async (_id, obj) => {
-   try {
-      const founded = await db.AccessKey.findByPk(_id)
-      if (founded) {
-
-         let checked = 'same'
-
-         for (let i = 0; i < (Object.keys(obj).length); i++) {
-
-            var exited_ = (founded[Object.keys(obj)[i]])
-            var new_ = Object.values(obj)[i]
-
-            if (new_ == exited_) {
-               console.error('same    : ', Object.keys(obj)[i], " : ", exited_, ' = ', new_)
-               continue
-            } else
-               if (Object.keys(obj)[i] == 'access_lastupdate') {
-                  continue
-               }
-               else {
-                  checked = 'not same'
-                  console.error('notsame : ', Object.keys(obj)[i], " : ", exited_, ' = ', new_)
-                  break
-               }
-         }
-         if (checked == 'not same') {
-
-            obj.lastupdate = moment()
-            const updateById = await db.AccessKey.update(obj, { where: { access_id: _id } })
-            return updateById[0]
-
-         }
-         return 'Exited Values'
-      }
-      return 'Access Not Found'
    }
    catch (err) {
       return err
    }
 }
 
-AccessKeyService.delete = async (access_id) => {
+AccessService.update = async (access_id, obj) => {
    try {
-      const founded = await db.AccessKey.findByPk(access_id)
+
+      const ext_access = await db.Access.findOne({ where: obj })
+      const founded = await db.Access.findByPk(access_id)
+
+      if (founded && ext_access) {
+         return 'Exited Values'
+      }
+      else if (!ext_access && founded) {
+         const updateById = await db.Access.update(obj, { where: { access_id: access_id } })
+         return updateById[0]
+      }
+      else return 'Access Not Found'
+   }
+   catch (err) {
+      return err
+   }
+}
+
+AccessService.delete = async (access_id) => {
+   try {
+
+      const founded = await db.Access.findByPk(access_id)
+
       if (founded) {
-         const deleted = await db.AccessKey.destroy({ where: { access_id: access_id } })
+         const deleted = await db.Access.destroy({ where: { access_id: access_id } })
          return deleted
       }
       else {
          return 'Access not found'
       }
-   } catch (err) {
+   }
+   catch (err) {
       return err
    }
 }
 
 
-module.exports = AccessKeyService
+module.exports = AccessService

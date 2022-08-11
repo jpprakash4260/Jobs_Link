@@ -156,6 +156,26 @@ class BaseValidation {
 		}
 	}
 
+	CityBody(req, res, next, city_schema) {
+		try {
+			const { error } = city_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	CollegeBody(req, res, next, city_schema) {
+		try {
+			const { error } = city_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
 }
 
 module.exports = new BaseValidation();

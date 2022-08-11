@@ -161,13 +161,9 @@ module.exports = (sequelize, DataTypes) => {
          posted_date: {
             type: DataTypes.DATE,
             defaultValue: null
-         },
-         posted_lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__govtjobpost" }
+      { updatedAt: 'posted_lastupdate', createdAt: false, tableName: "tbl__govtjobpost" }
    );
    return GovermentJobPost;
 };

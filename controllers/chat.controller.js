@@ -29,7 +29,7 @@ ChatController.create = async (req, res) => {
          read_status: req.body.read_status,
          read_date: req.body.read_date,
          ipaddr: req.body.ipaddr,
-         lastupdate: ''
+         lastupdate: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
       }
 
       const created = await chatService.create(obj)
@@ -133,11 +133,10 @@ ChatController.update = async (req, res) => {
          chat_ttype: req.body.chat_ttype,
          chat_msg: req.body.chat_msg,
          chat_status: req.body.chat_status,
-         chat_date: moment(new Date(req.body.chat_date)).format("YYYY-MM-DD HH:mm:ss"),
+         chat_date: new Date(req.body.chat_date),
          read_status: req.body.read_status,
-         read_date: moment(new Date(req.body.read_date)).format("YYYY-MM-DD HH:mm:ss"),
+         read_date: new Date(req.body.read_date),
          ipaddr: req.body.ipaddr,
-         lastupdate: ''
       }
 
       const update = await chatService.update(chat_id, obj)

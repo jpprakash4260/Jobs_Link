@@ -25,13 +25,9 @@ module.exports = (sequelize, DataTypes) => {
          lev_date: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__govtlevel" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__govtlevel" }
    );
    return GovernmentLevel;
 };

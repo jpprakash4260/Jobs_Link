@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__empjobcat" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__empjobcat" }
    );
    return EmployeeJobCategory;
 };

@@ -67,13 +67,9 @@ module.exports = (sequelize, DataTypes) => {
          ipaddr: {
             type: DataTypes.STRING,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__chat" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__chat" }
    );
    return Chat;
 };

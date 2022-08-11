@@ -1,6 +1,6 @@
 'use strict'
 
-const { adminMenuService } = require('../services')
+const { adminMenuService, adminService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
@@ -22,15 +22,15 @@ AdminController.create = async (req, res) => {
          menu_icon: req.body.menu_icon,
          menu_home: req.body.menu_home,
          menu_pos: req.body.menu_pos,
-         menu_status: req.body.menu_status,
-         menu_lastupdate: ''
+         menu_status: req.body.menu_status
       }
 
       const created = await adminMenuService.create(obj)
+      const founded = await adminService.findByPk(created.menu_id)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -128,10 +128,11 @@ AdminController.update = async (req, res) => {
       }
 
       const update = await adminMenuService.update(menu_id, obj)
+      const founded = await adminMenuService.findByPk(menu_id)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
-         return response.success(req, res, statusCodes.HTTP_OK, obj, responseMessage.updateDataSuccess)
+         return response.success(req, res, statusCodes.HTTP_OK, founded, responseMessage.updateDataSuccess)
       }
       else if (update == 'Exited Values') {
          logger.warn(loggerMessage.alreadyExited)

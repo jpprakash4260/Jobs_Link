@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__jobhistory" }
+      { updatedAt: 'del_date', createdAt: false, tableName: "tbl__jobhistory" }
    );
    return JobHistory;
 };

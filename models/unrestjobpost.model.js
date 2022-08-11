@@ -179,13 +179,9 @@ module.exports = (sequelize, DataTypes) => {
          posted_date: {
             type: DataTypes.DATE,
             default: null
-         },
-         posted_lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__unrestjobpost" }
+      { updatedAt: 'posted_lastupdate', createdAt: false, tableName: "tbl__unrestjobpost" }
    );
    return UnrestJobPost;
 };

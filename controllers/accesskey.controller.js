@@ -1,5 +1,5 @@
 'use strict'
-const { accessKeyService } = require('../services')
+const { accessService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
@@ -7,9 +7,9 @@ const { Op } = require("sequelize")
 const moment = require('moment')
 const createError = require("http-errors")
 
-class AccessKeyController { }
+class AccessController { }
 
-AccessKeyController.create = async (req, res) => {
+AccessController.create = async (req, res) => {
 
    try {
 
@@ -18,17 +18,17 @@ AccessKeyController.create = async (req, res) => {
          user_id: Number(req.body.user_id),
          user_type: req.body.user_type,
          access_status: "Y",
-         access_expdt: req.body.access_expdt,
-         access_dt: req.body.access_dt,
-         access_ip: req.ip,
-         access_lastupdate: ''
+         access_expdt: new Date(req.body.access_expdt),
+         access_dt: new Date(req.body.access_dt),
+         access_ip: req.ip
       }
 
-      const created = await accessKeyService.create(obj)
+      const created = await accessService.create(obj)
+      const founded = await accessService.findByPk(created.access_id)
 
-      if (created && (typeof created) == 'object') {
+      if (founded && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -36,18 +36,19 @@ AccessKeyController.create = async (req, res) => {
       }
    }
    catch (error) {
+      console.log(error);
       logger.error(loggerMessage.errInCreate)
       return response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, error, responseMessage.errInCreate)
    }
 }
 
-AccessKeyController.get = async (req, res) => {
+AccessController.get = async (req, res) => {
 
    try {
       let { access_id } = req.query
       if (!access_id) throw createError.BadRequest()
 
-      const { rows, count } = await accessKeyService.findAllAndCount(access_id)
+      const { rows, count } = await accessService.findAllAndCount(access_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -58,16 +59,18 @@ AccessKeyController.get = async (req, res) => {
    }
 }
 
-AccessKeyController.getOneUser = async (req, res) => {
+AccessController.getByPk = async (req, res) => {
 
    try {
       let { access_id } = req.params
       if (!access_id) throw createError.BadRequest()
 
-      const founded = await accessKeyService.findByPk(access_id)
+      const founded = await accessService.findByPk(access_id)
+
+      console.log("founded : ", founded)
 
       logger.info(loggerMessage.getDataSuccess)
-      return response.success(req, res, statusCodes.HTTP_OK, founded, responseMessage.getDataSuccess)
+      return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
    }
    catch (error) {
       logger.error(loggerMessage.errorInFindAllMatch)
@@ -75,7 +78,7 @@ AccessKeyController.getOneUser = async (req, res) => {
    }
 }
 
-AccessKeyController.getAccessDetails = async (req, res) => {
+AccessController.getAccessDetails = async (req, res) => {
 
    try {
       const { access_id, access_key, user_type } = req.body;
@@ -91,7 +94,7 @@ AccessKeyController.getAccessDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await accessKeyService.getAccessDetails(access_id, _start, _limit)
+      const totalAccess = await accessService.getAccessDetails(access_id, _start, _limit)
       if (!totalAccess) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -103,7 +106,7 @@ AccessKeyController.getAccessDetails = async (req, res) => {
    }
 }
 
-AccessKeyController.update = async (req, res) => {
+AccessController.update = async (req, res) => {
 
    try {
       let { access_id } = req.params
@@ -114,15 +117,17 @@ AccessKeyController.update = async (req, res) => {
          user_id: Number(req.body.user_id),
          user_type: req.body.user_type,
          access_status: "Y",
-         access_expdt: moment(new Date(req.body.access_expdt)).format("YYYY-MM-DD HH:mm:ss"),
-         access_dt: moment(new Date(req.body.access_dt)).format("YYYY-MM-DD HH:mm:ss"),
+         access_expdt: new Date(req.body.access_expdt),
+         access_dt: new Date(req.body.access_dt),
          access_ip: req.ip
       }
-      const update = await accessKeyService.update(access_id, obj)
+
+      const update = await accessService.update(access_id, obj)
+      const founded = await accessService.findByPk(access_id)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, obj, responseMessage.updateDataSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.updateDataSuccess)
       }
       else if (update == 'Exited Values') {
          logger.warn(loggerMessage.alreadyExited)
@@ -137,6 +142,7 @@ AccessKeyController.update = async (req, res) => {
          return response.success(req, res, statusCodes.HTTP_CREATED, update, responseMessage.notUpdated)
       }
       else {
+         console.log(update)
          logger.error(loggerMessage.updateDataFailure)
          return response.success(req, res, statusCodes.HTTP_CREATED, update, responseMessage.updateDataFailure)
       }
@@ -148,14 +154,14 @@ AccessKeyController.update = async (req, res) => {
    }
 }
 
-AccessKeyController.delete = async (req, res) => {
+AccessController.delete = async (req, res) => {
 
    try {
 
       let { access_id } = req.query
       if (!access_id) throw createError.BadRequest()
 
-      const deleted = await accessKeyService.delete(access_id)
+      const deleted = await accessService.delete(access_id)
       console.log('deleted : ', deleted);
 
       if (deleted == 1) {
@@ -178,4 +184,4 @@ AccessKeyController.delete = async (req, res) => {
    }
 }
 
-module.exports = AccessKeyController
+module.exports = AccessController

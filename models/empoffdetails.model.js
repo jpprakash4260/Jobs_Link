@@ -8,39 +8,39 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            allowNull:false
+            allowNull: false
          },
          emp_id: {
             type: DataTypes.INTEGER,
-            allowNull : false
+            allowNull: false
          },
          emp_desig: {
             type: DataTypes.STRING,
-            allowNull : false
+            allowNull: false
          },
          emp_org: {
             type: DataTypes.STRING,
-            allowNull : false
+            allowNull: false
          },
          cur_comp: {
             type: DataTypes.STRING,
-            allowNull : false
+            allowNull: false
          },
          exp_yr: {
             type: DataTypes.STRING,
-            allowNull : false
+            allowNull: false
          },
          exp_month: {
             type: DataTypes.STRING,
-            allowNull : false
+            allowNull: false
          },
          exp_yr_to: {
             type: DataTypes.STRING,
-            allowNull : false
+            allowNull: false
          },
          exp_month_to: {
             type: DataTypes.STRING,
-            allowNull : false
+            allowNull: false
          },
          sal_type: {
             type: DataTypes.STRING,
@@ -56,22 +56,18 @@ module.exports = (sequelize, DataTypes) => {
          },
          emp_detail: {
             type: DataTypes.STRING,
-            allowNull : false
+            allowNull: false
          },
-         wrk_status:{
+         wrk_status: {
             type: DataTypes.STRING,
             default: null
          },
          wrk_date: {
             type: DataTypes.DATE,
             default: null
-         },
-         lastupdate:{
-            type:DataTypes.DATE,
-            allowNull : false
          }
       },
-      { timestamps: false, tableName: "tbl__empoffdetails" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__empoffdetails" }
    );
    return EmployeeOfficialDetails;
 };

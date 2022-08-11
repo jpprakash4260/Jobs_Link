@@ -54,42 +54,20 @@ CampusService.findByPk = async (camp_id) => {
    }
 }
 
-CampusService.update = async (_id, obj) => {
+CampusService.update = async (camp_id, obj) => {
    try {
-      const founded = await db.Campus.findByPk(_id)
-      if (founded) {
 
-         let checked = 'same'
+      const ext_access = await db.Campus.findOne({ where: obj })
+      const founded = await db.Campus.findByPk(camp_id)
 
-         for (let i = 0; i < Object.keys(obj).length; i++) {
-
-            var exited_ = (founded[Object.keys(obj)[i]])
-            var new_ = Object.values(obj)[i]
-
-            if (new_ == exited_) {
-               // console.error('same ==> ', Object.keys(obj)[i], " : ", exited_, ' == ', new_)
-               continue
-            } else {
-               if (Object.keys(obj)[i] == 'lastupdate') {
-                  continue
-               }
-               else {
-                  checked = 'not same'
-                  console.error('notsame : ', Object.keys(obj)[i], " : ", exited_, ' = ', new_)
-                  break
-               }
-            }
-         }
-         if (checked == 'not same') {
-
-            obj.lastupdate = moment().format()
-            const updateById = await db.Campus.update(obj, { where: { camp_id: _id } })
-            return updateById[0]
-
-         }
+      if (founded && ext_access) {
          return 'Exited Values'
       }
-      return 'Access Not Found'
+      else if (!ext_access && founded) {
+         const updateById = await db.Campus.update(obj, { where: { camp_id: camp_id } })
+         return updateById[0]
+      }
+      else return 'Campus Not Found'
    }
    catch (err) {
       return err

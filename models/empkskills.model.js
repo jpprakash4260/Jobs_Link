@@ -31,13 +31,9 @@ module.exports = (sequelize, DataTypes) => {
          empkskil_date: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
-         },
+         }
       },
-      { timestamps: false, tableName: "tbl__empkskills" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__empkskills" }
    );
    return EmployeeKeyskills;
 };

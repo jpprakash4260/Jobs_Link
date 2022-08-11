@@ -1,7 +1,6 @@
 'use strict'
 const db = require("../Models")
 const moment = require('moment')
-const createError = require('http-errors')
 
 
 class AdminService { }
@@ -40,7 +39,8 @@ AdminService.getAdminDetails = async (admin_id, _start, _limit) => {
             OFFSET ${_start}`
       )
       return totalAccess[0].total
-   } catch (error) {
+   }
+   catch (error) {
       return error
    }
 }
@@ -55,41 +55,19 @@ AdminService.findByPk = async (admin_id) => {
    }
 }
 
-AdminService.update = async (_id, obj) => {
+AdminService.update = async (admin_id, obj) => {
    try {
-      const founded = await db.Admin.findByPk(_id)
-      if (founded) {
+      const ext_access = await db.Admin.findOne({ where: obj })
+      const founded = await db.Admin.findByPk(admin_id)
 
-         let checked = 'same'
-
-         for (let i = 0; i < (Object.keys(obj).length); i++) {
-
-            var exited_ = (founded[Object.keys(obj)[i]])
-            var new_ = Object.values(obj)[i]
-
-            if (new_ == exited_) {
-               continue
-            } else {
-               if (Object.keys(obj)[i] == 'lastupdate') {
-                  continue
-               }
-               else {
-                  checked = 'not same'
-                  console.error('notsame : ', Object.keys(obj)[i], " : ", exited_, ' = ', new_)
-                  break
-               }
-            }
-         }
-         if (checked == 'not same') {
-
-            obj.lastupdate = moment().format()
-            const updateById = await db.Admin.update(obj, { where: { admin_id: _id } })
-            return updateById[0]
-
-         }
+      if (founded && ext_access) {
          return 'Exited Values'
       }
-      return 'Access Not Found'
+      else if (!ext_access && founded) {
+         const updateById = await db.Admin.update(obj, { where: { admin_id: admin_id } })
+         return updateById[0]
+      }
+      else return 'Admin Not Found'
    }
    catch (err) {
       return err
@@ -106,7 +84,8 @@ AdminService.delete = async (admin_id) => {
       else {
          return 'Access not found'
       }
-   } catch (err) {
+   }
+   catch (err) {
       return err
    }
 }

@@ -39,13 +39,9 @@ module.exports = (sequelize, DataTypes) => {
          applied_date: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__jobapplied" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__jobapplied" }
    );
    return JobApplied;
 };

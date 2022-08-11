@@ -30,13 +30,9 @@ module.exports = (sequelize, DataTypes) => {
          gnews_date: {
             type: DataTypes.STRING,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__govjobnews" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__govjobnews" }
    );
    return GovernmentJobNews;
 };

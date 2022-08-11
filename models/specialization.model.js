@@ -34,13 +34,9 @@ module.exports = (sequelize, DataTypes) => {
          speclz_date: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
-         },
+         }
       },
-      { timestamps: false, tableName: "tbl__specialization" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__specialization" }
    );
    return Specialization;
 };

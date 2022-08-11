@@ -9,8 +9,8 @@ class AccessValidation {
          user_id: Joi.number().min(1).required(),
          user_type: Joi.string().max(1).required(),
          access_status: Joi.string().min(1),
-         access_expdt: Joi.date(),
-         access_dt: Joi.date().required(),
+         access_expdt: Joi.date().raw().required(),
+         access_dt: Joi.date().raw().required(),
       })
       return BaseValidation.AccessBody(req, res, next, create_schema)
    }
@@ -22,8 +22,8 @@ class AccessValidation {
          user_type: Joi.string().max(1),
          access_status: Joi.string().min(1),
          access_expdt: Joi.date().min(4),
-         access_dt: Joi.date(),
-         access_ip: Joi.string(),
+         access_dt: Joi.date().raw(),
+         access_ip: Joi.string().raw(),
       })
       return BaseValidation.AccessBody(req, res, next, update_schema)
    }

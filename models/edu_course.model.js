@@ -43,13 +43,9 @@ module.exports = (sequelize, DataTypes) => {
          ecat_dt: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         gcat_lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__edu_course" }
+      { updatedAt: 'gcat_lastupdate', createdAt: false, tableName: "tbl__edu_course" }
    );
    return EducationCourse;
 };

@@ -3,9 +3,9 @@ const db = require("../Models")
 const moment = require('moment')
 
 
-class CampusService { }
+class ChatService { }
 
-CampusService.create = async (obj) => {
+ChatService.create = async (obj) => {
    try {
       const saved = await db.Chat.create(obj)
       return saved
@@ -15,7 +15,7 @@ CampusService.create = async (obj) => {
    }
 }
 
-CampusService.findAllAndCount = async (chat_id) => {
+ChatService.findAllAndCount = async (chat_id) => {
    try {
       const findAllandCount = await db.Chat.findAndCountAll({ where: { chat_id: chat_id } })
       return findAllandCount
@@ -25,7 +25,7 @@ CampusService.findAllAndCount = async (chat_id) => {
    }
 }
 
-CampusService.getCampusDetails = async (chat_id, chat_status, _start, _limit) => {
+ChatService.getCampusDetails = async (chat_id, chat_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
@@ -44,7 +44,7 @@ CampusService.getCampusDetails = async (chat_id, chat_status, _start, _limit) =>
    }
 }
 
-CampusService.findByPk = async (chat_id) => {
+ChatService.findByPk = async (chat_id) => {
    try {
       const findByPk = await db.Chat.findByPk(chat_id)
       return findByPk
@@ -54,49 +54,27 @@ CampusService.findByPk = async (chat_id) => {
    }
 }
 
-CampusService.update = async (_id, obj) => {
+ChatService.update = async (chat_id, obj) => {
    try {
-      const founded = await db.Chat.findByPk(_id)
-      if (founded) {
 
-         let checked = 'same'
+      const ext_access = await db.Chat.findOne({ where: obj })
+      const founded = await db.Chat.findByPk(chat_id)
 
-         for (let i = 0; i < Object.keys(obj).length; i++) {
-
-            var exited_ = (founded[Object.keys(obj)[i]])
-            var new_ = Object.values(obj)[i]
-
-            if (new_ == exited_) {
-               // console.error('same ==> ', Object.keys(obj)[i], " : ", exited_, ' == ', new_)
-               continue
-            } else {
-               if (Object.keys(obj)[i] == 'lastupdate') {
-                  continue
-               }
-               else {
-                  checked = 'not same'
-                  console.error('notsame : ', Object.keys(obj)[i], " : ", exited_, ' = ', new_)
-                  break
-               }
-            }
-         }
-         if (checked == 'not same') {
-
-            obj.lastupdate = moment().format()
-            const updateById = await db.Chat.update(obj, { where: { chat_id: _id } })
-            return updateById[0]
-
-         }
+      if (founded && ext_access) {
          return 'Exited Values'
       }
-      return 'Access Not Found'
+      else if (!ext_access && founded) {
+         const updateById = await db.Chat.update(obj, { where: { chat_id: chat_id } })
+         return updateById[0]
+      }
+      else return 'Chat Not Found'
    }
    catch (err) {
       return err
    }
 }
 
-CampusService.delete = async (chat_id) => {
+ChatService.delete = async (chat_id) => {
    try {
       const founded = await db.Chat.findByPk(chat_id)
       if (founded) {
@@ -112,4 +90,4 @@ CampusService.delete = async (chat_id) => {
 }
 
 
-module.exports = CampusService
+module.exports = ChatService

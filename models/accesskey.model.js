@@ -1,6 +1,8 @@
+const moment = require('moment')
+
 module.exports = (sequelize, DataTypes) => {
    const AccessKey = sequelize.define(
-      "AccessKey",
+      "Access",
       {
          access_id: {
             type: DataTypes.INTEGER,
@@ -29,22 +31,18 @@ module.exports = (sequelize, DataTypes) => {
          },
          access_expdt: {
             type: DataTypes.DATE,
-            allowNull: false
+            allowNull: false,
          },
          access_dt: {
             type: DataTypes.DATE,
-            allowNull: false
+            allowNull: false,
          },
          access_ip: {
             type: DataTypes.STRING,
             allowNull: false
-         },
-         access_lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__accessKey" }
+      { updatedAt: 'access_lastupdate', createdAt: false, tableName: "tbl__accessKey" }
    );
-   return AccessKey
+   return AccessKey;
 };

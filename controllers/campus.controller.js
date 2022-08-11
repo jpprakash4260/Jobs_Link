@@ -26,14 +26,15 @@ CampusController.create = async (req, res) => {
          notif_link: req.body.notif_link,
          camp_status: req.body.camp_status,
          added_date: req.body.added_date,
-         lastupdate: ''
+         lastupdate: new Date()
       }
 
       const created = await campusService.create(obj)
+      const founded = await campusService.findByPk(created.camp_id)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -129,14 +130,15 @@ CampusController.update = async (req, res) => {
          camp_exp: req.body.camp_exp,
          notif_link: req.body.notif_link,
          camp_status: req.body.camp_status,
-         added_date: moment(new Date(req.body.added_date)).format("YYYY-MM-DD HH:mm:ss")
+         added_date: new Date(req.body.added_date)
       }
 
       const update = await campusService.update(camp_id, obj)
+      const founded = await campusService.findByPk(camp_id)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
-         return response.success(req, res, statusCodes.HTTP_OK, obj, responseMessage.updateDataSuccess)
+         return response.success(req, res, statusCodes.HTTP_OK, founded, responseMessage.updateDataSuccess)
       }
       else if (update == 'Exited Values') {
          logger.warn(loggerMessage.alreadyExited)

@@ -30,13 +30,9 @@ module.exports = (sequelize, DataTypes) => {
          ipaddress: {
             type: DataTypes.STRING,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
-         },
+         }
       },
-      { timestamps: false, tableName: "tbl__contactresume" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__contactresume" }
    );
    return ContactResume;
 };

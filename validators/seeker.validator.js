@@ -3,7 +3,31 @@ const Joi = require('joi');
 const BaseValidation = require("../middleware/baseValidation");
 
 class SeekerValidation {
-	seekerRegister(req, res, next){
+	create(req, res, next) {
+		const college_schema = Joi.object({
+			colg_name: Joi.string().min(1).required(),
+			colg_slug: Joi.string().min(1).required(),
+			colg_pos: Joi.number().min(1).required(),
+			colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
+			colg_date: Joi.date()
+		})
+
+		return BaseValidation.CollegeBody(req, res, next, college_schema)
+	}
+
+	update(req, res, next) {
+		const college_schema = Joi.object({
+			colg_name: Joi.string().min(1),
+			colg_slug: Joi.string().min(1),
+			colg_pos: Joi.number().min(1),
+			colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
+			colg_date: Joi.date()
+		})
+
+		return BaseValidation.CollegeBody(req, res, next, college_schema)
+	}
+
+	seekerRegister(req, res, next) {
 		const seeker_schema = Joi.object({
 			emp_name: Joi.string().min(5).required(),
 			emp_email: Joi.string().email().required(),
@@ -16,7 +40,7 @@ class SeekerValidation {
 		});
 		return BaseValidation.validateSeekerRegisterBody(req, res, next, seeker_schema);
 	};
-	seekerVerifyEmail(req,res, next){
+	seekerVerifyEmail(req, res, next) {
 		const seeker_schema = Joi.object({
 			emp_email: Joi.string().email().required(),
 			email_otp: Joi.number().min(6).required()
@@ -46,7 +70,7 @@ class SeekerValidation {
 		return BaseValidation.validateSeekerRegEduBody(req, res, next, seeker_schema);
 	};
 
-	seekerLogin(req,res,next){
+	seekerLogin(req, res, next) {
 		const seeker_schema = Joi.object({
 			emp_email: Joi.string().email().required(),
 			emp_pass: Joi.string().min(6).required()
@@ -61,7 +85,7 @@ class SeekerValidation {
 		return BaseValidation.validateSeekerLoginBody(req, res, next, seeker_schema);
 	}
 
-	seekerPersonalDetails(req, res, next){
+	seekerPersonalDetails(req, res, next) {
 		const seeker_schema = Joi.object({
 			emp_dob: Joi.date().required(),
 			emp_gender: Joi.string().min(4).required(),
@@ -116,5 +140,4 @@ class SeekerValidation {
 }
 
 module.exports = new SeekerValidation();
-
 

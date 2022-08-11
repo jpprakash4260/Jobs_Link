@@ -13,7 +13,7 @@ crudRoutes.get('/findOne', crudController.findOne)
 crudRoutes.get('/findAllMatch', crudController.findAllMatch)
 crudRoutes.put('/update', crudController.update)
 crudRoutes.delete('/delete', crudController.delete)
-crudRoutes.get('/truncate', crudController.truncate)
+crudRoutes.get('/truncate/:tableName', crudController.truncate)
 crudRoutes.get('/query', crudController.findOnesome)
 crudRoutes.get('/get_IP', CrudController.get_IP)
 

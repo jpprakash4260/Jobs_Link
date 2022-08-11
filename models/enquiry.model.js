@@ -53,13 +53,9 @@ module.exports = (sequelize, DataTypes) => {
          enq_loc: {
             type: DataTypes.STRING,
             alloNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            alloNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__enquiry" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__enquiry" }
    );
    return Enquiry;
 };

@@ -30,13 +30,9 @@ module.exports = (sequelize, DataTypes) => {
          qual_dt: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__qualification" }
+      { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__qualification" }
    );
    return Qualification;
 };

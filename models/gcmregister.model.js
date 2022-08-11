@@ -30,13 +30,9 @@ module.exports = (sequelize, DataTypes) => {
          gcm_dt: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         gcm_lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__gcmregister" }
+      { updatedAt: 'gcm_lastupdate', createdAt: false, tableName: "tbl__gcmregister" }
    );
    return GcmRegister;
 };

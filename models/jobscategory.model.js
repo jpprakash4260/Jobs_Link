@@ -55,13 +55,9 @@ module.exports = (sequelize, DataTypes) => {
          jcat_dt: {
             type: DataTypes.DATE,
             defaultValue: null
-         },
-         jcat_lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
-      { timestamps: false, tableName: "tbl__jobscategory" }
+      { updatedAt: 'jcat_lastupdate', createdAt: false, tableName: "tbl__jobscategory" }
    );
    return JobsCategory;
 };
