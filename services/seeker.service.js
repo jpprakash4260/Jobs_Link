@@ -1,9 +1,9 @@
 'use strict'
 const db = require("../Models")
 
-class CollegeService { }
+class SeekerService { }
 
-CollegeService.create = async (obj) => {
+SeekerService.create = async (obj) => {
    try {
       const saved = await db.College.create(obj)
       return saved
@@ -13,7 +13,7 @@ CollegeService.create = async (obj) => {
    }
 }
 
-CollegeService.findAllAndCount = async (colg_id) => {
+SeekerService.findAllAndCount = async (colg_id) => {
    try {
       const findAllandCount = await db.College.findAndCountAll({ where: { colg_id: colg_id } })
       return findAllandCount
@@ -23,7 +23,7 @@ CollegeService.findAllAndCount = async (colg_id) => {
    }
 }
 
-CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) => {
+SeekerService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
@@ -42,7 +42,7 @@ CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) 
    }
 }
 
-CollegeService.findByPk = async (colg_id) => {
+SeekerService.findByPk = async (colg_id) => {
    try {
       const findByPk = await db.College.findByPk(colg_id)
       return findByPk
@@ -52,27 +52,29 @@ CollegeService.findByPk = async (colg_id) => {
    }
 }
 
-CollegeService.update = async (colg_id, obj) => {
+SeekerService.update = async (colg_id, obj) => {
    try {
 
-      const ext_access = await db.College.findOne({ where: obj })
-      const founded = await db.College.findByPk(colg_id)
+      const ext_conf = await db.Conference.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_conf && conf_id == ext_conf.conf_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
-         const updateById = await db.College.update(obj, { where: { colg_id: colg_id } })
+      else if (!ext_conf || (ext_conf && conf_id != ext_conf.conf_id)) {
+
+         const updateById = await db.Conference.update(obj, { where: { conf_id: conf_id } })
          return updateById[0]
+
       }
-      else return 'College Not Found'
+      else return 'Conference Not Found'
    }
    catch (err) {
       return err
    }
 }
 
-CollegeService.delete = async (colg_id) => {
+SeekerService.delete = async (colg_id) => {
    try {
       const founded = await db.College.findByPk(colg_id)
       if (founded) {
@@ -88,4 +90,4 @@ CollegeService.delete = async (colg_id) => {
 }
 
 
-module.exports = CollegeService
+module.exports = SeekerService

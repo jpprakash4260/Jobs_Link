@@ -19,8 +19,8 @@ SeekerController.create = async (req, res) => {
          colg_date: new Date(req.body.colg_date)
       }
 
-      const created = await collegeService.create(obj)
-      const founded = await collegeService.findByPk(created.colg_id)
+      const created = await seekerService.create(obj)
+      const founded = await seekerService.findByPk(created.colg_id)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
@@ -43,7 +43,7 @@ SeekerController.get = async (req, res) => {
       let { colg_id } = req.query
       if (!colg_id) throw createError.BadRequest()
 
-      const { rows, count } = await collegeService.findAllAndCount(colg_id)
+      const { rows, count } = await seekerService.findAllAndCount(colg_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -60,7 +60,7 @@ SeekerController.getByPk = async (req, res) => {
       let { colg_id } = req.params
       if (!colg_id) throw createError.BadRequest()
 
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await seekerService.findByPk(colg_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -89,7 +89,7 @@ SeekerController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await collegeService.getCollegeDetails(colg_id, colg_status, _start, _limit)
+      const totalAccess = await seekerService.getCollegeDetails(colg_id, colg_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -117,8 +117,8 @@ SeekerController.update = async (req, res) => {
          colg_date: new Date(req.body.colg_date)
       }
 
-      const update = await collegeService.update(colg_id, obj)
-      const founded = await collegeService.findByPk(colg_id)
+      const update = await seekerService.update(colg_id, obj)
+      const founded = await seekerService.findByPk(colg_id)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -156,7 +156,7 @@ SeekerController.delete = async (req, res) => {
       let { colg_id } = req.query
       if (!colg_id) throw createError.BadRequest()
 
-      const deleted = await collegeService.delete(colg_id)
+      const deleted = await seekerService.delete(colg_id)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)

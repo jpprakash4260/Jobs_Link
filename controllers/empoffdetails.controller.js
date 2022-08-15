@@ -1,29 +1,36 @@
 'use strict'
 
-const { collegeService } = require('../services')
+const { empoffdetailsService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const { Op } = require('sequelize')
-const moment = require('moment')
 const createError = require('http-errors')
 
-class CollegeController { }
+class EmpOfficialDetailsController { }
 
-CollegeController.create = async (req, res) => {
+EmpOfficialDetailsController.create = async (req, res) => {
 
    try {
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         emp_id: req.body.emp_id,
+         emp_desig: req.body.emp_desig,
+         emp_org: req.body.emp_org,
+         exp_yr: req.body.exp_yr,
+         exp_month: req.body.exp_month,
+         exp_yr_to: req.body.exp_yr_to,
+         exp_month_to: req.body.exp_month_to,
+         sal_type: req.body.sal_type,
+         sal_lakhs: req.body.sal_lakhs,
+         sal_thousand: req.body.sal_thousand,
+         emp_detail: req.body.emp_detail,
+         wrk_status: req.body.wrk_status,
+         wrk_date: new Date(req.body.wrk_date)
       }
 
-      const created = await collegeService.create(obj)
-      const founded = await collegeService.findByPk(created.colg_id)
+      const created = await empoffdetailsService.create(obj)
+      const founded = await empoffdetailsService.findByPk(created.wrk_id)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
@@ -40,13 +47,13 @@ CollegeController.create = async (req, res) => {
    }
 }
 
-CollegeController.get = async (req, res) => {
+EmpOfficialDetailsController.get = async (req, res) => {
 
    try {
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { wrk_id } = req.query
+      if (!wrk_id) throw createError.BadRequest()
 
-      const { rows, count } = await collegeService.findAllAndCount(colg_id)
+      const { rows, count } = await empoffdetailsService.findAllAndCount(wrk_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -57,13 +64,13 @@ CollegeController.get = async (req, res) => {
    }
 }
 
-CollegeController.getByPk = async (req, res) => {
+EmpOfficialDetailsController.getByPk = async (req, res) => {
 
    try {
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { wrk_id } = req.params
+      if (!wrk_id) throw createError.BadRequest()
 
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await empoffdetailsService.findByPk(wrk_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -75,12 +82,12 @@ CollegeController.getByPk = async (req, res) => {
    }
 }
 
-CollegeController.getCollegeDetails = async (req, res) => {
+EmpOfficialDetailsController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { colg_id, colg_name, colg_status } = req.body
-      if (!colg_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { wrk_id, colg_name, colg_status } = req.body
+      if (!wrk_id || !colg_name || !colg_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -92,7 +99,7 @@ CollegeController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await collegeService.getCollegeDetails(colg_id, colg_status, _start, _limit)
+      const totalAccess = await empoffdetailsService.getCollegeDetails(wrk_id, colg_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -105,23 +112,33 @@ CollegeController.getCollegeDetails = async (req, res) => {
    }
 }
 
-CollegeController.update = async (req, res) => {
+EmpOfficialDetailsController.update = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { wrk_id } = req.params
+      if (!wrk_id) throw createError.BadRequest()
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         emp_id: req.body.emp_id,
+         emp_desig: req.body.emp_desig,
+         emp_org: req.body.emp_org,
+         exp_yr: req.body.exp_yr,
+         exp_month: req.body.exp_month,
+         exp_yr_to: req.body.exp_yr_to,
+         exp_month_to: req.body.exp_month_to,
+         sal_type: req.body.sal_type,
+         sal_lakhs: req.body.sal_lakhs,
+         sal_thousand: req.body.sal_thousand,
+         emp_detail: req.body.emp_detail,
+         wrk_status: req.body.wrk_status,
+         wrk_date: new Date(req.body.wrk_date)
       }
 
-      const update = await collegeService.update(colg_id, obj)
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await empoffdetailsService.findByPk(wrk_id)
+      if (!founded) throw createError.NotFound()
+
+      const update = await empoffdetailsService.update(founded.wrk_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -152,14 +169,14 @@ CollegeController.update = async (req, res) => {
    }
 }
 
-CollegeController.delete = async (req, res) => {
+EmpOfficialDetailsController.delete = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { wrk_id } = req.query
+      if (!wrk_id) throw createError.BadRequest()
 
-      const deleted = await collegeService.delete(colg_id)
+      const deleted = await empoffdetailsService.delete(wrk_id)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)
@@ -181,4 +198,4 @@ CollegeController.delete = async (req, res) => {
    }
 }
 
-module.exports = CollegeController
+module.exports = EmpOfficialDetailsController

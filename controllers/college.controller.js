@@ -5,7 +5,6 @@ const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const { Op } = require('sequelize')
-const moment = require('moment')
 const createError = require('http-errors')
 
 class CollegeController { }
@@ -120,8 +119,10 @@ CollegeController.update = async (req, res) => {
          colg_date: new Date(req.body.colg_date)
       }
 
-      const update = await collegeService.update(colg_id, obj)
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await conferenceService.findByPk(conf_id)
+      if (!founded) throw createError.NotFound()
+
+      const update = await conferenceService.update(founded.conf_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)

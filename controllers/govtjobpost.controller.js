@@ -1,11 +1,10 @@
 'use strict'
 
-const { collegeService } = require('../services')
+const { govtjobpostService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const { Op } = require('sequelize')
-const moment = require('moment')
 const createError = require('http-errors')
 
 class CollegeController { }
@@ -15,15 +14,51 @@ CollegeController.create = async (req, res) => {
    try {
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         duplicate_from: req.body.duplicate_from,
+         jcat_type: req.body.jcat_type,
+         unrest_jcat: req.body.unrest_jcat,
+         unrest_jsubcat: req.body.unrest_jsubcat,
+         unrest_jcode: req.body.unrest_jcode,
+         unrest_jname: req.body.unrest_jname,
+         unrest_jdesc: req.body.unrest_jdesc,
+         unrest_jeducat: req.body.unrest_jeducat,
+         unrest_jquali: req.body.unrest_jquali,
+         quali_type: req.body.quali_type,
+         qualif_txt: req.body.qualif_txt,
+         age_limit: req.body.age_limit,
+         job_detail: req.body.job_detail,
+         unrest_jrequ: req.body.unrest_jrequ,
+         unrest_jallow: req.body.unrest_jallow,
+         job_type: req.body.job_type,
+         key_skills: req.body.key_skills,
+         job_exp: req.body.job_exp,
+         country_id: req.body.country_id,
+         state: req.body.state,
+         unrest_jloct: req.body.unrest_jloct,
+         unrest_jcompany: req.body.unrest_jcompany,
+         unrest_jemail: req.body.unrest_jemail,
+         unrest_jphone: req.body.unrest_jphone,
+         unrest_sal: req.body.unrest_sal,
+         web_url: req.body.web_url,
+         sec_title: req.body.sec_title,
+         all_india: req.body.all_india,
+         statename: req.body.statename,
+         cityname: req.body.cityname,
+         no_of_openings: req.body.no_of_openings,
+         sec_jobtitle: req.body.sec_jobtitle,
+         apply: req.body.apply,
+         ip_address: req.body.ip_address,
+         posted_id: req.body.posted_id,
+         posted_by: req.body.posted_by,
+         posted_name: req.body.posted_name,
+         posted_pos: req.body.posted_pos,
+         exp_date: req.body.exp_date,
+         posted_status: req.body.posted_status,
+         posted_date: new Date(req.body.posted_date)
       }
 
-      const created = await collegeService.create(obj)
-      const founded = await collegeService.findByPk(created.colg_id)
+      const created = await govtjobpostService.create(obj)
+      const founded = await govtjobpostService.findByPk(created.unrst_jid)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
@@ -43,10 +78,10 @@ CollegeController.create = async (req, res) => {
 CollegeController.get = async (req, res) => {
 
    try {
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { unrst_jid } = req.query
+      if (!unrst_jid) throw createError.BadRequest()
 
-      const { rows, count } = await collegeService.findAllAndCount(colg_id)
+      const { rows, count } = await govtjobpostService.findAllAndCount(unrst_jid)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -60,10 +95,10 @@ CollegeController.get = async (req, res) => {
 CollegeController.getByPk = async (req, res) => {
 
    try {
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { unrst_jid } = req.params
+      if (!unrst_jid) throw createError.BadRequest()
 
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await govtjobpostService.findByPk(unrst_jid)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -79,8 +114,8 @@ CollegeController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { colg_id, colg_name, colg_status } = req.body
-      if (!colg_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { unrst_jid, colg_name, posted_status } = req.body
+      if (!unrst_jid || !colg_name || !posted_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -92,7 +127,7 @@ CollegeController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await collegeService.getCollegeDetails(colg_id, colg_status, _start, _limit)
+      const totalAccess = await govtjobpostService.getCollegeDetails(unrst_jid, posted_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -109,19 +144,57 @@ CollegeController.update = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { unrst_jid } = req.params
+      if (!unrst_jid) throw createError.BadRequest()
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         duplicate_from: req.body.duplicate_from,
+         jcat_type: req.body.jcat_type,
+         unrest_jcat: req.body.unrest_jcat,
+         unrest_jsubcat: req.body.unrest_jsubcat,
+         unrest_jcode: req.body.unrest_jcode,
+         unrest_jname: req.body.unrest_jname,
+         unrest_jdesc: req.body.unrest_jdesc,
+         unrest_jeducat: req.body.unrest_jeducat,
+         unrest_jquali: req.body.unrest_jquali,
+         quali_type: req.body.quali_type,
+         qualif_txt: req.body.qualif_txt,
+         age_limit: req.body.age_limit,
+         job_detail: req.body.job_detail,
+         unrest_jrequ: req.body.unrest_jrequ,
+         unrest_jallow: req.body.unrest_jallow,
+         job_type: req.body.job_type,
+         key_skills: req.body.key_skills,
+         job_exp: req.body.job_exp,
+         country_id: req.body.country_id,
+         state: req.body.state,
+         unrest_jloct: req.body.unrest_jloct,
+         unrest_jcompany: req.body.unrest_jcompany,
+         unrest_jemail: req.body.unrest_jemail,
+         unrest_jphone: req.body.unrest_jphone,
+         unrest_sal: req.body.unrest_sal,
+         web_url: req.body.web_url,
+         sec_title: req.body.sec_title,
+         all_india: req.body.all_india,
+         statename: req.body.statename,
+         cityname: req.body.cityname,
+         no_of_openings: req.body.no_of_openings,
+         sec_jobtitle: req.body.sec_jobtitle,
+         apply: req.body.apply,
+         ip_address: req.body.ip_address,
+         posted_id: req.body.posted_id,
+         posted_by: req.body.posted_by,
+         posted_name: req.body.posted_name,
+         posted_pos: req.body.posted_pos,
+         exp_date: req.body.exp_date,
+         posted_status: req.body.posted_status,
+         posted_date: new Date(req.body.posted_date)
       }
 
-      const update = await collegeService.update(colg_id, obj)
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await govtjobpostService.findByPk(unrst_jid)
+      if (!founded) throw createError.NotFound()
+
+      const update = await govtjobpostService.update(founded.unrst_jid, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -156,10 +229,10 @@ CollegeController.delete = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { unrst_jid } = req.query
+      if (!unrst_jid) throw createError.BadRequest()
 
-      const deleted = await collegeService.delete(colg_id)
+      const deleted = await govtjobpostService.delete(unrst_jid)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)

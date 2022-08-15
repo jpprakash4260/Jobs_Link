@@ -14,15 +14,21 @@ ConferenceController.create = async (req, res) => {
    try {
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         conf_title: req.body.conf_title,
+         conf_image: req.body.conf_image,
+         notif_link: req.body.notif_link,
+         start_date: new Date(req.body.start_date),
+         exp_date: new Date(req.body.exp_date),
+         end_date: new Date(req.body.end_date),
+         dead_line: new Date(req.body.dead_line),
+         enq_email: req.body.enq_email,
+         conf_venue: req.body.conf_venue,
+         conf_status: req.body.conf_status,
+         added_date: new Date(req.body.added_date)
       }
 
-      const created = await conferenceService.create(obj)
-      const founded = await conferenceService.findByPk(created.colg_id)
+      const created = await conferenceService.create(obj);
+      const founded = await conferenceService.findByPk(created.conf_id)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
@@ -42,10 +48,10 @@ ConferenceController.create = async (req, res) => {
 ConferenceController.get = async (req, res) => {
 
    try {
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { conf_id } = req.query
+      if (!conf_id) throw createError.BadRequest()
 
-      const { rows, count } = await conferenceService.findAllAndCount(colg_id)
+      const { rows, count } = await conferenceService.findAllAndCount(conf_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -59,10 +65,10 @@ ConferenceController.get = async (req, res) => {
 ConferenceController.getByPk = async (req, res) => {
 
    try {
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { conf_id } = req.params
+      if (!conf_id) throw createError.BadRequest()
 
-      const founded = await conferenceService.findByPk(colg_id)
+      const founded = await conferenceService.findByPk(conf_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -78,8 +84,8 @@ ConferenceController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { colg_id, colg_name, colg_status } = req.body
-      if (!colg_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { conf_title, notif_link, conf_status } = req.body
+      if (!conf_title || !notif_link || !conf_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -91,7 +97,7 @@ ConferenceController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await conferenceService.getCollegeDetails(colg_id, colg_status, _start, _limit)
+      const totalAccess = await conferenceService.getCollegeDetails(conf_title, conf_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -108,19 +114,26 @@ ConferenceController.update = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { conf_id } = req.params
+      if (!conf_id) throw createError.BadRequest()
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         notif_link: req.body.notif_link,
+         conf_image: req.body.conf_image,
+         notif_link: req.body.notif_link,
+         start_date: new Date(req.body.start_date),
+         exp_date: new Date(req.body.exp_date),
+         end_date: new Date(req.body.end_date),
+         dead_line: new Date(req.body.dead_line),
+         enq_email: req.body.enq_email,
+         conf_venue: req.body.conf_venue,
+         conf_status: req.body.conf_status,
+         added_date: new Date(req.body.added_date)
       }
+      const founded = await conferenceService.findByPk(conf_id)
+      if (!founded) throw createError.NotFound()
 
-      const update = await conferenceService.update(colg_id, obj)
-      const founded = await conferenceService.findByPk(colg_id)
+      const update = await conferenceService.update(founded.conf_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -155,10 +168,10 @@ ConferenceController.delete = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { conf_id } = req.query
+      if (!conf_id) throw createError.BadRequest()
 
-      const deleted = await conferenceService.delete(colg_id)
+      const deleted = await conferenceService.delete(conf_id)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)

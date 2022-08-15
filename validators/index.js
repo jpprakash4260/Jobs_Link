@@ -26,7 +26,7 @@ module.exports = {
     govcategory_validate: require('./govcategory.validator'),
     govjobnews_validate: require('./govjobnews.validator'),
     govtjobpost_exp_validate: require('./govtjobpost_exp.validator'),
-    govtjobpost_validate: require('./govtjobpost_exp.validator'),
+    govtjobpost_validate: require('./govtjobpost.validator'),
     govtlevel_validate: require('./govtlevel.validator'),
     industrytype_validate: require('./industrytype.validator'),
     intschedule_validate: require('./intschedule.validator'),

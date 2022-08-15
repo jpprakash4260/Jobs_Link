@@ -2,31 +2,29 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class ContactresumeValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1).required(),
-         colg_slug: Joi.string().min(1).required(),
-         colg_pos: Joi.number().min(1).required(),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         colg_date: Joi.date()
+      const contactresume_schema = Joi.object({
+         emp_id: Joi.number().min(1).required(),
+         comp_id: Joi.number().min(1).required(),
+         cont_type: Joi.string().valid('C', 'S').max(1).required(),
+         cont_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.ContactResumeBody(req, res, next, contactresume_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1),
-         colg_slug: Joi.string().min(1),
-         colg_pos: Joi.number().min(1),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         colg_date: Joi.date()
+      const contactresume_schema = Joi.object({
+         emp_id: Joi.number().min(1),
+         comp_id: Joi.number().min(1),
+         cont_type: Joi.string().valid('C', 'S').max(1),
+         cont_date: Joi.date().raw()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.ContactResumeBody(req, res, next, contactresume_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new ContactresumeValidation();

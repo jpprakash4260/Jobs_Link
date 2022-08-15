@@ -10,3 +10,5 @@ CollegeRoute.put("/:colg_id", college_validate.update, collegeController.update)
 CollegeRoute.delete("/delete", collegeController.delete)
 
 module.exports = CollegeRoute
+
+

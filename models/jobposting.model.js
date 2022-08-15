@@ -75,16 +75,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATEONLY,
             allowNull: false
          },
-         job_date: {
-            type: DataTypes.DATEONLY,
-            allowNull: false
-         },
          ipaddress: {
             type: DataTypes.STRING,
-            allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
             allowNull: false
          }
       },

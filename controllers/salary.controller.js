@@ -1,29 +1,30 @@
 'use strict'
 
-const { collegeService } = require('../services')
+const { salaryService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const { Op } = require('sequelize')
-const moment = require('moment')
 const createError = require('http-errors')
 
-class CollegeController { }
+class SalaryController { }
 
-CollegeController.create = async (req, res) => {
+SalaryController.create = async (req, res) => {
 
    try {
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         sal_name: req.body.sal_name,
+         sal_slug: req.body.sal_slug,
+         min_sal: req.body.min_sal,
+         max_sal: req.body.max_sal,
+         sal_pos: req.body.sal_pos,
+         sal_status: req.body.sal_status,
+         sal_date: new Date(req.body.sal_date)
       }
 
-      const created = await collegeService.create(obj)
-      const founded = await collegeService.findByPk(created.colg_id)
+      const created = await salaryService.create(obj)
+      const founded = await salaryService.findByPk(created.sal_id)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
@@ -40,13 +41,13 @@ CollegeController.create = async (req, res) => {
    }
 }
 
-CollegeController.get = async (req, res) => {
+SalaryController.get = async (req, res) => {
 
    try {
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { sal_id } = req.query
+      if (!sal_id) throw createError.BadRequest()
 
-      const { rows, count } = await collegeService.findAllAndCount(colg_id)
+      const { rows, count } = await salaryService.findAllAndCount(sal_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -57,13 +58,13 @@ CollegeController.get = async (req, res) => {
    }
 }
 
-CollegeController.getByPk = async (req, res) => {
+SalaryController.getByPk = async (req, res) => {
 
    try {
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { sal_id } = req.params
+      if (!sal_id) throw createError.BadRequest()
 
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await salaryService.findByPk(sal_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -75,12 +76,12 @@ CollegeController.getByPk = async (req, res) => {
    }
 }
 
-CollegeController.getCollegeDetails = async (req, res) => {
+SalaryController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { colg_id, colg_name, colg_status } = req.body
-      if (!colg_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { sal_id, sal_name, sal_status } = req.body
+      if (!sal_id || !sal_name || !sal_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -92,7 +93,7 @@ CollegeController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await collegeService.getCollegeDetails(colg_id, colg_status, _start, _limit)
+      const totalAccess = await salaryService.getCollegeDetails(sal_id, sal_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -105,23 +106,27 @@ CollegeController.getCollegeDetails = async (req, res) => {
    }
 }
 
-CollegeController.update = async (req, res) => {
+SalaryController.update = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { sal_id } = req.params
+      if (!sal_id) throw createError.BadRequest()
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         sal_name: req.body.sal_name,
+         sal_slug: req.body.sal_slug,
+         min_sal: req.body.min_sal,
+         max_sal: req.body.max_sal,
+         sal_pos: req.body.sal_pos,
+         sal_status: req.body.sal_status,
+         sal_date: new Date(req.body.sal_date)
       }
 
-      const update = await collegeService.update(colg_id, obj)
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await salaryService.findByPk(sal_id)
+      if (!founded) throw createError.NotFound()
+
+      const update = await salaryService.update(founded.sal_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -152,14 +157,14 @@ CollegeController.update = async (req, res) => {
    }
 }
 
-CollegeController.delete = async (req, res) => {
+SalaryController.delete = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { sal_id } = req.query
+      if (!sal_id) throw createError.BadRequest()
 
-      const deleted = await collegeService.delete(colg_id)
+      const deleted = await salaryService.delete(sal_id)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)
@@ -181,4 +186,4 @@ CollegeController.delete = async (req, res) => {
    }
 }
 
-module.exports = CollegeController
+module.exports = SalaryController

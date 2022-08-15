@@ -19,8 +19,8 @@ EmployerController.create = async (req, res) => {
          colg_date: new Date(req.body.colg_date)
       }
 
-      const created = await collegeService.create(obj)
-      const founded = await collegeService.findByPk(created.colg_id)
+      const created = await employerService.create(obj)
+      const founded = await employerService.findByPk(created.colg_id)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
@@ -43,7 +43,7 @@ EmployerController.get = async (req, res) => {
       let { colg_id } = req.query
       if (!colg_id) throw createError.BadRequest()
 
-      const { rows, count } = await collegeService.findAllAndCount(colg_id)
+      const { rows, count } = await employerService.findAllAndCount(colg_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -60,7 +60,7 @@ EmployerController.getByPk = async (req, res) => {
       let { colg_id } = req.params
       if (!colg_id) throw createError.BadRequest()
 
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await employerService.findByPk(colg_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -89,7 +89,7 @@ EmployerController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await collegeService.getCollegeDetails(colg_id, colg_status, _start, _limit)
+      const totalAccess = await employerService.getCollegeDetails(colg_id, colg_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -117,8 +117,10 @@ EmployerController.update = async (req, res) => {
          colg_date: new Date(req.body.colg_date)
       }
 
-      const update = await collegeService.update(colg_id, obj)
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await employerService.findByPk(conf_id)
+      if (!founded) throw createError.NotFound()
+
+      const update = await employerService.update(founded.conf_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -156,7 +158,7 @@ EmployerController.delete = async (req, res) => {
       let { colg_id } = req.query
       if (!colg_id) throw createError.BadRequest()
 
-      const deleted = await collegeService.delete(colg_id)
+      const deleted = await employerService.delete(colg_id)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)

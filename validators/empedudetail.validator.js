@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class EmpedudetailValidation {
 
    create(req, res, next) {
       const college_schema = Joi.object({
@@ -13,7 +13,7 @@ class CollegeValidation {
          colg_date: Joi.date()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.EmpEduDetailBody(req, res, next, college_schema)
    }
 
    update(req, res, next) {
@@ -25,8 +25,8 @@ class CollegeValidation {
          colg_date: Joi.date()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.EmpEduDetailBody(req, res, next, college_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new EmpedudetailValidation();

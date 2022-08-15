@@ -1,11 +1,11 @@
 'use strict'
 const db = require("../Models")
 
-class CollegeService { }
+class OperatorService { }
 
-CollegeService.create = async (obj) => {
+OperatorService.create = async (obj) => {
    try {
-      const saved = await db.College.create(obj)
+      const saved = await db.Operator.create(obj)
       return saved
    }
    catch (error) {
@@ -13,9 +13,9 @@ CollegeService.create = async (obj) => {
    }
 }
 
-CollegeService.findAllAndCount = async (colg_id) => {
+OperatorService.findAllAndCount = async (op_id) => {
    try {
-      const findAllandCount = await db.College.findAndCountAll({ where: { colg_id: colg_id } })
+      const findAllandCount = await db.Operator.findAndCountAll({ where: { op_id: op_id } })
       return findAllandCount
    }
    catch (err) {
@@ -23,16 +23,16 @@ CollegeService.findAllAndCount = async (colg_id) => {
    }
 }
 
-CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) => {
+OperatorService.getCollegeDetails = async (op_id, op_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__operator as a 
                 where 
-                a.colg_id=${colg_id} and a.colg_status='${colg_status}'
+                a.op_id=${op_id} and a.op_status='${op_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )
@@ -42,9 +42,9 @@ CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) 
    }
 }
 
-CollegeService.findByPk = async (colg_id) => {
+OperatorService.findByPk = async (op_id) => {
    try {
-      const findByPk = await db.College.findByPk(colg_id)
+      const findByPk = await db.Operator.findByPk(op_id)
       return findByPk
    }
    catch (err) {
@@ -52,31 +52,33 @@ CollegeService.findByPk = async (colg_id) => {
    }
 }
 
-CollegeService.update = async (colg_id, obj) => {
+OperatorService.update = async (op_id, obj) => {
    try {
 
-      const ext_access = await db.College.findOne({ where: obj })
-      const founded = await db.College.findByPk(colg_id)
+      const ext_Operator = await db.Operator.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_Operator && op_id == ext_Operator.op_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
-         const updateById = await db.College.update(obj, { where: { colg_id: colg_id } })
+      else if (!ext_Operator || (ext_Operator && op_id != ext_Operator.op_id)) {
+
+         const updateById = await db.Operator.update(obj, { where: { op_id: op_id } })
          return updateById[0]
+
       }
-      else return 'College Not Found'
+      else return 'Operator Not Found'
    }
    catch (err) {
       return err
    }
 }
 
-CollegeService.delete = async (colg_id) => {
+OperatorService.delete = async (op_id) => {
    try {
-      const founded = await db.College.findByPk(colg_id)
+      const founded = await db.Operator.findByPk(op_id)
       if (founded) {
-         const deleted = await db.College.destroy({ where: { colg_id: colg_id } })
+         const deleted = await db.Operator.destroy({ where: { op_id: op_id } })
          return deleted
       }
       else {
@@ -88,4 +90,4 @@ CollegeService.delete = async (colg_id) => {
 }
 
 
-module.exports = CollegeService
+module.exports = OperatorService

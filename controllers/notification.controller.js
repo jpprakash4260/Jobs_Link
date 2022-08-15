@@ -1,29 +1,34 @@
 'use strict'
 
-const { collegeService } = require('../services')
+const { notificationService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const { Op } = require('sequelize')
-const moment = require('moment')
 const createError = require('http-errors')
 
-class CollegeController { }
+class NotificationController { }
 
-CollegeController.create = async (req, res) => {
+NotificationController.create = async (req, res) => {
 
    try {
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         noti_title: req.body.noti_title,
+         noti_msg: req.body.noti_msg,
+         chat_id: req.body.chat_id,
+         noti_type: req.body.noti_type,
+         job_applyid: req.body.job_applyid,
+         noti_from: req.body.noti_from,
+         noti_ftype: req.body.noti_ftype,
+         noti_to: req.body.noti_to,
+         noti_date: req.body.noti_date,
+         noti_status: req.body.noti_status,
+         noti_read: req.body.noti_read
       }
 
-      const created = await collegeService.create(obj)
-      const founded = await collegeService.findByPk(created.colg_id)
+      const created = await notificationService.create(obj)
+      const founded = await notificationService.findByPk(created.notify_id)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
@@ -40,13 +45,13 @@ CollegeController.create = async (req, res) => {
    }
 }
 
-CollegeController.get = async (req, res) => {
+NotificationController.get = async (req, res) => {
 
    try {
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { notify_id } = req.query
+      if (!notify_id) throw createError.BadRequest()
 
-      const { rows, count } = await collegeService.findAllAndCount(colg_id)
+      const { rows, count } = await notificationService.findAllAndCount(notify_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -57,13 +62,13 @@ CollegeController.get = async (req, res) => {
    }
 }
 
-CollegeController.getByPk = async (req, res) => {
+NotificationController.getByPk = async (req, res) => {
 
    try {
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { notify_id } = req.params
+      if (!notify_id) throw createError.BadRequest()
 
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await notificationService.findByPk(notify_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -75,12 +80,12 @@ CollegeController.getByPk = async (req, res) => {
    }
 }
 
-CollegeController.getCollegeDetails = async (req, res) => {
+NotificationController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { colg_id, colg_name, colg_status } = req.body
-      if (!colg_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { notify_id, noti_type, noti_status } = req.body
+      if (!notify_id || !noti_type || !noti_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -92,7 +97,7 @@ CollegeController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await collegeService.getCollegeDetails(colg_id, colg_status, _start, _limit)
+      const totalAccess = await notificationService.getCollegeDetails(notify_id, noti_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -105,23 +110,31 @@ CollegeController.getCollegeDetails = async (req, res) => {
    }
 }
 
-CollegeController.update = async (req, res) => {
+NotificationController.update = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { notify_id } = req.params
+      if (!notify_id) throw createError.BadRequest()
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         noti_title: req.body.noti_title,
+         noti_msg: req.body.noti_msg,
+         chat_id: req.body.chat_id,
+         noti_type: req.body.noti_type,
+         job_applyid: req.body.job_applyid,
+         noti_from: req.body.noti_from,
+         noti_ftype: req.body.noti_ftype,
+         noti_to: req.body.noti_to,
+         noti_date: req.body.noti_date,
+         noti_status: req.body.noti_status,
+         noti_read: req.body.noti_read
       }
 
-      const update = await collegeService.update(colg_id, obj)
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await notificationService.findByPk(notify_id)
+      if (!founded) throw createError.NotFound()
+
+      const update = await notificationService.update(founded.notify_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -152,14 +165,14 @@ CollegeController.update = async (req, res) => {
    }
 }
 
-CollegeController.delete = async (req, res) => {
+NotificationController.delete = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { notify_id } = req.query
+      if (!notify_id) throw createError.BadRequest()
 
-      const deleted = await collegeService.delete(colg_id)
+      const deleted = await notificationService.delete(notify_id)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)
@@ -181,4 +194,4 @@ CollegeController.delete = async (req, res) => {
    }
 }
 
-module.exports = CollegeController
+module.exports = NotificationController

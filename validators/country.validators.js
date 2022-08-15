@@ -2,31 +2,41 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class CountryValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1).required(),
-         colg_slug: Joi.string().min(1).required(),
-         colg_pos: Joi.number().min(1).required(),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         colg_date: Joi.date()
+      const country_schema = Joi.object({
+         id: Joi.number().min(1).required(),
+         iso: Joi.string().min(1).required(),
+         country_name: Joi.string().min(1).required(),
+         country_slug: Joi.string().min(1).required(),
+         nicename: Joi.string().min(1).required(),
+         iso3: Joi.string().min(1).required(),
+         numcode: Joi.number().min(1).required(),
+         phonecode: Joi.number().min(1).required(),
+         country_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
+         foot_status: Joi.string().valid('Y', 'N').max(1).required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.CountryBody(req, res, next, country_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1),
-         colg_slug: Joi.string().min(1),
-         colg_pos: Joi.number().min(1),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         colg_date: Joi.date()
+      const country_schema = Joi.object({
+         id: Joi.number().min(1),
+         iso: Joi.string().min(1),
+         country_name: Joi.string().min(1),
+         country_slug: Joi.string().min(1),
+         nicename: Joi.string().min(1),
+         iso3: Joi.string().min(1),
+         numcode: Joi.number().min(1),
+         phonecode: Joi.number().min(1),
+         country_status: Joi.string().valid('Y', 'N', 'D').max(1),
+         foot_status: Joi.string().valid('Y', 'N').max(1)
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.CountryBody(req, res, next, country_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new CountryValidation();

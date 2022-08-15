@@ -1,12 +1,12 @@
 const EmpedudetailRoute = require("express").Router()
-const { edu_course_validate } = require("../../validators")
-const { edu_courseController } = require('../../controllers')
+const { empedudetail_validate } = require("../../validators")
+const { empedudetailController } = require('../../controllers')
 
-EmpedudetailRoute.post("/", edu_course_validate.create, edu_courseController.create)
-EmpedudetailRoute.get("/", edu_courseController.get)
-EmpedudetailRoute.get("/:edu_id", edu_courseController.getByPk)
-EmpedudetailRoute.post("/Details", edu_courseController.getCollegeDetails)
-EmpedudetailRoute.put("/:edu_id", edu_course_validate.update, edu_courseController.update)
-EmpedudetailRoute.delete("/delete", edu_courseController.delete)
+EmpedudetailRoute.post("/", empedudetail_validate.create, empedudetailController.create)
+EmpedudetailRoute.get("/", empedudetailController.get)
+EmpedudetailRoute.get("/:edu_id", empedudetailController.getByPk)
+EmpedudetailRoute.post("/Details", empedudetailController.getCollegeDetails)
+EmpedudetailRoute.put("/:edu_id", empedudetail_validate.update, empedudetailController.update)
+EmpedudetailRoute.delete("/delete", empedudetailController.delete)
 
 module.exports = EmpedudetailRoute

@@ -1,29 +1,41 @@
 'use strict'
 
-const { collegeService } = require('../services')
+const { jobpostingService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const { Op } = require('sequelize')
-const moment = require('moment')
 const createError = require('http-errors')
 
-class CollegeController { }
+class JobPostingController { }
 
-CollegeController.create = async (req, res) => {
+JobPostingController.create = async (req, res) => {
 
    try {
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         job_code: req.body.job_code,
+         posted_by: req.body.posted_by,
+         jcat_id: req.body.jcat_id,
+         jsub_id: req.body.jsub_id,
+         cont_mail: req.body.cont_mail,
+         cont_mob: req.body.cont_mob,
+         sal_range: req.body.sal_range,
+         indust_id: req.body.indust_id,
+         empl_type: req.body.empl_type,
+         emp_educ: req.body.emp_educ,
+         emp_exp: req.body.emp_exp,
+         emp_specal: req.body.emp_specal,
+         job_desc: req.body.job_desc,
+         job_status: req.body.job_status,
+         posted_type: req.body.posted_type,
+         job_expdate: new Date(req.body.job_expdate),
+         job_date: new Date(req.body.job_date),
+         ipaddress: req.body.ipaddress
       }
 
-      const created = await collegeService.create(obj)
-      const founded = await collegeService.findByPk(created.colg_id)
+      const created = await jobpostingService.create(obj)
+      const founded = await jobpostingService.findByPk(created.job_id)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
@@ -40,13 +52,13 @@ CollegeController.create = async (req, res) => {
    }
 }
 
-CollegeController.get = async (req, res) => {
+JobPostingController.get = async (req, res) => {
 
    try {
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { job_id } = req.query
+      if (!job_id) throw createError.BadRequest()
 
-      const { rows, count } = await collegeService.findAllAndCount(colg_id)
+      const { rows, count } = await jobpostingService.findAllAndCount(job_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -57,13 +69,13 @@ CollegeController.get = async (req, res) => {
    }
 }
 
-CollegeController.getByPk = async (req, res) => {
+JobPostingController.getByPk = async (req, res) => {
 
    try {
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { job_id } = req.params
+      if (!job_id) throw createError.BadRequest()
 
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await jobpostingService.findByPk(job_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -75,12 +87,12 @@ CollegeController.getByPk = async (req, res) => {
    }
 }
 
-CollegeController.getCollegeDetails = async (req, res) => {
+JobPostingController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { colg_id, colg_name, colg_status } = req.body
-      if (!colg_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { job_id, colg_name, colg_status } = req.body
+      if (!job_id || !colg_name || !colg_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -92,7 +104,7 @@ CollegeController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await collegeService.getCollegeDetails(colg_id, colg_status, _start, _limit)
+      const totalAccess = await jobpostingService.getCollegeDetails(job_id, colg_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -105,23 +117,38 @@ CollegeController.getCollegeDetails = async (req, res) => {
    }
 }
 
-CollegeController.update = async (req, res) => {
+JobPostingController.update = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { job_id } = req.params
+      if (!job_id) throw createError.BadRequest()
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         job_code: req.body.job_code,
+         posted_by: req.body.posted_by,
+         jcat_id: req.body.jcat_id,
+         jsub_id: req.body.jsub_id,
+         cont_mail: req.body.cont_mail,
+         cont_mob: req.body.cont_mob,
+         sal_range: req.body.sal_range,
+         indust_id: req.body.indust_id,
+         empl_type: req.body.empl_type,
+         emp_educ: req.body.emp_educ,
+         emp_exp: req.body.emp_exp,
+         emp_specal: req.body.emp_specal,
+         job_desc: req.body.job_desc,
+         job_status: req.body.job_status,
+         posted_type: req.body.posted_type,
+         job_expdate: new Date(req.body.job_expdate),
+         job_date: new Date(req.body.job_date),
+         ipaddress: req.body.ipaddress
       }
 
-      const update = await collegeService.update(colg_id, obj)
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await jobpostingService.findByPk(job_id)
+      if (!founded) throw createError.NotFound()
+
+      const update = await jobpostingService.update(founded.job_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -152,14 +179,14 @@ CollegeController.update = async (req, res) => {
    }
 }
 
-CollegeController.delete = async (req, res) => {
+JobPostingController.delete = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { job_id } = req.query
+      if (!job_id) throw createError.BadRequest()
 
-      const deleted = await collegeService.delete(colg_id)
+      const deleted = await jobpostingService.delete(job_id)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)
@@ -181,4 +208,4 @@ CollegeController.delete = async (req, res) => {
    }
 }
 
-module.exports = CollegeController
+module.exports = JobPostingController

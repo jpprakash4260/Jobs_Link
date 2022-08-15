@@ -2,31 +2,43 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class ConferenceValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1).required(),
-         colg_slug: Joi.string().min(1).required(),
-         colg_pos: Joi.number().min(1).required(),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         colg_date: Joi.date()
+      const conference_schema = Joi.object({
+         conf_title: Joi.string().min(1).required(),
+         conf_image: Joi.string().min(1).required(),
+         notif_link: Joi.string().min(1).required(),
+         start_date: Joi.date().raw().required(),
+         exp_date: Joi.date().raw().required(),
+         end_date: Joi.date().raw().required(),
+         dead_line: Joi.date().raw().required(),
+         enq_email: Joi.string().min(1).required(),
+         conf_venue: Joi.string().min(1).required(),
+         conf_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
+         added_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.ConferenceBody(req, res, next, conference_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1),
-         colg_slug: Joi.string().min(1),
-         colg_pos: Joi.number().min(1),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         colg_date: Joi.date()
+      const conference_schema = Joi.object({
+         conf_title: Joi.string().min(1),
+         conf_image: Joi.string().min(1),
+         notif_link: Joi.string().min(1),
+         start_date: Joi.date().raw(),
+         exp_date: Joi.date().raw(),
+         end_date: Joi.date().raw(),
+         dead_line: Joi.date().raw(),
+         enq_email: Joi.string().min(1),
+         conf_venue: Joi.string().min(1),
+         conf_status: Joi.string().valid('Y', 'N', 'D').max(1),
+         added_date: Joi.date().raw()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.ConferenceBody(req, res, next, conference_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new ConferenceValidation();

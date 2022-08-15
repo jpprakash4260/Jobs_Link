@@ -1,9 +1,9 @@
 'use strict'
 const db = require("../Models")
 
-class CollegeService { }
+class GovCategoryService { }
 
-CollegeService.create = async (obj) => {
+GovCategoryService.create = async (obj) => {
    try {
       const saved = await db.College.create(obj)
       return saved
@@ -13,9 +13,9 @@ CollegeService.create = async (obj) => {
    }
 }
 
-CollegeService.findAllAndCount = async (colg_id) => {
+GovCategoryService.findAllAndCount = async (gcat_id) => {
    try {
-      const findAllandCount = await db.College.findAndCountAll({ where: { colg_id: colg_id } })
+      const findAllandCount = await db.College.findAndCountAll({ where: { gcat_id: gcat_id } })
       return findAllandCount
    }
    catch (err) {
@@ -23,16 +23,16 @@ CollegeService.findAllAndCount = async (colg_id) => {
    }
 }
 
-CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) => {
+GovCategoryService.getCollegeDetails = async (gcat_id, colg_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__govcategory as a 
                 where 
-                a.colg_id=${colg_id} and a.colg_status='${colg_status}'
+                a.gcat_id=${gcat_id} and a.colg_status='${colg_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )
@@ -42,9 +42,9 @@ CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) 
    }
 }
 
-CollegeService.findByPk = async (colg_id) => {
+GovCategoryService.findByPk = async (gcat_id) => {
    try {
-      const findByPk = await db.College.findByPk(colg_id)
+      const findByPk = await db.College.findByPk(gcat_id)
       return findByPk
    }
    catch (err) {
@@ -52,31 +52,33 @@ CollegeService.findByPk = async (colg_id) => {
    }
 }
 
-CollegeService.update = async (colg_id, obj) => {
+GovCategoryService.update = async (gcat_id, obj) => {
    try {
 
-      const ext_access = await db.College.findOne({ where: obj })
-      const founded = await db.College.findByPk(colg_id)
+      const ext_govcategory = await db.Conference.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_govcategory && gcat_id == ext_govcategory.gcat_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
-         const updateById = await db.College.update(obj, { where: { colg_id: colg_id } })
+      else if (!ext_govcategory || (ext_govcategory && gcat_id != ext_govcategory.gcat_id)) {
+
+         const updateById = await db.Conference.update(obj, { where: { gcat_id: gcat_id } })
          return updateById[0]
+
       }
-      else return 'College Not Found'
+      else return 'Conference Not Found'
    }
    catch (err) {
       return err
    }
 }
 
-CollegeService.delete = async (colg_id) => {
+GovCategoryService.delete = async (gcat_id) => {
    try {
-      const founded = await db.College.findByPk(colg_id)
+      const founded = await db.College.findByPk(gcat_id)
       if (founded) {
-         const deleted = await db.College.destroy({ where: { colg_id: colg_id } })
+         const deleted = await db.College.destroy({ where: { gcat_id: gcat_id } })
          return deleted
       }
       else {
@@ -88,4 +90,4 @@ CollegeService.delete = async (colg_id) => {
 }
 
 
-module.exports = CollegeService
+module.exports = GovCategoryService

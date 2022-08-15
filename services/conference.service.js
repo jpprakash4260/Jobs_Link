@@ -13,9 +13,9 @@ ConferenceService.create = async (obj) => {
    }
 }
 
-ConferenceService.findAllAndCount = async (colg_id) => {
+ConferenceService.findAllAndCount = async (conf_id) => {
    try {
-      const findAllandCount = await db.Conference.findAndCountAll({ where: { colg_id: colg_id } })
+      const findAllandCount = await db.Conference.findAndCountAll({ where: { conf_id: conf_id } })
       return findAllandCount
    }
    catch (err) {
@@ -23,16 +23,16 @@ ConferenceService.findAllAndCount = async (colg_id) => {
    }
 }
 
-ConferenceService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) => {
+ConferenceService.getCollegeDetails = async (conf_title, conf_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__conference as a 
                 where 
-                a.colg_id=${colg_id} and a.colg_status='${colg_status}'
+                a.conf_title='${conf_title}' and a.conf_status='${conf_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )
@@ -42,9 +42,9 @@ ConferenceService.getCollegeDetails = async (colg_id, colg_status, _start, _limi
    }
 }
 
-ConferenceService.findByPk = async (colg_id) => {
+ConferenceService.findByPk = async (conf_id) => {
    try {
-      const findByPk = await db.Conference.findByPk(colg_id)
+      const findByPk = await db.Conference.findByPk(conf_id)
       return findByPk
    }
    catch (err) {
@@ -52,31 +52,34 @@ ConferenceService.findByPk = async (colg_id) => {
    }
 }
 
-ConferenceService.update = async (colg_id, obj) => {
+ConferenceService.update = async (conf_id, obj) => {
    try {
 
-      const ext_access = await db.Conference.findOne({ where: obj })
-      const founded = await db.Conference.findByPk(colg_id)
+      const ext_conf = await db.Conference.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_conf && conf_id == ext_conf.conf_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
-         const updateById = await db.Conference.update(obj, { where: { colg_id: colg_id } })
+      else if (!ext_conf || (ext_conf && conf_id != ext_conf.conf_id)) {
+
+         const updateById = await db.Conference.update(obj, { where: { conf_id: conf_id } })
          return updateById[0]
+
       }
       else return 'Conference Not Found'
    }
+
    catch (err) {
       return err
    }
 }
 
-ConferenceService.delete = async (colg_id) => {
+ConferenceService.delete = async (conf_id) => {
    try {
-      const founded = await db.Conference.findByPk(colg_id)
+      const founded = await db.Conference.findByPk(conf_id)
       if (founded) {
-         const deleted = await db.Conference.destroy({ where: { colg_id: colg_id } })
+         const deleted = await db.Conference.destroy({ where: { conf_id: conf_id } })
          return deleted
       }
       else {

@@ -2,31 +2,35 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class SeminarsValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1).required(),
-         colg_slug: Joi.string().min(1).required(),
-         colg_pos: Joi.number().min(1).required(),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         colg_date: Joi.date()
+      const seminars_schema = Joi.object({
+         semi_title: Joi.string().min(1).required(),
+         start_date: Joi.date().raw().required(),
+         semi_org: Joi.string().min(1).required(),
+         semi_venue: Joi.string().min(1).required(),
+         notif_link: Joi.string().min(1).required(),
+         semi_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
+         added_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.SeminarsBody(req, res, next, seminars_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1),
-         colg_slug: Joi.string().min(1),
-         colg_pos: Joi.number().min(1),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         colg_date: Joi.date()
+      const seminars_schema = Joi.object({
+         semi_title: Joi.string().min(1),
+         start_date: Joi.date().raw(),
+         semi_org: Joi.string().min(1),
+         semi_venue: Joi.string().min(1),
+         notif_link: Joi.string().min(1),
+         semi_status: Joi.string().valid('Y', 'N', 'D').max(1),
+         added_date: Joi.date().raw()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.SeminarsBody(req, res, next, seminars_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new SeminarsValidation();

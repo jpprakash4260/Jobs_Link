@@ -2,31 +2,33 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class EmplocationValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1).required(),
-         colg_slug: Joi.string().min(1).required(),
-         colg_pos: Joi.number().min(1).required(),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         colg_date: Joi.date()
+      const emplocat_schema = Joi.object({
+         emp_id: Joi.number().min(1).required(),
+         emp_country: Joi.number().min(1).required(),
+         emp_state: Joi.number().min(1).required(),
+         emp_city: Joi.number().min(1).required(),
+         locat_status: Joi.string().valid('Y', 'D').max(1).required(),
+         locat_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.EmplocationBody(req, res, next, emplocat_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1),
-         colg_slug: Joi.string().min(1),
-         colg_pos: Joi.number().min(1),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         colg_date: Joi.date()
+      const emplocat_schema = Joi.object({
+         emp_id: Joi.number().min(1),
+         emp_country: Joi.number().min(1),
+         emp_state: Joi.number().min(1),
+         emp_city: Joi.number().min(1),
+         locat_status: Joi.string().valid('Y', 'D').max(1),
+         locat_date: Joi.date().raw()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.EmplocationBody(req, res, next, emplocat_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new EmplocationValidation();

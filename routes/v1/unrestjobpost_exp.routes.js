@@ -9,4 +9,4 @@ UnrestjobpostRoute.post("/Details", unrestjobpost_exp.getCollegeDetails)
 UnrestjobpostRoute.put("/:unrst_jid", unrestjobpost_exp_validate.update, unrestjobpost_exp.update)
 UnrestjobpostRoute.delete("/delete", unrestjobpost_exp.delete)
 
-module.exports = UnrestjobpostRoute
+module.expor.valid('Y', 'N', 'D').max(1).required()

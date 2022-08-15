@@ -2,31 +2,35 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class GalleryValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1).required(),
-         colg_slug: Joi.string().min(1).required(),
-         colg_pos: Joi.number().min(1).required(),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         colg_date: Joi.date()
+      const gallery_schema = Joi.object({
+         cat_id: Joi.number().min(1).required(),
+         gal_type: Joi.string().valid('C', 'W').max(1).required(),
+         gal_title: Joi.string().min(1).required(),
+         gal_image: Joi.string().min(1).required(),
+         gal_pos: Joi.number().min(1).required(),
+         gal_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
+         gal_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.GalleryBody(req, res, next, gallery_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1),
-         colg_slug: Joi.string().min(1),
-         colg_pos: Joi.number().min(1),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         colg_date: Joi.date()
+      const gallery_schema = Joi.object({
+         cat_id: Joi.number().min(1),
+         gal_type: Joi.string().valid('C', 'W').max(1),
+         gal_title: Joi.string().min(1),
+         gal_image: Joi.string().min(1),
+         gal_pos: Joi.number().min(1),
+         gal_status: Joi.string().valid('Y', 'N', 'D').max(1),
+         gal_date: Joi.date().raw()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.GalleryBody(req, res, next, gallery_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new GalleryValidation();

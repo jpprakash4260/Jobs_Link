@@ -2,31 +2,43 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class EnquiryValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1).required(),
-         colg_slug: Joi.string().min(1).required(),
-         colg_pos: Joi.number().min(1).required(),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         colg_date: Joi.date()
+      const enquiry_schema = Joi.object({
+         enq_name: Joi.string().min(1).required(),
+         enq_email: Joi.string().min(1).required(),
+         enq_mobile: Joi.number().min(1).required(),
+         enq_msg: Joi.string().min(1).required(),
+         enq_date: Joi.date().raw().required(),
+         ipaddress: Joi.string().min(1).required(),
+         enq_altmobile: Joi.string().min(1).required(),
+         maincat: Joi.number().min(1).required(),
+         type_home: Joi.string().min(1).required(),
+         type_bhk: Joi.string().min(1).required(),
+         enq_loc: Joi.string().min(1).required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.EnquiryBody(req, res, next, enquiry_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1),
-         colg_slug: Joi.string().min(1),
-         colg_pos: Joi.number().min(1),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         colg_date: Joi.date()
+      const enquiry_schema = Joi.object({
+         enq_name: Joi.string().min(1),
+         enq_email: Joi.string().min(1),
+         enq_mobile: Joi.number().min(1),
+         enq_msg: Joi.string().min(1),
+         enq_date: Joi.date().raw(),
+         ipaddress: Joi.string().min(1),
+         enq_altmobile: Joi.string().min(1),
+         maincat: Joi.number().min(1),
+         type_home: Joi.string().min(1),
+         type_bhk: Joi.string().min(1),
+         enq_loc: Joi.string().min(1)
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.EnquiryBody(req, res, next, enquiry_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new EnquiryValidation();

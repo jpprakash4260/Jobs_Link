@@ -1,29 +1,32 @@
 'use strict'
 
-const { collegeService } = require('../services')
+const { resumescoreService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const { Op } = require('sequelize')
-const moment = require('moment')
 const createError = require('http-errors')
 
-class CollegeController { }
+class ResumeScoreController { }
 
-CollegeController.create = async (req, res) => {
+ResumeScoreController.create = async (req, res) => {
 
    try {
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         resume_title: req.body.resume_title,
+         resume_fdesc: req.body.resume_fdesc,
+         resume_sdesc: req.body.resume_sdesc,
+         first_image: req.body.first_image,
+         seo_title: req.body.seo_title,
+         seo_description: req.body.seo_description,
+         seo_keywords: req.body.seo_keywords,
+         second_image: req.body.second_image,
+         resume_date: new Date(req.body.resume_date)
       }
 
-      const created = await collegeService.create(obj)
-      const founded = await collegeService.findByPk(created.colg_id)
+      const created = await resumescoreService.create(obj)
+      const founded = await resumescoreService.findByPk(created.resume_id)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
@@ -40,13 +43,13 @@ CollegeController.create = async (req, res) => {
    }
 }
 
-CollegeController.get = async (req, res) => {
+ResumeScoreController.get = async (req, res) => {
 
    try {
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { resume_id } = req.query
+      if (!resume_id) throw createError.BadRequest()
 
-      const { rows, count } = await collegeService.findAllAndCount(colg_id)
+      const { rows, count } = await resumescoreService.findAllAndCount(resume_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -57,13 +60,13 @@ CollegeController.get = async (req, res) => {
    }
 }
 
-CollegeController.getByPk = async (req, res) => {
+ResumeScoreController.getByPk = async (req, res) => {
 
    try {
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { resume_id } = req.params
+      if (!resume_id) throw createError.BadRequest()
 
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await resumescoreService.findByPk(resume_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -75,12 +78,12 @@ CollegeController.getByPk = async (req, res) => {
    }
 }
 
-CollegeController.getCollegeDetails = async (req, res) => {
+ResumeScoreController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { colg_id, colg_name, colg_status } = req.body
-      if (!colg_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { resume_id, colg_name, colg_status } = req.body
+      if (!resume_id || !colg_name || !colg_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -92,7 +95,7 @@ CollegeController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await collegeService.getCollegeDetails(colg_id, colg_status, _start, _limit)
+      const totalAccess = await resumescoreService.getCollegeDetails(resume_id, colg_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -105,23 +108,29 @@ CollegeController.getCollegeDetails = async (req, res) => {
    }
 }
 
-CollegeController.update = async (req, res) => {
+ResumeScoreController.update = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { resume_id } = req.params
+      if (!resume_id) throw createError.BadRequest()
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         resume_title: req.body.resume_title,
+         resume_fdesc: req.body.resume_fdesc,
+         resume_sdesc: req.body.resume_sdesc,
+         first_image: req.body.first_image,
+         seo_title: req.body.seo_title,
+         seo_description: req.body.seo_description,
+         seo_keywords: req.body.seo_keywords,
+         second_image: req.body.second_image,
+         resume_date: new Date(req.body.resume_date)
       }
 
-      const update = await collegeService.update(colg_id, obj)
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await resumescoreService.findByPk(resume_id)
+      if (!founded) throw createError.NotFound()
+
+      const update = await resumescoreService.update(founded.resume_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -152,14 +161,14 @@ CollegeController.update = async (req, res) => {
    }
 }
 
-CollegeController.delete = async (req, res) => {
+ResumeScoreController.delete = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { resume_id } = req.query
+      if (!resume_id) throw createError.BadRequest()
 
-      const deleted = await collegeService.delete(colg_id)
+      const deleted = await resumescoreService.delete(resume_id)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)
@@ -181,4 +190,4 @@ CollegeController.delete = async (req, res) => {
    }
 }
 
-module.exports = CollegeController
+module.exports = ResumeScoreController

@@ -1,29 +1,67 @@
 'use strict'
 
-const { collegeService } = require('../services')
+const { unrestjobpostService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const { Op } = require('sequelize')
-const moment = require('moment')
 const createError = require('http-errors')
 
-class CollegeController { }
+class UnrestJobPostController { }
 
-CollegeController.create = async (req, res) => {
+UnrestJobPostController.create = async (req, res) => {
 
    try {
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         duplicate_from: req.body.duplicate_from,
+         jcat_type: req.body.jcat_type,
+         unrest_jcat: req.body.unrest_jcat,
+         unrest_jsubcat: req.body.unrest_jsubcat,
+         unrest_jcode: req.body.unrest_jcode,
+         verify: req.body.verify,
+         unrest_jdesc: req.body.unrest_jdesc,
+         unrest_jquali: req.body.unrest_jquali,
+         unrest_jrequ: req.body.unrest_jrequ,
+         high_qualif: req.body.high_qualif,
+         high_course: req.body.high_course,
+         high_special: req.body.high_special,
+         unrest_jallow: req.body.unrest_jallow,
+         sal_id: req.body.sal_id,
+         jtype_id: req.body.jtype_id,
+         jtype_id_new: req.body.jtype_id_new,
+         job_type: req.body.job_type,
+         key_skills: req.body.key_skills,
+         job_exp: req.body.job_exp,
+         country_id: req.body.country_id,
+         state: req.body.state,
+         unrest_jloct: req.body.unrest_jloct,
+         unrest_jcompany: req.body.unrest_jcompany,
+         comp_detail: req.body.comp_detail,
+         unrest_jemail: req.body.unrest_jemail,
+         unrest_jphoneold: req.body.unrest_jphoneold,
+         unrest_jphone: req.body.unrest_jphone,
+         unrest_landline: req.body.unrest_landline,
+         unrest_sal: req.body.unrest_sal,
+         comp_address: req.body.comp_address,
+         apply: req.body.apply,
+         ip_address: req.body.ip_address,
+         posted_id: req.body.posted_id,
+         posted_by: req.body.posted_by,
+         posted_name: req.body.posted_name,
+         posted_pos: req.body.posted_pos,
+         exp_date: new Date(req.body.exp_date),
+         posted_status: req.body.posted_status,
+         comp_website: req.body.comp_website,
+         field_exp: req.body.field_exp,
+         nationality: req.body.nationality,
+         no_of_openings: req.body.no_of_openings,
+         gender: req.body.gender,
+         posted_date: new Date(req.body.posted_date)
       }
 
-      const created = await collegeService.create(obj)
-      const founded = await collegeService.findByPk(created.colg_id)
+      const created = await unrestjobpostService.create(obj)
+      const founded = await unrestjobpostService.findByPk(created.unrst_jid)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
@@ -40,13 +78,13 @@ CollegeController.create = async (req, res) => {
    }
 }
 
-CollegeController.get = async (req, res) => {
+UnrestJobPostController.get = async (req, res) => {
 
    try {
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { unrst_jid } = req.query
+      if (!unrst_jid) throw createError.BadRequest()
 
-      const { rows, count } = await collegeService.findAllAndCount(colg_id)
+      const { rows, count } = await unrestjobpostService.findAllAndCount(unrst_jid)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -57,13 +95,13 @@ CollegeController.get = async (req, res) => {
    }
 }
 
-CollegeController.getByPk = async (req, res) => {
+UnrestJobPostController.getByPk = async (req, res) => {
 
    try {
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { unrst_jid } = req.params
+      if (!unrst_jid) throw createError.BadRequest()
 
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await unrestjobpostService.findByPk(unrst_jid)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -75,12 +113,12 @@ CollegeController.getByPk = async (req, res) => {
    }
 }
 
-CollegeController.getCollegeDetails = async (req, res) => {
+UnrestJobPostController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { colg_id, colg_name, colg_status } = req.body
-      if (!colg_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { unrst_jid, colg_name, colg_status } = req.body
+      if (!unrst_jid || !colg_name || !colg_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -92,7 +130,7 @@ CollegeController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await collegeService.getCollegeDetails(colg_id, colg_status, _start, _limit)
+      const totalAccess = await unrestjobpostService.getCollegeDetails(unrst_jid, colg_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -105,23 +143,64 @@ CollegeController.getCollegeDetails = async (req, res) => {
    }
 }
 
-CollegeController.update = async (req, res) => {
+UnrestJobPostController.update = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { unrst_jid } = req.params
+      if (!unrst_jid) throw createError.BadRequest()
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         duplicate_from: req.body.duplicate_from,
+         jcat_type: req.body.jcat_type,
+         unrest_jcat: req.body.unrest_jcat,
+         unrest_jsubcat: req.body.unrest_jsubcat,
+         unrest_jcode: req.body.unrest_jcode,
+         verify: req.body.verify,
+         unrest_jdesc: req.body.unrest_jdesc,
+         unrest_jquali: req.body.unrest_jquali,
+         unrest_jrequ: req.body.unrest_jrequ,
+         high_qualif: req.body.high_qualif,
+         high_course: req.body.high_course,
+         high_special: req.body.high_special,
+         unrest_jallow: req.body.unrest_jallow,
+         sal_id: req.body.sal_id,
+         jtype_id: req.body.jtype_id,
+         jtype_id_new: req.body.jtype_id_new,
+         job_type: req.body.job_type,
+         key_skills: req.body.key_skills,
+         job_exp: req.body.job_exp,
+         country_id: req.body.country_id,
+         state: req.body.state,
+         unrest_jloct: req.body.unrest_jloct,
+         unrest_jcompany: req.body.unrest_jcompany,
+         comp_detail: req.body.comp_detail,
+         unrest_jemail: req.body.unrest_jemail,
+         unrest_jphoneold: req.body.unrest_jphoneold,
+         unrest_jphone: req.body.unrest_jphone,
+         unrest_landline: req.body.unrest_landline,
+         unrest_sal: req.body.unrest_sal,
+         comp_address: req.body.comp_address,
+         apply: req.body.apply,
+         ip_address: req.body.ip_address,
+         posted_id: req.body.posted_id,
+         posted_by: req.body.posted_by,
+         posted_name: req.body.posted_name,
+         posted_pos: req.body.posted_pos,
+         exp_date: new Date(req.body.exp_date),
+         posted_status: req.body.posted_status,
+         comp_website: req.body.comp_website,
+         field_exp: req.body.field_exp,
+         nationality: req.body.nationality,
+         no_of_openings: req.body.no_of_openings,
+         gender: req.body.gender,
+         posted_date: new Date(req.body.posted_date)
       }
 
-      const update = await collegeService.update(colg_id, obj)
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await unrestjobpostService.findByPk(conf_id)
+      if (!founded) throw createError.NotFound()
+
+      const update = await unrestjobpostService.update(founded.conf_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -152,14 +231,14 @@ CollegeController.update = async (req, res) => {
    }
 }
 
-CollegeController.delete = async (req, res) => {
+UnrestJobPostController.delete = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { unrst_jid } = req.query
+      if (!unrst_jid) throw createError.BadRequest()
 
-      const deleted = await collegeService.delete(colg_id)
+      const deleted = await unrestjobpostService.delete(unrst_jid)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)
@@ -181,4 +260,4 @@ CollegeController.delete = async (req, res) => {
    }
 }
 
-module.exports = CollegeController
+module.exports = UnrestJobPostController

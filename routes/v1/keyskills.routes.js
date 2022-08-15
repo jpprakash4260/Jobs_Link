@@ -10,3 +10,6 @@ KeyskillsRoute.put("/:keysk_id", keyskills_validate.update, keyskillsController.
 KeyskillsRoute.delete("/delete", keyskillsController.delete)
 
 module.exports = KeyskillsRoute
+
+
+

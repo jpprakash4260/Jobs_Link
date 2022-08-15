@@ -2,31 +2,31 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class EmpjobcatValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1).required(),
-         colg_slug: Joi.string().min(1).required(),
-         colg_pos: Joi.number().min(1).required(),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         colg_date: Joi.date()
+      const empjobcat_schema = Joi.object({
+         emp_id: Joi.number().min(1).required(),
+         cat_id: Joi.number().min(1).required(),
+         subcat_id: Joi.number().min(1).required(),
+         mjcat_status: Joi.string().valid('Y', 'D').max(1).required(),
+         mjcat_date: Joi.date().min(1).required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.EmpJobcatBody(req, res, next, empjobcat_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1),
-         colg_slug: Joi.string().min(1),
-         colg_pos: Joi.number().min(1),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         colg_date: Joi.date()
+      const empjobcat_schema = Joi.object({
+         emp_id: Joi.number().min(1),
+         cat_id: Joi.number().min(1),
+         subcat_id: Joi.number().min(1),
+         mjcat_status: Joi.string().valid('Y', 'D').max(1),
+         mjcat_date: Joi.date().min(1)
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.EmpJobcatBody(req, res, next, empjobcat_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new EmpjobcatValidation();

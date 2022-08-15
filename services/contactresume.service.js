@@ -5,7 +5,7 @@ class CollegeService { }
 
 CollegeService.create = async (obj) => {
    try {
-      const saved = await db.College.create(obj)
+      const saved = await db.ContactResume.create(obj)
       return saved
    }
    catch (error) {
@@ -13,9 +13,9 @@ CollegeService.create = async (obj) => {
    }
 }
 
-CollegeService.findAllAndCount = async (colg_id) => {
+CollegeService.findAllAndCount = async (cont_id) => {
    try {
-      const findAllandCount = await db.College.findAndCountAll({ where: { colg_id: colg_id } })
+      const findAllandCount = await db.ContactResume.findAndCountAll({ where: { cont_id: cont_id } })
       return findAllandCount
    }
    catch (err) {
@@ -23,16 +23,16 @@ CollegeService.findAllAndCount = async (colg_id) => {
    }
 }
 
-CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) => {
+CollegeService.getCollegeDetails = async (cont_id, cont_type, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__contactresume as a 
                 where 
-                a.colg_id=${colg_id} and a.colg_status='${colg_status}'
+                a.cont_id=${cont_id} and a.cont_type='${cont_type}'
             limit ${_limit} 
             OFFSET ${_start}`
       )
@@ -42,9 +42,9 @@ CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) 
    }
 }
 
-CollegeService.findByPk = async (colg_id) => {
+CollegeService.findByPk = async (cont_id) => {
    try {
-      const findByPk = await db.College.findByPk(colg_id)
+      const findByPk = await db.ContactResume.findByPk(cont_id)
       return findByPk
    }
    catch (err) {
@@ -52,31 +52,33 @@ CollegeService.findByPk = async (colg_id) => {
    }
 }
 
-CollegeService.update = async (colg_id, obj) => {
+CollegeService.update = async (cont_id, obj) => {
    try {
 
-      const ext_access = await db.College.findOne({ where: obj })
-      const founded = await db.College.findByPk(colg_id)
+      const ext_cont = await db.ContactResume.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_cont && cont_id == ext_cont.cont_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
-         const updateById = await db.College.update(obj, { where: { colg_id: colg_id } })
+      else if (!ext_cont || (ext_cont && cont_id != ext_cont.cont_id)) {
+
+         const updateById = await db.ContactResume.update(obj, { where: { cont_id: cont_id } })
          return updateById[0]
+
       }
-      else return 'College Not Found'
+      else return 'ContactResume Not Found'
    }
    catch (err) {
       return err
    }
 }
 
-CollegeService.delete = async (colg_id) => {
+CollegeService.delete = async (cont_id) => {
    try {
-      const founded = await db.College.findByPk(colg_id)
+      const founded = await db.ContactResume.findByPk(cont_id)
       if (founded) {
-         const deleted = await db.College.destroy({ where: { colg_id: colg_id } })
+         const deleted = await db.ContactResume.destroy({ where: { cont_id: cont_id } })
          return deleted
       }
       else {

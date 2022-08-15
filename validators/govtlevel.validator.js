@@ -2,31 +2,29 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class GovtLevelValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1).required(),
-         colg_slug: Joi.string().min(1).required(),
-         colg_pos: Joi.number().min(1).required(),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         colg_date: Joi.date()
+      const govtlevel_schema = Joi.object({
+         lev_name: Joi.string().min(1).required(),
+         lev_pos: Joi.number().min(1).required(),
+         lev_status: Joi.string().min().required(),
+         lev_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.GovtLevelBody(req, res, next, govtlevel_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1),
-         colg_slug: Joi.string().min(1),
-         colg_pos: Joi.number().min(1),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         colg_date: Joi.date()
+      const govtlevel_schema = Joi.object({
+         lev_name: Joi.string().min(1),
+         lev_pos: Joi.number().min(1),
+         lev_status: Joi.string().min(),
+         lev_date: Joi.date().raw()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.GovtLevelBody(req, res, next, govtlevel_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new GovtLevelValidation();

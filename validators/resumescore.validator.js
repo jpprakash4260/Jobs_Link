@@ -2,31 +2,39 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class ResumeScoreValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1).required(),
-         colg_slug: Joi.string().min(1).required(),
-         colg_pos: Joi.number().min(1).required(),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         colg_date: Joi.date()
+      const resumescore_schema = Joi.object({
+         resume_title: Joi.string().min(1).required(),
+         resume_fdesc: Joi.string().min(1).required(),
+         resume_sdesc: Joi.string().min(1).required(),
+         first_image: Joi.string().min(1).required(),
+         seo_title: Joi.string().min(1).required(),
+         seo_description: Joi.string().min(1).required(),
+         seo_keywords: Joi.string().min(1).required(),
+         second_image: Joi.string().min(1).required(),
+         resume_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.ResumeScoreBody(req, res, next, resumescore_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1),
-         colg_slug: Joi.string().min(1),
-         colg_pos: Joi.number().min(1),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         colg_date: Joi.date()
+      const resumescore_schema = Joi.object({
+         resume_title: Joi.string().min(1),
+         resume_fdesc: Joi.string().min(1),
+         resume_sdesc: Joi.string().min(1),
+         first_image: Joi.string().min(1),
+         seo_title: Joi.string().min(1),
+         seo_description: Joi.string().min(1),
+         seo_keywords: Joi.string().min(1),
+         second_image: Joi.string().min(1),
+         resume_date: Joi.date().raw()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.ResumeScoreBody(req, res, next, resumescore_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new ResumeScoreValidation();

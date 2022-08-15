@@ -1,7 +1,5 @@
 'use strict'
 const db = require("../Models")
-const moment = require('moment')
-
 
 class CollegeService { }
 
@@ -57,17 +55,19 @@ CollegeService.findByPk = async (colg_id) => {
 CollegeService.update = async (colg_id, obj) => {
    try {
 
-      const ext_access = await db.College.findOne({ where: obj })
-      const founded = await db.College.findByPk(colg_id)
+      const ext_conf = await db.Conference.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_conf && conf_id == ext_conf.conf_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
-         const updateById = await db.College.update(obj, { where: { colg_id: colg_id } })
+      else if (!ext_conf || (ext_conf && conf_id != ext_conf.conf_id)) {
+
+         const updateById = await db.Conference.update(obj, { where: { conf_id: conf_id } })
          return updateById[0]
+
       }
-      else return 'College Not Found'
+      else return 'Conference Not Found'
    }
    catch (err) {
       return err

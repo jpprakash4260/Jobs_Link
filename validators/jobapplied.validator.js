@@ -2,31 +2,35 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class JobAppliedValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1).required(),
-         colg_slug: Joi.string().min(1).required(),
-         colg_pos: Joi.number().min(1).required(),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         colg_date: Joi.date()
+      const jobapplied_schema = Joi.object({
+         emp_id: Joi.number().min(1).required(),
+         job_id: Joi.number().min(1).required(),
+         company_id: Joi.number().min(1).required(),
+         job_type: Joi.string().min(1).required(),
+         appl_status: Joi.string().valid('W', 'A', 'C', 'H', 'R').max(1).required(),
+         ipaddress: Joi.string().min(1).required(),
+         applied_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.JobAppliedBody(req, res, next, jobapplied_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1),
-         colg_slug: Joi.string().min(1),
-         colg_pos: Joi.number().min(1),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         colg_date: Joi.date()
+      const jobapplied_schema = Joi.object({
+         emp_id: Joi.number().min(1),
+         job_id: Joi.number().min(1),
+         company_id: Joi.number().min(1),
+         job_type: Joi.string().min(1),
+         appl_status: Joi.string().valid('W', 'A', 'C', 'H', 'R').max(1),
+         ipaddress: Joi.string().min(1),
+         applied_date: Joi.date().raw()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.JobAppliedBody(req, res, next, jobapplied_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new JobAppliedValidation();

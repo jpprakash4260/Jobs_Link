@@ -1,11 +1,11 @@
 'use strict'
 const db = require("../Models")
 
-class CollegeService { }
+class JobPostingService { }
 
-CollegeService.create = async (obj) => {
+JobPostingService.create = async (obj) => {
    try {
-      const saved = await db.College.create(obj)
+      const saved = await db.JobPosting.create(obj)
       return saved
    }
    catch (error) {
@@ -13,9 +13,9 @@ CollegeService.create = async (obj) => {
    }
 }
 
-CollegeService.findAllAndCount = async (colg_id) => {
+JobPostingService.findAllAndCount = async (job_id) => {
    try {
-      const findAllandCount = await db.College.findAndCountAll({ where: { colg_id: colg_id } })
+      const findAllandCount = await db.JobPosting.findAndCountAll({ where: { job_id: job_id } })
       return findAllandCount
    }
    catch (err) {
@@ -23,7 +23,7 @@ CollegeService.findAllAndCount = async (colg_id) => {
    }
 }
 
-CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) => {
+JobPostingService.getCollegeDetails = async (job_id, colg_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
@@ -32,7 +32,7 @@ CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) 
                 from 
                     tbl__colg as a 
                 where 
-                a.colg_id=${colg_id} and a.colg_status='${colg_status}'
+                a.job_id=${job_id} and a.colg_status='${colg_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )
@@ -42,9 +42,9 @@ CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) 
    }
 }
 
-CollegeService.findByPk = async (colg_id) => {
+JobPostingService.findByPk = async (job_id) => {
    try {
-      const findByPk = await db.College.findByPk(colg_id)
+      const findByPk = await db.JobPosting.findByPk(job_id)
       return findByPk
    }
    catch (err) {
@@ -52,31 +52,33 @@ CollegeService.findByPk = async (colg_id) => {
    }
 }
 
-CollegeService.update = async (colg_id, obj) => {
+JobPostingService.update = async (job_id, obj) => {
    try {
 
-      const ext_access = await db.College.findOne({ where: obj })
-      const founded = await db.College.findByPk(colg_id)
+      const ext_JobPosting = await db.JobPosting.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_JobPosting && job_id == ext_JobPosting.job_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
-         const updateById = await db.College.update(obj, { where: { colg_id: colg_id } })
+      else if (!ext_JobPosting || (ext_JobPosting && job_id != ext_JobPosting.job_id)) {
+
+         const updateById = await db.JobPosting.update(obj, { where: { job_id: job_id } })
          return updateById[0]
+
       }
-      else return 'College Not Found'
+      else return 'JobPosting Not Found'
    }
    catch (err) {
       return err
    }
 }
 
-CollegeService.delete = async (colg_id) => {
+JobPostingService.delete = async (job_id) => {
    try {
-      const founded = await db.College.findByPk(colg_id)
+      const founded = await db.JobPosting.findByPk(job_id)
       if (founded) {
-         const deleted = await db.College.destroy({ where: { colg_id: colg_id } })
+         const deleted = await db.JobPosting.destroy({ where: { job_id: job_id } })
          return deleted
       }
       else {
@@ -88,4 +90,4 @@ CollegeService.delete = async (colg_id) => {
 }
 
 
-module.exports = CollegeService
+module.exports = JobPostingService

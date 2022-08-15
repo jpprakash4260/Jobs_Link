@@ -2,22 +2,22 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class QualificatioValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1).required(),
-         colg_slug: Joi.string().min(1).required(),
-         colg_pos: Joi.number().min(1).required(),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         colg_date: Joi.date()
+      const qualification_schema = Joi.object({
+         qual_name: Joi.string().min(1).required(),
+         qual_slug: Joi.string().min(1).required(),
+         qual_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
+         qual_pos: Joi.number().min(1).required(),
+         qual_dt: Joi.date().raw().required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.QualificationBody(req, res, next, qualification_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
+      const qualification_schema = Joi.object({
          colg_name: Joi.string().min(1),
          colg_slug: Joi.string().min(1),
          colg_pos: Joi.number().min(1),
@@ -25,8 +25,8 @@ class CollegeValidation {
          colg_date: Joi.date()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.QualificationBody(req, res, next, qualification_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new QualificatioValidation();

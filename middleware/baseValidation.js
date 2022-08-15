@@ -156,9 +156,9 @@ class BaseValidation {
 		}
 	}
 
-	CityBody(req, res, next, city_schema) {
+	CityBody(req, res, next, edu_course_schema) {
 		try {
-			const { error } = city_schema.validate(req.body)
+			const { error } = edu_course_schema.validate(req.body)
 			if (error) return response.joierrors(req, res, error)
 			next()
 		} catch (error) {
@@ -166,15 +166,127 @@ class BaseValidation {
 		}
 	}
 
-	CollegeBody(req, res, next, city_schema) {
+	CollegeBody(req, res, next, college_schema) {
 		try {
-			const { error } = city_schema.validate(req.body)
+			const { error } = college_schema.validate(req.body)
 			if (error) return response.joierrors(req, res, error)
 			next()
 		} catch (error) {
 			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
 		}
 	}
+
+	ConferenceBody(req, res, next, conference_schema) {
+		try {
+			const { error } = conference_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	ContactResumeBody(req, res, next, contactresume_schema) {
+		try {
+			const { error } = contactresume_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	CountryBody(req, res, next, country_schema) {
+		try {
+			const { error } = country_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	Edu_CourseBody(req, res, next, edu_course_schema) {
+		try {
+			const { error } = edu_course_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+
+	EmpEduDetailBody(req, res, next, empedudetail_schema) {
+		try {
+			const { error } = empedudetail_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	Empjobcat(req, res, next, empjobcat_schema) {
+		try {
+			const { error } = empjobcat_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	CollegeBody(req, res, next, edu_course_schema) {
+		try {
+			const { error } = edu_course_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	CollegeBody(req, res, next, edu_course_schema) {
+		try {
+			const { error } = edu_course_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	CollegeBody(req, res, next, edu_course_schema) {
+		try {
+			const { error } = edu_course_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	CollegeBody(req, res, next, edu_course_schema) {
+		try {
+			const { error } = edu_course_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	CollegeBody(req, res, next, edu_course_schema) {
+		try {
+			const { error } = edu_course_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
 
 }
 

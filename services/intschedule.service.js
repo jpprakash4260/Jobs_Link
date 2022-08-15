@@ -1,11 +1,11 @@
 'use strict'
 const db = require("../Models")
 
-class CollegeService { }
+class IntScheduleService { }
 
-CollegeService.create = async (obj) => {
+IntScheduleService.create = async (obj) => {
    try {
-      const saved = await db.College.create(obj)
+      const saved = await db.InterviewSchedule.create(obj)
       return saved
    }
    catch (error) {
@@ -13,9 +13,9 @@ CollegeService.create = async (obj) => {
    }
 }
 
-CollegeService.findAllAndCount = async (colg_id) => {
+IntScheduleService.findAllAndCount = async (intsch_id) => {
    try {
-      const findAllandCount = await db.College.findAndCountAll({ where: { colg_id: colg_id } })
+      const findAllandCount = await db.InterviewSchedule.findAndCountAll({ where: { intsch_id: intsch_id } })
       return findAllandCount
    }
    catch (err) {
@@ -23,7 +23,7 @@ CollegeService.findAllAndCount = async (colg_id) => {
    }
 }
 
-CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) => {
+IntScheduleService.getCollegeDetails = async (intsch_id, emp_id, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
@@ -32,7 +32,7 @@ CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) 
                 from 
                     tbl__colg as a 
                 where 
-                a.colg_id=${colg_id} and a.colg_status='${colg_status}'
+                a.intsch_id=${intsch_id} and a.emp_id='${emp_id}'
             limit ${_limit} 
             OFFSET ${_start}`
       )
@@ -42,9 +42,9 @@ CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) 
    }
 }
 
-CollegeService.findByPk = async (colg_id) => {
+IntScheduleService.findByPk = async (intsch_id) => {
    try {
-      const findByPk = await db.College.findByPk(colg_id)
+      const findByPk = await db.InterviewSchedule.findByPk(intsch_id)
       return findByPk
    }
    catch (err) {
@@ -52,31 +52,33 @@ CollegeService.findByPk = async (colg_id) => {
    }
 }
 
-CollegeService.update = async (colg_id, obj) => {
+IntScheduleService.update = async (intsch_id, obj) => {
    try {
 
-      const ext_access = await db.College.findOne({ where: obj })
-      const founded = await db.College.findByPk(colg_id)
+      const ext_intsch = await db.InterviewSchedule.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_intsch && intsch_id == ext_intsch.intsch_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
-         const updateById = await db.College.update(obj, { where: { colg_id: colg_id } })
+      else if (!ext_intsch || (ext_intsch && intsch_id != ext_intsch.intsch_id)) {
+
+         const updateById = await db.InterviewSchedule.update(obj, { where: { intsch_id: intsch_id } })
          return updateById[0]
+
       }
-      else return 'College Not Found'
+      else return 'InterviewSchedule Not Found'
    }
    catch (err) {
       return err
    }
 }
 
-CollegeService.delete = async (colg_id) => {
+IntScheduleService.delete = async (intsch_id) => {
    try {
-      const founded = await db.College.findByPk(colg_id)
+      const founded = await db.InterviewSchedule.findByPk(intsch_id)
       if (founded) {
-         const deleted = await db.College.destroy({ where: { colg_id: colg_id } })
+         const deleted = await db.InterviewSchedule.destroy({ where: { intsch_id: intsch_id } })
          return deleted
       }
       else {
@@ -88,4 +90,4 @@ CollegeService.delete = async (colg_id) => {
 }
 
 
-module.exports = CollegeService
+module.exports = IntScheduleService

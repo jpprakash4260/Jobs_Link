@@ -1,11 +1,11 @@
 'use strict'
 const db = require("../Models")
 
-class CollegeService { }
+class EnquiryService { }
 
-CollegeService.create = async (obj) => {
+EnquiryService.create = async (obj) => {
    try {
-      const saved = await db.College.create(obj)
+      const saved = await db.Enquiry.create(obj)
       return saved
    }
    catch (error) {
@@ -13,9 +13,9 @@ CollegeService.create = async (obj) => {
    }
 }
 
-CollegeService.findAllAndCount = async (colg_id) => {
+EnquiryService.findAllAndCount = async (enq_id) => {
    try {
-      const findAllandCount = await db.College.findAndCountAll({ where: { colg_id: colg_id } })
+      const findAllandCount = await db.Enquiry.findAndCountAll({ where: { enq_id: enq_id } })
       return findAllandCount
    }
    catch (err) {
@@ -23,7 +23,7 @@ CollegeService.findAllAndCount = async (colg_id) => {
    }
 }
 
-CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) => {
+EnquiryService.getCollegeDetails = async (enq_id, colg_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
@@ -32,7 +32,7 @@ CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) 
                 from 
                     tbl__colg as a 
                 where 
-                a.colg_id=${colg_id} and a.colg_status='${colg_status}'
+                a.enq_id=${enq_id} and a.colg_status='${colg_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )
@@ -42,9 +42,9 @@ CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) 
    }
 }
 
-CollegeService.findByPk = async (colg_id) => {
+EnquiryService.findByPk = async (enq_id) => {
    try {
-      const findByPk = await db.College.findByPk(colg_id)
+      const findByPk = await db.Enquiry.findByPk(enq_id)
       return findByPk
    }
    catch (err) {
@@ -52,31 +52,33 @@ CollegeService.findByPk = async (colg_id) => {
    }
 }
 
-CollegeService.update = async (colg_id, obj) => {
+EnquiryService.update = async (enq_id, obj) => {
    try {
 
-      const ext_access = await db.College.findOne({ where: obj })
-      const founded = await db.College.findByPk(colg_id)
+      const ext_enquiry = await db.Enquiry.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_enquiry && enq_id == ext_enquiry.enq_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
-         const updateById = await db.College.update(obj, { where: { colg_id: colg_id } })
+      else if (!ext_enquiry || (ext_enquiry && enq_id != ext_enquiry.enq_id)) {
+
+         const updateById = await db.Enquiry.update(obj, { where: { enq_id: enq_id } })
          return updateById[0]
+
       }
-      else return 'College Not Found'
+      else return 'Enquiry Not Found'
    }
    catch (err) {
       return err
    }
 }
 
-CollegeService.delete = async (colg_id) => {
+EnquiryService.delete = async (enq_id) => {
    try {
-      const founded = await db.College.findByPk(colg_id)
+      const founded = await db.Enquiry.findByPk(enq_id)
       if (founded) {
-         const deleted = await db.College.destroy({ where: { colg_id: colg_id } })
+         const deleted = await db.Enquiry.destroy({ where: { enq_id: enq_id } })
          return deleted
       }
       else {
@@ -88,4 +90,4 @@ CollegeService.delete = async (colg_id) => {
 }
 
 
-module.exports = CollegeService
+module.exports = EnquiryService

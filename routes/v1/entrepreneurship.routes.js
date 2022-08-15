@@ -10,3 +10,5 @@ EntrepreneurshipRoute.put("/:ent_id", entrepreneurship_validate.update, entrepre
 EntrepreneurshipRoute.delete("/delete", entrepreneurshipController.delete)
 
 module.exports = EntrepreneurshipRoute
+
+

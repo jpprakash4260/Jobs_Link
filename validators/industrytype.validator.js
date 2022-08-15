@@ -2,31 +2,31 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class IndustryTypeValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1).required(),
-         colg_slug: Joi.string().min(1).required(),
-         colg_pos: Joi.number().min(1).required(),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         colg_date: Joi.date()
+      const industryType_schema = Joi.object({
+         indust_name: Joi.string().min(1).required(),
+         indust_slug: Joi.string().min(1).required(),
+         indust_pos: Joi.number().min(1).required(),
+         indust_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
+         indust_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.IndustryTyeBody(req, res, next, industryType_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
-         colg_name: Joi.string().min(1),
-         colg_slug: Joi.string().min(1),
-         colg_pos: Joi.number().min(1),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         colg_date: Joi.date()
+      const industryType_schema = Joi.object({
+         indust_name: Joi.string().min(1),
+         indust_slug: Joi.string().min(1),
+         indust_pos: Joi.number().min(1),
+         indust_status: Joi.string().valid('Y', 'N', 'D').max(1),
+         indust_date: Joi.date().raw()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.IndustryTyeBody(req, res, next, industryType_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new IndustryTypeValidation();

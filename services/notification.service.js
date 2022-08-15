@@ -1,11 +1,11 @@
 'use strict'
 const db = require("../Models")
 
-class CollegeService { }
+class NotificationService { }
 
-CollegeService.create = async (obj) => {
+NotificationService.create = async (obj) => {
    try {
-      const saved = await db.College.create(obj)
+      const saved = await db.Notification.create(obj)
       return saved
    }
    catch (error) {
@@ -13,9 +13,9 @@ CollegeService.create = async (obj) => {
    }
 }
 
-CollegeService.findAllAndCount = async (colg_id) => {
+NotificationService.findAllAndCount = async (notify_id) => {
    try {
-      const findAllandCount = await db.College.findAndCountAll({ where: { colg_id: colg_id } })
+      const findAllandCount = await db.Notification.findAndCountAll({ where: { notify_id: notify_id } })
       return findAllandCount
    }
    catch (err) {
@@ -23,16 +23,16 @@ CollegeService.findAllAndCount = async (colg_id) => {
    }
 }
 
-CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) => {
+NotificationService.getCollegeDetails = async (notify_id, noti_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__notification as a 
                 where 
-                a.colg_id=${colg_id} and a.colg_status='${colg_status}'
+                a.notify_id=${notify_id} and a.noti_status='${noti_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )
@@ -42,9 +42,9 @@ CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) 
    }
 }
 
-CollegeService.findByPk = async (colg_id) => {
+NotificationService.findByPk = async (notify_id) => {
    try {
-      const findByPk = await db.College.findByPk(colg_id)
+      const findByPk = await db.Notification.findByPk(notify_id)
       return findByPk
    }
    catch (err) {
@@ -52,31 +52,33 @@ CollegeService.findByPk = async (colg_id) => {
    }
 }
 
-CollegeService.update = async (colg_id, obj) => {
+NotificationService.update = async (notify_id, obj) => {
    try {
 
-      const ext_access = await db.College.findOne({ where: obj })
-      const founded = await db.College.findByPk(colg_id)
+      const ext_Notification = await db.Notification.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_Notification && notify_id == ext_Notification.notify_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
-         const updateById = await db.College.update(obj, { where: { colg_id: colg_id } })
+      else if (!ext_Notification || (ext_Notification && notify_id != ext_Notification.notify_id)) {
+
+         const updateById = await db.Notification.update(obj, { where: { notify_id: notify_id } })
          return updateById[0]
+
       }
-      else return 'College Not Found'
+      else return 'Notification Not Found'
    }
    catch (err) {
       return err
    }
 }
 
-CollegeService.delete = async (colg_id) => {
+NotificationService.delete = async (notify_id) => {
    try {
-      const founded = await db.College.findByPk(colg_id)
+      const founded = await db.Notification.findByPk(notify_id)
       if (founded) {
-         const deleted = await db.College.destroy({ where: { colg_id: colg_id } })
+         const deleted = await db.Notification.destroy({ where: { notify_id: notify_id } })
          return deleted
       }
       else {
@@ -88,4 +90,4 @@ CollegeService.delete = async (colg_id) => {
 }
 
 
-module.exports = CollegeService
+module.exports = NotificationService

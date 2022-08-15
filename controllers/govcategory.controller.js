@@ -1,6 +1,6 @@
 'use strict'
 
-const { collegeService } = require('../services')
+const { govcategoryService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
@@ -8,22 +8,28 @@ const { Op } = require('sequelize')
 const moment = require('moment')
 const createError = require('http-errors')
 
-class CollegeController { }
+class GovCategoryController { }
 
-CollegeController.create = async (req, res) => {
+GovCategoryController.create = async (req, res) => {
 
    try {
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         pid: req.body.pid,
+         gcat_name: req.body.gcat_name,
+         gcat_slug: req.body.gcat_slug,
+         gcat_code: req.body.gcat_code,
+         gcat_icon: req.body.gcat_icon,
+         gcat_desc: req.body.gcat_desc,
+         gcat_image: req.body.gcat_image,
+         gcat_pos: req.body.gcat_pos,
+         gcat_status: req.body.gcat_status,
+         foot_status: req.body.foot_status,
+         gcat_dt: new Date(req.body.gcat_dt)
       }
 
-      const created = await collegeService.create(obj)
-      const founded = await collegeService.findByPk(created.colg_id)
+      const created = await govcategoryService.create(obj)
+      const founded = await govcategoryService.findByPk(created.gcat_id)
 
       if (created && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
@@ -40,13 +46,13 @@ CollegeController.create = async (req, res) => {
    }
 }
 
-CollegeController.get = async (req, res) => {
+GovCategoryController.get = async (req, res) => {
 
    try {
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { gcat_id } = req.query
+      if (!gcat_id) throw createError.BadRequest()
 
-      const { rows, count } = await collegeService.findAllAndCount(colg_id)
+      const { rows, count } = await govcategoryService.findAllAndCount(gcat_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -57,13 +63,13 @@ CollegeController.get = async (req, res) => {
    }
 }
 
-CollegeController.getByPk = async (req, res) => {
+GovCategoryController.getByPk = async (req, res) => {
 
    try {
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { gcat_id } = req.params
+      if (!gcat_id) throw createError.BadRequest()
 
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await govcategoryService.findByPk(gcat_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -75,12 +81,12 @@ CollegeController.getByPk = async (req, res) => {
    }
 }
 
-CollegeController.getCollegeDetails = async (req, res) => {
+GovCategoryController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { colg_id, colg_name, colg_status } = req.body
-      if (!colg_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { gcat_id, colg_name, colg_status } = req.body
+      if (!gcat_id || !colg_name || !colg_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -92,7 +98,7 @@ CollegeController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await collegeService.getCollegeDetails(colg_id, colg_status, _start, _limit)
+      const totalAccess = await govcategoryService.getCollegeDetails(gcat_id, colg_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -105,23 +111,31 @@ CollegeController.getCollegeDetails = async (req, res) => {
    }
 }
 
-CollegeController.update = async (req, res) => {
+GovCategoryController.update = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { gcat_id } = req.params
+      if (!gcat_id) throw createError.BadRequest()
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         pid: req.body.pid,
+         gcat_name: req.body.gcat_name,
+         gcat_slug: req.body.gcat_slug,
+         gcat_code: req.body.gcat_code,
+         gcat_icon: req.body.gcat_icon,
+         gcat_desc: req.body.gcat_desc,
+         gcat_image: req.body.gcat_image,
+         gcat_pos: req.body.gcat_pos,
+         gcat_status: req.body.gcat_status,
+         foot_status: req.body.foot_status,
+         gcat_dt: new Date(req.body.gcat_dt)
       }
 
-      const update = await collegeService.update(colg_id, obj)
-      const founded = await collegeService.findByPk(colg_id)
+      const founded = await govcategoryService.findByPk(gcat_id)
+      if (!founded) throw createError.NotFound()
+
+      const update = await govcategoryService.update(founded.gcat_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -152,14 +166,14 @@ CollegeController.update = async (req, res) => {
    }
 }
 
-CollegeController.delete = async (req, res) => {
+GovCategoryController.delete = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { gcat_id } = req.query
+      if (!gcat_id) throw createError.BadRequest()
 
-      const deleted = await collegeService.delete(colg_id)
+      const deleted = await govcategoryService.delete(gcat_id)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)
@@ -181,4 +195,4 @@ CollegeController.delete = async (req, res) => {
    }
 }
 
-module.exports = CollegeController
+module.exports = GovCategoryController

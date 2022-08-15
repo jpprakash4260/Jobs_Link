@@ -26,10 +26,6 @@ module.exports = (sequelize, DataTypes) => {
          exp_date: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
       { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__experince" }
