@@ -5,7 +5,6 @@ const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const { Op } = require('sequelize')
-const moment = require('moment')
 const createError = require('http-errors')
 
 class CampusController { }
@@ -30,11 +29,10 @@ CampusController.create = async (req, res) => {
       }
 
       const created = await campusService.create(obj)
-      const founded = await campusService.findByPk(created.camp_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)

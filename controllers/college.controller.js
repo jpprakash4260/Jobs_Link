@@ -22,11 +22,10 @@ CollegeController.create = async (req, res) => {
       }
 
       const created = await collegeService.create(obj)
-      const founded = await collegeService.findByPk(created.colg_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -119,10 +118,8 @@ CollegeController.update = async (req, res) => {
          colg_date: new Date(req.body.colg_date)
       }
 
-      const founded = await conferenceService.findByPk(conf_id)
-      if (!founded) throw createError.NotFound()
-
-      const update = await conferenceService.update(founded.conf_id, obj)
+      const founded = await collegeService.findByPk(colg_id)
+      const update = await collegeService.update(founded.colg_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)

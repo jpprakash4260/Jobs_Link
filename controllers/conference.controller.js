@@ -28,11 +28,10 @@ ConferenceController.create = async (req, res) => {
       }
 
       const created = await conferenceService.create(obj);
-      const founded = await conferenceService.findByPk(created.conf_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -131,7 +130,7 @@ ConferenceController.update = async (req, res) => {
          added_date: new Date(req.body.added_date)
       }
       const founded = await conferenceService.findByPk(conf_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await conferenceService.update(founded.conf_id, obj)
 

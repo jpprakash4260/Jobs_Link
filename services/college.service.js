@@ -55,19 +55,19 @@ CollegeService.findByPk = async (colg_id) => {
 CollegeService.update = async (colg_id, obj) => {
    try {
 
-      const ext_conf = await db.Conference.findOne({ where: obj })
+      const ext_college = await db.College.findOne({ where: obj })
 
-      if (ext_conf && conf_id == ext_conf.conf_id) {
+      if (ext_college && colg_id == ext_college.colg_id) {
 
          return 'Exited Values'
       }
-      else if (!ext_conf || (ext_conf && conf_id != ext_conf.conf_id)) {
+      else if (!ext_college || (ext_college && colg_id != ext_college.colg_id)) {
 
-         const updateById = await db.Conference.update(obj, { where: { conf_id: conf_id } })
+         const updateById = await db.College.update(obj, { where: { colg_id: colg_id } })
          return updateById[0]
 
       }
-      else return 'Conference Not Found'
+      else return 'College Not Found'
    }
    catch (err) {
       return err

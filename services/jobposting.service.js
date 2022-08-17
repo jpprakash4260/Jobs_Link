@@ -23,16 +23,16 @@ JobPostingService.findAllAndCount = async (job_id) => {
    }
 }
 
-JobPostingService.getCollegeDetails = async (job_id, colg_status, _start, _limit) => {
+JobPostingService.getCollegeDetails = async (job_id, job_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__jobposting as a 
                 where 
-                a.job_id=${job_id} and a.colg_status='${colg_status}'
+                a.job_id=${job_id} and a.job_status='${job_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )

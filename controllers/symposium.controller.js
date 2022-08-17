@@ -25,11 +25,10 @@ SymposiumController.create = async (req, res) => {
       }
 
       const created = await symposiumService.create(obj)
-      const founded = await symposiumService.findByPk(created.symp_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -81,8 +80,8 @@ SymposiumController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { symp_id, colg_name, colg_status } = req.body
-      if (!symp_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { symp_id, symp_title, symp_status } = req.body
+      if (!symp_id || !symp_title || !symp_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -94,7 +93,7 @@ SymposiumController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await symposiumService.getCollegeDetails(symp_id, colg_status, _start, _limit)
+      const totalAccess = await symposiumService.getCollegeDetails(symp_id, symp_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -126,7 +125,7 @@ SymposiumController.update = async (req, res) => {
       }
 
       const founded = await symposiumService.findByPk(symp_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await symposiumService.update(founded.symp_id, obj)
 

@@ -7,9 +7,9 @@ const { seeker_validate } = require("../../validators")
 
 seekerRoutes.post("/", seeker_validate.create, seekerController.create)
 seekerRoutes.get("/", seekerController.get)
-seekerRoutes.get("/:colg_id", seekerController.getByPk)
+seekerRoutes.get("/:emp_id", seekerController.getByPk)
 seekerRoutes.post("/Details", seekerController.getCollegeDetails)
-seekerRoutes.put("/:colg_id", seeker_validate.update, seekerController.update)
+seekerRoutes.put("/:emp_id", seeker_validate.update, seekerController.update)
 seekerRoutes.delete("/delete", seekerController.delete)
 
 

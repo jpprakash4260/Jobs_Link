@@ -23,16 +23,16 @@ IntScheduleService.findAllAndCount = async (intsch_id) => {
    }
 }
 
-IntScheduleService.getCollegeDetails = async (intsch_id, emp_id, _start, _limit) => {
+IntScheduleService.getCollegeDetails = async (intsch_id, mail_content, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__intschedule as a 
                 where 
-                a.intsch_id=${intsch_id} and a.emp_id='${emp_id}'
+                a.intsch_id=${intsch_id} and a.mail_content='${mail_content}'
             limit ${_limit} 
             OFFSET ${_start}`
       )

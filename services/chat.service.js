@@ -1,7 +1,5 @@
 'use strict'
 const db = require("../Models")
-const moment = require('moment')
-
 
 class ChatService { }
 
@@ -57,15 +55,17 @@ ChatService.findByPk = async (chat_id) => {
 ChatService.update = async (chat_id, obj) => {
    try {
 
-      const ext_access = await db.Chat.findOne({ where: obj })
-      const founded = await db.Chat.findByPk(chat_id)
+      const ext_chat = await db.Chat.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_chat && chat_id == ext_chat.chat_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
+      else if (!ext_chat || (ext_chat && chat_id != ext_chat.chat_id)) {
+
          const updateById = await db.Chat.update(obj, { where: { chat_id: chat_id } })
          return updateById[0]
+
       }
       else return 'Chat Not Found'
    }

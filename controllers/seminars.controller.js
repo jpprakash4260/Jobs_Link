@@ -24,11 +24,10 @@ SeminarsController.create = async (req, res) => {
       }
 
       const created = await seminarsService.create(obj)
-      const founded = await seminarsService.findByPk(created.semi_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -124,7 +123,7 @@ SeminarsController.update = async (req, res) => {
       }
 
       const founded = await seminarsService.findByPk(semi_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await seminarsService.update(founded.semi_id, obj)
 

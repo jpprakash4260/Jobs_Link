@@ -22,11 +22,10 @@ EmpKeySkillsController.create = async (req, res) => {
       }
 
       const created = await empkskillsService.create(obj)
-      const founded = await empkskillsService.findByPk(created.empkskil_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -78,8 +77,8 @@ EmpKeySkillsController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { empkskil_id, colg_name, colg_status } = req.body
-      if (!empkskil_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { empkskil_id, keysk_name, empkskil_status } = req.body
+      if (!empkskil_id || !keysk_name || !empkskil_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -91,7 +90,7 @@ EmpKeySkillsController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await empkskillsService.getCollegeDetails(empkskil_id, colg_status, _start, _limit)
+      const totalAccess = await empkskillsService.getCollegeDetails(empkskil_id, empkskil_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -120,7 +119,7 @@ EmpKeySkillsController.update = async (req, res) => {
       }
 
       const founded = await empkskillsService.findByPk(empkskil_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await empkskillsService.update(founded.empkskil_id, obj)
 

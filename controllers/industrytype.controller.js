@@ -22,11 +22,10 @@ IndustryTypeController.create = async (req, res) => {
       }
 
       const created = await industrytypeService.create(obj)
-      const founded = await industrytypeService.findByPk(created.indust_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -78,8 +77,8 @@ IndustryTypeController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { indust_id, colg_name, colg_status } = req.body
-      if (!indust_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { indust_id, indust_name, indust_status } = req.body
+      if (!indust_id || !indust_name || !indust_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -91,7 +90,7 @@ IndustryTypeController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await industrytypeService.getCollegeDetails(indust_id, colg_status, _start, _limit)
+      const totalAccess = await industrytypeService.getCollegeDetails(indust_id, indust_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -120,7 +119,7 @@ IndustryTypeController.update = async (req, res) => {
       }
 
       const founded = await industrytypeService.findByPk(indust_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await industrytypeService.update(founded.indust_id, obj)
 

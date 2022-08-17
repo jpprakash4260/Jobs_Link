@@ -6,26 +6,26 @@ class CourseValidation {
 
    create(req, res, next) {
       const course_schema = Joi.object({
-         quali_id: Joi.number().min(1).required(),
+         qual_id: Joi.number().min(1).required(),
          course_name: Joi.string().min(1).required(),
          course_slug: Joi.string().min(1).required(),
          course_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
          course_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, course_schema)
+      return BaseValidation.CourseBody(req, res, next, course_schema)
    }
 
    update(req, res, next) {
       const course_schema = Joi.object({
-         quali_id: Joi.number().min(1),
+         qual_id: Joi.number().min(1),
          course_name: Joi.string().min(1),
          course_slug: Joi.string().min(1),
          course_status: Joi.string().valid('Y', 'N', 'D').max(1),
          course_date: Joi.date().raw()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, course_schema)
+      return BaseValidation.CourseBody(req, res, next, course_schema)
    }
 }
 

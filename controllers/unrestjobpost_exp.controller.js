@@ -63,7 +63,7 @@ UnrestJobPost_ExpController.create = async (req, res) => {
       const created = await unrestjobpost_expService.create(obj)
       const founded = await unrestjobpost_expService.findByPk(created.unrst_jid)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
          return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
       }
@@ -117,8 +117,8 @@ UnrestJobPost_ExpController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { unrst_jid, colg_name, colg_status } = req.body
-      if (!unrst_jid || !colg_name || !colg_status) throw createError.BadRequest()
+      const { unrst_jid, unrest_jcode, posted_status } = req.body
+      if (!unrst_jid || !unrest_jcode || !posted_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -130,7 +130,7 @@ UnrestJobPost_ExpController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await unrestjobpost_expService.getCollegeDetails(unrst_jid, colg_status, _start, _limit)
+      const totalAccess = await unrestjobpost_expService.getCollegeDetails(unrst_jid, posted_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -198,7 +198,7 @@ UnrestJobPost_ExpController.update = async (req, res) => {
       }
 
       const founded = await unrestjobpost_expService.findByPk(unrst_jid)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await unrestjobpost_expService.update(founded.unrst_jid, obj)
 

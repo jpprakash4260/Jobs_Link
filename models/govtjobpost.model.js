@@ -1,8 +1,8 @@
 //-------------------------- GovermentJobPost Model Start ------------------------------//
 
 module.exports = (sequelize, DataTypes) => {
-   const GovermentJobPost = sequelize.define(
-      "GovermentJobPost",
+   const GovernmentJobPost = sequelize.define(
+      "GovernmentJobPost",
       {
          unrst_jid: {
             type: DataTypes.INTEGER,
@@ -165,7 +165,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       { updatedAt: 'posted_lastupdate', createdAt: false, tableName: "tbl__govtjobpost" }
    );
-   return GovermentJobPost;
+   return GovernmentJobPost;
 };
 
 //-------------------------- GovermentJobPost Model End ------------------------------//

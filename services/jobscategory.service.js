@@ -30,7 +30,7 @@ JobsCategoryService.getCollegeDetails = async (jcat_id, jcat_status, _start, _li
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__jobscategory as a 
                 where 
                 a.jcat_id=${jcat_id} and a.jcat_status='${jcat_status}'
             limit ${_limit} 

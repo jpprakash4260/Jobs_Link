@@ -4,7 +4,6 @@ const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const { Op } = require("sequelize")
-const moment = require('moment')
 const createError = require("http-errors")
 
 class AccessController { }
@@ -15,7 +14,7 @@ AccessController.create = async (req, res) => {
 
       let obj = {
          access_key: req.body.access_key,
-         user_id: Number(req.body.user_id),
+         user_id: req.body.user_id,
          user_type: req.body.user_type,
          access_status: "Y",
          access_expdt: new Date(req.body.access_expdt),
@@ -24,11 +23,10 @@ AccessController.create = async (req, res) => {
       }
 
       const created = await accessService.create(obj)
-      const founded = await accessService.findByPk(created.access_id)
 
       if (founded && (typeof created) == 'object') {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -36,7 +34,6 @@ AccessController.create = async (req, res) => {
       }
    }
    catch (error) {
-      console.log(error);
       logger.error(loggerMessage.errInCreate)
       return response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, error, responseMessage.errInCreate)
    }
@@ -66,8 +63,6 @@ AccessController.getByPk = async (req, res) => {
       if (!access_id) throw createError.BadRequest()
 
       const founded = await accessService.findByPk(access_id)
-
-      console.log("founded : ", founded)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -148,7 +143,6 @@ AccessController.update = async (req, res) => {
       }
    }
    catch (error) {
-      console.log(error);
       logger.error(loggerMessage.errorInUpdating)
       return response.success(req, res, statusCodes.HTTP_CREATED, error, responseMessage.errorInUpdating)
    }
@@ -162,7 +156,6 @@ AccessController.delete = async (req, res) => {
       if (!access_id) throw createError.BadRequest()
 
       const deleted = await accessService.delete(access_id)
-      console.log('deleted : ', deleted);
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)
@@ -178,7 +171,6 @@ AccessController.delete = async (req, res) => {
       }
    }
    catch (error) {
-      console.log(error);
       logger.error(loggerMessage.errorInDeleting)
       return response.success(req, res, statusCodes.HTTP_CREATED, error, responseMessage.errorInDeleting)
    }

@@ -22,11 +22,10 @@ QualificationController.create = async (req, res) => {
       }
 
       const created = await qualificationService.create(obj)
-      const founded = await qualificationService.findByPk(created.qual_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -120,7 +119,7 @@ QualificationController.update = async (req, res) => {
       }
 
       const founded = await qualificationService.findByPk(qual_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await qualificationService.update(founded.qual_id, obj)
 

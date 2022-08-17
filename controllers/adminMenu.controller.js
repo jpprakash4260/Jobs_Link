@@ -1,16 +1,15 @@
 'use strict'
 
-const { adminMenuService, adminService } = require('../services')
+const { adminMenuService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const { Op } = require('sequelize')
-const moment = require('moment')
 const createError = require('http-errors')
 
-class AdminController { }
+class AdminMenuController { }
 
-AdminController.create = async (req, res) => {
+AdminMenuController.create = async (req, res) => {
 
    try {
 
@@ -26,11 +25,10 @@ AdminController.create = async (req, res) => {
       }
 
       const created = await adminMenuService.create(obj)
-      const founded = await adminService.findByPk(created.menu_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -43,7 +41,7 @@ AdminController.create = async (req, res) => {
    }
 }
 
-AdminController.get = async (req, res) => {
+AdminMenuController.get = async (req, res) => {
 
    try {
       let { menu_id } = req.query
@@ -60,7 +58,7 @@ AdminController.get = async (req, res) => {
    }
 }
 
-AdminController.getByPk = async (req, res) => {
+AdminMenuController.getByPk = async (req, res) => {
 
    try {
       let { menu_id } = req.params
@@ -78,7 +76,7 @@ AdminController.getByPk = async (req, res) => {
    }
 }
 
-AdminController.getAdminDetails = async (req, res) => {
+AdminMenuController.getAdminDetails = async (req, res) => {
 
    try {
 
@@ -109,7 +107,7 @@ AdminController.getAdminDetails = async (req, res) => {
    }
 }
 
-AdminController.update = async (req, res) => {
+AdminMenuController.update = async (req, res) => {
 
    try {
 
@@ -158,7 +156,7 @@ AdminController.update = async (req, res) => {
    }
 }
 
-AdminController.delete = async (req, res) => {
+AdminMenuController.delete = async (req, res) => {
 
    try {
 
@@ -187,4 +185,4 @@ AdminController.delete = async (req, res) => {
    }
 }
 
-module.exports = AdminController
+module.exports = AdminMenuController

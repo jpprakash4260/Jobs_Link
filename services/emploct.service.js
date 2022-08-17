@@ -30,7 +30,7 @@ EmplocatService.getCollegeDetails = async (emplocat_id, locat_status, _start, _l
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__emploct as a 
                 where 
                 a.emplocat_id=${emplocat_id} and a.locat_status='${locat_status}'
             limit ${_limit} 

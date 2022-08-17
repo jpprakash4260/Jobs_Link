@@ -2,11 +2,12 @@
 const db = require("../Models");
 const crudService = require("./crud.service")
 
-class CollegeService { }
+class EmployerService { };
 
-CollegeService.create = async (obj) => {
+
+EmployerService.create = async (obj) => {
    try {
-      const saved = await db.College.create(obj)
+      const saved = await db.Employer.create(obj)
       return saved
    }
    catch (error) {
@@ -14,9 +15,9 @@ CollegeService.create = async (obj) => {
    }
 }
 
-CollegeService.findAllAndCount = async (colg_id) => {
+EmployerService.findAllAndCount = async (recut_id) => {
    try {
-      const findAllandCount = await db.College.findAndCountAll({ where: { colg_id: colg_id } })
+      const findAllandCount = await db.Employer.findAndCountAll({ where: { recut_id: recut_id } })
       return findAllandCount
    }
    catch (err) {
@@ -24,16 +25,16 @@ CollegeService.findAllAndCount = async (colg_id) => {
    }
 }
 
-CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) => {
+EmployerService.getCollegeDetails = async (recut_id, recut_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__recutcomp as a 
                 where 
-                a.colg_id=${colg_id} and a.colg_status='${colg_status}'
+                a.recut_id=${recut_id} and a.recut_status='${recut_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )
@@ -43,9 +44,9 @@ CollegeService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) 
    }
 }
 
-CollegeService.findByPk = async (colg_id) => {
+EmployerService.findByPk = async (recut_id) => {
    try {
-      const findByPk = await db.College.findByPk(colg_id)
+      const findByPk = await db.Employer.findByPk(recut_id)
       return findByPk
    }
    catch (err) {
@@ -53,33 +54,33 @@ CollegeService.findByPk = async (colg_id) => {
    }
 }
 
-CollegeService.update = async (colg_id, obj) => {
+EmployerService.update = async (recut_id, obj) => {
    try {
 
-      const ext_conf = await db.Conference.findOne({ where: obj })
+      const ext_Employer = await db.Employer.findOne({ where: obj })
 
-      if (ext_conf && conf_id == ext_conf.conf_id) {
+      if (ext_Employer && recut_id == ext_Employer.recut_id) {
 
          return 'Exited Values'
       }
-      else if (!ext_conf || (ext_conf && conf_id != ext_conf.conf_id)) {
+      else if (!ext_Employer || (ext_Employer && recut_id != ext_Employer.recut_id)) {
 
-         const updateById = await db.Conference.update(obj, { where: { conf_id: conf_id } })
+         const updateById = await db.Employer.update(obj, { where: { recut_id: recut_id } })
          return updateById[0]
 
       }
-      else return 'Conference Not Found'
+      else return 'Employer Not Found'
    }
    catch (err) {
       return err
    }
 }
 
-CollegeService.delete = async (colg_id) => {
+EmployerService.delete = async (recut_id) => {
    try {
-      const founded = await db.College.findByPk(colg_id)
+      const founded = await db.Employer.findByPk(recut_id)
       if (founded) {
-         const deleted = await db.College.destroy({ where: { colg_id: colg_id } })
+         const deleted = await db.Employer.destroy({ where: { recut_id: recut_id } })
          return deleted
       }
       else {
@@ -92,7 +93,6 @@ CollegeService.delete = async (colg_id) => {
 
 
 
-class EmployerService { };
 EmployerService.postJob = async (req, modelName) => {
    try {
       const obj = req.body

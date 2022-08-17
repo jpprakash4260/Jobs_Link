@@ -5,6 +5,7 @@ const initializeRoutes = (app) => {
     app.use('/api/v1/campus', require('./v1/campus.routes'));
     app.use('/api/v1/chat', require('./v1/chat.routes'));
     app.use('/api/v1/city', require('./v1/city.routes'));
+    app.use('/api/v1/college', require('./v1/college.routes'));
     app.use('/api/v1/conference', require('./v1/conference.routes'));
     app.use('/api/v1/contactresume', require('./v1/contactresume.routes'));
     app.use('/api/v1/country', require('./v1/country.routes'));

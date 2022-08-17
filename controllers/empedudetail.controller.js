@@ -15,18 +15,22 @@ EmpEduDetailController.create = async (req, res) => {
 
       let obj = {
          emp_id: req.body.emp_id,
-         colg_slug: req.body.colg_slug,
+         high_qualif: req.body.high_qualif,
+         high_course: req.body.high_course,
+         high_special: req.body.high_special,
+         colg_name: req.body.colg_name,
+         colg_name: req.body.colg_name,
+         high_pass_yr: req.body.high_pass_yr,
          colg_pos: req.body.colg_pos,
-         high_college: req.body.high_college,
-         colg_date: new Date(req.body.colg_date)
+         colg_name: req.body.colg_name,
+         edudate: new Date(req.body.edudate)
       }
 
       const created = await empedudetailService.create(obj)
-      const founded = await empedudetailService.findByPk(created.edu_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -78,8 +82,8 @@ EmpEduDetailController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { edu_id, emp_id, high_college } = req.body
-      if (!edu_id || !emp_id || !high_college) throw createError.BadRequest()
+      const { edu_id, emp_id, colg_name } = req.body
+      if (!edu_id || !emp_id || !colg_name) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -91,7 +95,7 @@ EmpEduDetailController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await empedudetailService.getCollegeDetails(edu_id, high_college, _start, _limit)
+      const totalAccess = await empedudetailService.getCollegeDetails(edu_id, colg_name, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -113,16 +117,18 @@ EmpEduDetailController.update = async (req, res) => {
 
       let obj = {
          emp_id: req.body.emp_id,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         high_college: req.body.high_college,
-         colg_date: new Date(req.body.colg_date)
+         high_qualif: req.body.high_qualif,
+         high_course: req.body.high_course,
+         high_special: req.body.high_special,
+         colg_name: req.body.colg_name,
+         colg_name: req.body.colg_name,
+         high_pass_yr: req.body.high_pass_yr,
+         colg_name: req.body.colg_name,
+         edudate: new Date(req.body.edudate)
       }
 
-      const founded = await conferenceService.findByPk(edu_id)
-      if (!founded) throw createError.NotFound()
-
-      const update = await conferenceService.update(founded.edu_id, obj)
+      const founded = await empedudetailService.findByPk(edu_id)
+      const update = await empedudetailService.update(founded.edu_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)

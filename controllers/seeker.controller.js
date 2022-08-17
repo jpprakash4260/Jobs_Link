@@ -4,6 +4,7 @@ const { seekerService, crudService } = require('../services');
 const { response } = require('../middleware');
 const { statusCodes, responseMessage, loggerMessage } = require('../constants');
 const { logger } = require('../helper');
+const createError = require('http-errors')
 
 class SeekerController { };
 
@@ -12,19 +13,21 @@ SeekerController.create = async (req, res) => {
    try {
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         emp_name: req.body.emp_name,
+         emp_email: req.body.emp_email,
+         emp_pass: req.body.emp_pass,
+         emp_mobile: req.body.emp_mobile,
+         emp_country: req.body.emp_country,
+         emp_state: req.body.emp_state,
+         emp_city: req.body.emp_city,
+         agreechk: req.body.agreechk
       }
 
       const created = await seekerService.create(obj)
-      const founded = await seekerService.findByPk(created.colg_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -40,10 +43,10 @@ SeekerController.create = async (req, res) => {
 SeekerController.get = async (req, res) => {
 
    try {
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { emp_id } = req.query
+      if (!emp_id) throw createError.BadRequest()
 
-      const { rows, count } = await seekerService.findAllAndCount(colg_id)
+      const { rows, count } = await seekerService.findAllAndCount(emp_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -57,10 +60,10 @@ SeekerController.get = async (req, res) => {
 SeekerController.getByPk = async (req, res) => {
 
    try {
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { emp_id } = req.params
+      if (!emp_id) throw createError.BadRequest()
 
-      const founded = await seekerService.findByPk(colg_id)
+      const founded = await seekerService.findByPk(emp_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -76,8 +79,8 @@ SeekerController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { colg_id, colg_name, colg_status } = req.body
-      if (!colg_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { emp_id, emp_name, emp_status } = req.body
+      if (!emp_id || !emp_name || !emp_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -89,7 +92,7 @@ SeekerController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await seekerService.getCollegeDetails(colg_id, colg_status, _start, _limit)
+      const totalAccess = await seekerService.getCollegeDetails(emp_id, emp_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -106,19 +109,21 @@ SeekerController.update = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { emp_id } = req.params
+      if (!emp_id) throw createError.BadRequest()
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         emp_name: req.body.emp_name,
+         emp_email: req.body.emp_email,
+         emp_pass: req.body.emp_pass,
+         emp_mobile: req.body.emp_mobile,
+         emp_country: req.body.emp_country,
+         emp_state: req.body.emp_state,
+         emp_city: req.body.emp_city
       }
 
-      const update = await seekerService.update(colg_id, obj)
-      const founded = await seekerService.findByPk(colg_id)
+      const update = await seekerService.update(emp_id, obj)
+      const founded = await seekerService.findByPk(emp_id)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -153,10 +158,10 @@ SeekerController.delete = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { emp_id } = req.query
+      if (!emp_id) throw createError.BadRequest()
 
-      const deleted = await seekerService.delete(colg_id)
+      const deleted = await seekerService.delete(emp_id)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)

@@ -22,11 +22,12 @@ GovtLevelController.create = async (req, res) => {
       }
 
       const created = await govtlevelService.create(obj)
-      const founded = await govtlevelService.findByPk(created.lev_id)
+      console.log(created);
 
-      if (created && (typeof created) == 'object') {
+
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -113,14 +114,13 @@ GovtLevelController.update = async (req, res) => {
 
       let obj = {
          lev_name: req.body.lev_name,
-         lev_slug: req.body.lev_slug,
          lev_pos: req.body.lev_pos,
          lev_status: req.body.lev_status,
          lev_date: new Date(req.body.lev_date)
       }
 
       const founded = await govtlevelService.findByPk(lev_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await govtlevelService.update(founded.lev_id, obj)
 

@@ -42,10 +42,6 @@ module.exports = (sequelize, DataTypes) => {
          ipaddress: {
             type: DataTypes.STRING,
             allowNull: false
-         },
-         del_date: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
       { updatedAt: 'del_date', createdAt: false, tableName: "tbl__jobhistory" }

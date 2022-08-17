@@ -30,10 +30,6 @@ module.exports = (sequelize, DataTypes) => {
          mjcat_date: {
             type: DataTypes.DATE,
             allowNull: false
-         },
-         lastupdate: {
-            type: DataTypes.DATE,
-            allowNull: false
          }
       },
       { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__empjobcat" }

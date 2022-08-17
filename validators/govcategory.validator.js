@@ -2,10 +2,10 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class GovCategoryValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
+      const govcategory_schema = Joi.object({
          pid: Joi.number().min(1).required(),
          gcat_name: Joi.number().min(1).required(),
          gcat_slug: Joi.string().min(1).required(),
@@ -19,11 +19,11 @@ class CollegeValidation {
          gcat_dt: Joi.date().raw().required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.GovCategory(req, res, next, govcategory_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
+      const govcategory_schema = Joi.object({
          pid: Joi.number().min(1),
          gcat_name: Joi.number().min(1),
          gcat_slug: Joi.string().min(1),
@@ -37,8 +37,8 @@ class CollegeValidation {
          gcat_dt: Joi.date().raw()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.GovCategory(req, res, next, govcategory_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new GovCategoryValidation();

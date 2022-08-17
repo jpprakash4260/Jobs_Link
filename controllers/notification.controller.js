@@ -28,11 +28,10 @@ NotificationController.create = async (req, res) => {
       }
 
       const created = await notificationService.create(obj)
-      const founded = await notificationService.findByPk(created.notify_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -132,7 +131,7 @@ NotificationController.update = async (req, res) => {
       }
 
       const founded = await notificationService.findByPk(notify_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await notificationService.update(founded.notify_id, obj)
 

@@ -31,7 +31,7 @@ GovCategoryController.create = async (req, res) => {
       const created = await govcategoryService.create(obj)
       const founded = await govcategoryService.findByPk(created.gcat_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
          return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
       }
@@ -85,8 +85,8 @@ GovCategoryController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { gcat_id, colg_name, colg_status } = req.body
-      if (!gcat_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { gcat_id, gcat_name, gcat_status } = req.body
+      if (!gcat_id || !gcat_name || !gcat_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -98,7 +98,7 @@ GovCategoryController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await govcategoryService.getCollegeDetails(gcat_id, colg_status, _start, _limit)
+      const totalAccess = await govcategoryService.getCollegeDetails(gcat_id, gcat_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -133,7 +133,7 @@ GovCategoryController.update = async (req, res) => {
       }
 
       const founded = await govcategoryService.findByPk(gcat_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await govcategoryService.update(founded.gcat_id, obj)
 

@@ -23,16 +23,16 @@ EnquiryService.findAllAndCount = async (enq_id) => {
    }
 }
 
-EnquiryService.getCollegeDetails = async (enq_id, colg_status, _start, _limit) => {
+EnquiryService.getCollegeDetails = async (enq_id, enq_loc, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__enquiry as a 
                 where 
-                a.enq_id=${enq_id} and a.colg_status='${colg_status}'
+                a.enq_id=${enq_id} and a.enq_loc='${enq_loc}'
             limit ${_limit} 
             OFFSET ${_start}`
       )

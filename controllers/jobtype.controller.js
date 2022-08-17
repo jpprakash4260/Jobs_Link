@@ -21,11 +21,10 @@ JobTypeController.create = async (req, res) => {
       }
 
       const created = await jobtypeService.create(obj)
-      const founded = await jobtypeService.findByPk(created.jtype_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -77,8 +76,8 @@ JobTypeController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { jtype_id, colg_name, jtype_status } = req.body
-      if (!jtype_id || !colg_name || !jtype_status) throw createError.BadRequest()
+      const { jtype_id, jtype_name, jtype_status } = req.body
+      if (!jtype_id || !jtype_name || !jtype_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -118,7 +117,7 @@ JobTypeController.update = async (req, res) => {
       }
 
       const founded = await jobtypeService.findByPk(jtype_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await jobtypeService.update(founded.jtype_id, obj)
 

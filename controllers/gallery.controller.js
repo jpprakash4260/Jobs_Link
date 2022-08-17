@@ -26,7 +26,7 @@ GalleryController.create = async (req, res) => {
       const created = await galleryService.create(obj)
       const founded = await galleryService.findByPk(created.gal_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
          return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
       }
@@ -80,8 +80,8 @@ GalleryController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { gal_id, colg_name, colg_status } = req.body
-      if (!gal_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { gal_id, gal_title, gal_status } = req.body
+      if (!gal_id || !gal_title || !gal_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -93,7 +93,7 @@ GalleryController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await galleryService.getCollegeDetails(gal_id, colg_status, _start, _limit)
+      const totalAccess = await galleryService.getCollegeDetails(gal_id, gal_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -124,7 +124,7 @@ GalleryController.update = async (req, res) => {
       }
 
       const founded = await galleryService.findByPk(gal_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await galleryService.update(founded.gal_id, obj)
 

@@ -26,7 +26,7 @@ SalaryController.create = async (req, res) => {
       const created = await salaryService.create(obj)
       const founded = await salaryService.findByPk(created.sal_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
          return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
       }
@@ -124,7 +124,7 @@ SalaryController.update = async (req, res) => {
       }
 
       const founded = await salaryService.findByPk(sal_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await salaryService.update(founded.sal_id, obj)
 

@@ -16,7 +16,7 @@ class NotificationValidation {
          noti_to: Joi.number().min(1).required(),
          noti_date: Joi.date().raw().required(),
          noti_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         noti_status: Joi.string().valid('Y', 'N').max(1).required()
+         noti_read: Joi.string().valid('Y', 'N').max(1).required(),
       })
 
       return BaseValidation.NotificationBody(req, res, next, notification_schema)
@@ -34,7 +34,8 @@ class NotificationValidation {
          noti_to: Joi.number().min(1),
          noti_date: Joi.date().raw(),
          noti_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         noti_status: Joi.string().valid('Y', 'N').max(1)
+         noti_status: Joi.string().valid('Y', 'N').max(1),
+         noti_read: Joi.string().valid('Y', 'N').max(1).required()
       })
 
       return BaseValidation.NotificationBody(req, res, next, notification_schema)

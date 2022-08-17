@@ -5,26 +5,40 @@ const BaseValidation = require("../middleware/baseValidation");
 class EmployeeValidation {
    create(req, res, next) {
       const college_schema = Joi.object({
-         colg_name: Joi.string().min(1).required(),
-         colg_slug: Joi.string().min(1).required(),
-         colg_pos: Joi.number().min(1).required(),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-         colg_date: Joi.date()
+         comp_name: Joi.string().min(5).required(),
+         mail_id: Joi.string().email().required(),
+         mobile_no: Joi.string().min(10).required(),
+         cont_person: Joi.string().min(3).required(),
+         indust_id: Joi.number().min(1).required(),
+         comp_pass: Joi.string().min(4).required(),
+         pincode: Joi.number().min(4).required(),
+         country_id: Joi.number().min(1).required(),
+         state_id: Joi.number().min(1).required(),
+         unrest_jloct: Joi.number().min(1).required(),
+         recut_address: Joi.string().min(5).required(),
+         recut_desc: Joi.string().min(10).required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.validateEmployeeRegisterBody(req, res, next, college_schema)
    }
 
    update(req, res, next) {
       const college_schema = Joi.object({
-         colg_name: Joi.string().min(1),
-         colg_slug: Joi.string().min(1),
-         colg_pos: Joi.number().min(1),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         colg_date: Joi.date()
+         comp_name: Joi.string().min(5),
+         mail_id: Joi.string().email(),
+         mobile_no: Joi.string().min(10),
+         cont_person: Joi.string().min(3),
+         indust_id: Joi.number().min(1),
+         comp_pass: Joi.string().min(4),
+         pincode: Joi.number().min(4),
+         country_id: Joi.number().min(1),
+         state_id: Joi.number().min(1),
+         unrest_jloct: Joi.number().min(1),
+         recut_address: Joi.string().min(5),
+         recut_desc: Joi.string().min(10)
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.validateEmployeeRegisterBody(req, res, next, college_schema)
    }
 
    employerRegister(req, res, next) {

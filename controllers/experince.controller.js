@@ -23,7 +23,7 @@ ExperinceController.create = async (req, res) => {
       const created = await experinceService.create(obj)
       const founded = await experinceService.findByPk(created.exp_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
          return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
       }
@@ -77,8 +77,8 @@ ExperinceController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { exp_id, colg_name, exp_status } = req.body
-      if (!exp_id || !colg_name || !exp_status) throw createError.BadRequest()
+      const { exp_id, exp_name, exp_status } = req.body
+      if (!exp_id || !exp_name || !exp_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -118,7 +118,7 @@ ExperinceController.update = async (req, res) => {
       }
 
       const founded = await experinceService.findByPk(exp_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await experinceService.update(founded.exp_id, obj)
 

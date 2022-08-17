@@ -18,6 +18,7 @@ EmpOfficialDetailsController.create = async (req, res) => {
          emp_desig: req.body.emp_desig,
          emp_org: req.body.emp_org,
          exp_yr: req.body.exp_yr,
+         cur_comp: req.body.cur_comp,
          exp_month: req.body.exp_month,
          exp_yr_to: req.body.exp_yr_to,
          exp_month_to: req.body.exp_month_to,
@@ -30,11 +31,10 @@ EmpOfficialDetailsController.create = async (req, res) => {
       }
 
       const created = await empoffdetailsService.create(obj)
-      const founded = await empoffdetailsService.findByPk(created.wrk_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -86,8 +86,8 @@ EmpOfficialDetailsController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { wrk_id, colg_name, colg_status } = req.body
-      if (!wrk_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { wrk_id, emp_id, wrk_status } = req.body
+      if (!wrk_id || !emp_id || !wrk_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -99,7 +99,7 @@ EmpOfficialDetailsController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await empoffdetailsService.getCollegeDetails(wrk_id, colg_status, _start, _limit)
+      const totalAccess = await empoffdetailsService.getCollegeDetails(wrk_id, wrk_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -136,7 +136,7 @@ EmpOfficialDetailsController.update = async (req, res) => {
       }
 
       const founded = await empoffdetailsService.findByPk(wrk_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await empoffdetailsService.update(founded.wrk_id, obj)
 

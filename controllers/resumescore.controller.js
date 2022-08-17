@@ -26,11 +26,10 @@ ResumeScoreController.create = async (req, res) => {
       }
 
       const created = await resumescoreService.create(obj)
-      const founded = await resumescoreService.findByPk(created.resume_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -82,8 +81,8 @@ ResumeScoreController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { resume_id, colg_name, colg_status } = req.body
-      if (!resume_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { resume_id, resume_title, resume_fdesc } = req.body
+      if (!resume_id || !resume_title || !resume_fdesc) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -95,7 +94,7 @@ ResumeScoreController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await resumescoreService.getCollegeDetails(resume_id, colg_status, _start, _limit)
+      const totalAccess = await resumescoreService.getCollegeDetails(resume_id, resume_fdesc, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -128,7 +127,7 @@ ResumeScoreController.update = async (req, res) => {
       }
 
       const founded = await resumescoreService.findByPk(resume_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await resumescoreService.update(founded.resume_id, obj)
 

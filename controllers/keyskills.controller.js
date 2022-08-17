@@ -15,18 +15,18 @@ KeySkillsController.create = async (req, res) => {
 
       let obj = {
          keysk_name: req.body.keysk_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
+         keysk_slug: req.body.keysk_slug,
+         keysk_pos: req.body.keysk_pos,
+         keysk_code: req.body.keysk_code,
          keysk_status: req.body.keysk_status,
-         colg_date: new Date(req.body.colg_date)
+         keysk_dt: new Date(req.body.keysk_dt)
       }
 
       const created = await keyskillsService.create(obj)
-      const founded = await keyskillsService.findByPk(created.keysk_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -113,14 +113,15 @@ KeySkillsController.update = async (req, res) => {
 
       let obj = {
          keysk_name: req.body.keysk_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
+         keysk_slug: req.body.keysk_slug,
+         keysk_pos: req.body.keysk_pos,
+         keysk_code: req.body.keysk_code,
          keysk_status: req.body.keysk_status,
-         colg_date: new Date(req.body.colg_date)
+         keysk_dt: new Date(req.body.keysk_dt)
       }
 
       const founded = await keyskillsService.findByPk(keysk_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await keyskillsService.update(founded.keysk_id, obj)
 

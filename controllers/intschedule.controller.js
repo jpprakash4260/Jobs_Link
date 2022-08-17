@@ -24,11 +24,10 @@ IntscheduleController.create = async (req, res) => {
       }
 
       const created = await intscheduleService.create(obj)
-      const founded = await intscheduleService.findByPk(created.intsch_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -80,8 +79,8 @@ IntscheduleController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { intsch_id, colg_name, colg_status } = req.body
-      if (!intsch_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { intsch_id, mail_title, mail_content } = req.body
+      if (!intsch_id || !mail_title || !mail_content) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -93,7 +92,7 @@ IntscheduleController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await intscheduleService.getCollegeDetails(intsch_id, colg_status, _start, _limit)
+      const totalAccess = await intscheduleService.getCollegeDetails(intsch_id, mail_content, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -124,7 +123,7 @@ IntscheduleController.update = async (req, res) => {
       }
 
       const founded = await intscheduleService.findByPk(intsch_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await intscheduleService.update(founded.intsch_id, obj)
 

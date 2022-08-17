@@ -57,17 +57,19 @@ AdminService.findByPk = async (admin_id) => {
 
 AdminService.update = async (admin_id, obj) => {
    try {
-      const ext_access = await db.Admin.findOne({ where: obj })
-      const founded = await db.Admin.findByPk(admin_id)
+      const ext_college = await db.College.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_college && colg_id == ext_college.colg_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
-         const updateById = await db.Admin.update(obj, { where: { admin_id: admin_id } })
+      else if (!ext_college || (ext_college && colg_id != ext_college.colg_id)) {
+
+         const updateById = await db.College.update(obj, { where: { colg_id: colg_id } })
          return updateById[0]
+
       }
-      else return 'Admin Not Found'
+      else return 'College Not Found'
    }
    catch (err) {
       return err

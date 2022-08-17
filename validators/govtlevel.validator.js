@@ -8,7 +8,7 @@ class GovtLevelValidation {
       const govtlevel_schema = Joi.object({
          lev_name: Joi.string().min(1).required(),
          lev_pos: Joi.number().min(1).required(),
-         lev_status: Joi.string().min().required(),
+         lev_status: Joi.string().min(1).required(),
          lev_date: Joi.date().raw().required()
       })
 
@@ -19,7 +19,7 @@ class GovtLevelValidation {
       const govtlevel_schema = Joi.object({
          lev_name: Joi.string().min(1),
          lev_pos: Joi.number().min(1),
-         lev_status: Joi.string().min(),
+         lev_status: Joi.string().min(1),
          lev_date: Joi.date().raw()
       })
 

@@ -6,7 +6,6 @@ const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const { Op } = require('sequelize')
 const createError = require('http-errors')
-const { entrepreneurship_validate } = require('../validators')
 
 class EntrepreneurshipController { }
 
@@ -15,17 +14,26 @@ EntrepreneurshipController.create = async (req, res) => {
    try {
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
+         ent_title: req.body.ent_title,
+         cond_by: req.body.cond_by,
+         start_date: req.body.start_date,
+         ending_date: req.body.ending_date,
+         ent_venue: req.body.ent_venue,
+         ent_eligible: req.body.ent_eligible,
+         ent_email: req.body.ent_email,
+         ent_phone: req.body.ent_phone,
+         ent_desc: req.body.ent_desc,
+         notif_link: req.body.notif_link,
+         reg_date: req.body.reg_date,
+         close_date: req.body.close_date,
          ent_status: req.body.ent_status,
-         colg_date: new Date(req.body.colg_date)
+         added_date: new Date(req.body.added_date)
       }
 
       const created = await entrepreneurshipService.create(obj)
       const founded = await entrepreneurshipService.findByPk(created.ent_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
          return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
       }
@@ -79,8 +87,8 @@ EntrepreneurshipController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { ent_id, colg_name, ent_status } = req.body
-      if (!ent_id || !colg_name || !ent_status) throw createError.BadRequest()
+      const { ent_id, ent_title, ent_status } = req.body
+      if (!ent_id || !ent_title || !ent_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -113,15 +121,24 @@ EntrepreneurshipController.update = async (req, res) => {
       if (!ent_id) throw createError.BadRequest()
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
+         ent_title: req.body.ent_title,
+         cond_by: req.body.cond_by,
+         start_date: req.body.start_date,
+         ending_date: req.body.ending_date,
+         ent_venue: req.body.ent_venue,
+         ent_eligible: req.body.ent_eligible,
+         ent_email: req.body.ent_email,
+         ent_phone: req.body.ent_phone,
+         ent_desc: req.body.ent_desc,
+         notif_link: req.body.notif_link,
+         reg_date: req.body.reg_date,
+         close_date: req.body.close_date,
          ent_status: req.body.ent_status,
-         colg_date: new Date(req.body.colg_date)
+         added_date: new Date(req.body.added_date)
       }
 
       const founded = await entrepreneurshipService.findByPk(ent_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await entrepreneurshipService.update(founded.ent_id, obj)
 

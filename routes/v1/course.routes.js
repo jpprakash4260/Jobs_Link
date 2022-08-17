@@ -6,7 +6,7 @@ CourseRoute.post("/", course_validate.create, courseController.create)
 CourseRoute.get("/", courseController.get)
 CourseRoute.get("/:course_id", courseController.getByPk)
 CourseRoute.post("/Details", courseController.getCollegeDetails)
-CourseRoute.put("/:colg_id", course_validate.update, courseController.update)
+CourseRoute.put("/:course_id", course_validate.update, courseController.update)
 CourseRoute.delete("/delete", courseController.delete)
 
 module.exports = CourseRoute

@@ -23,11 +23,10 @@ SpecilizationController.create = async (req, res) => {
       }
 
       const created = await specializationService.create(obj)
-      const founded = await specializationService.findByPk(created.speclz_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -79,8 +78,8 @@ SpecilizationController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { speclz_id, colg_name, colg_status } = req.body
-      if (!speclz_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { speclz_id, speclz_name, speclz_status } = req.body
+      if (!speclz_id || !speclz_name || !speclz_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -92,7 +91,7 @@ SpecilizationController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await specializationService.getCollegeDetails(speclz_id, colg_status, _start, _limit)
+      const totalAccess = await specializationService.getCollegeDetails(speclz_id, speclz_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -122,7 +121,7 @@ SpecilizationController.update = async (req, res) => {
       }
 
       const founded = await specializationService.findByPk(speclz_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await specializationService.update(founded.speclz_id, obj)
 

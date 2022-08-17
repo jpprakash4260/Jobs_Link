@@ -1,7 +1,5 @@
 'use strict'
 const db = require("../Models")
-const moment = require('moment')
-
 
 class CityService { }
 
@@ -57,15 +55,17 @@ CityService.findByPk = async (city_id) => {
 CityService.update = async (city_id, obj) => {
    try {
 
-      const ext_access = await db.City.findOne({ where: obj })
-      const founded = await db.City.findByPk(city_id)
+      const ext_city = await db.city_id.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_city && city_id == ext_city.city_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
-         const updateById = await db.City.update(obj, { where: { city_id: city_id } })
+      else if (!ext_city || (ext_city && city_id != ext_city.city_id)) {
+
+         const updateById = await db.city_id.update(obj, { where: { city_id: city_id } })
          return updateById[0]
+
       }
       else return 'City Not Found'
    }

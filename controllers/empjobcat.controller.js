@@ -22,11 +22,10 @@ EmpjobcatController.create = async (req, res) => {
       }
 
       const created = await empjobcatService.create(obj)
-      const founded = await empjobcatService.findByPk(created.mjcat_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -78,8 +77,8 @@ EmpjobcatController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { mjcat_id, colg_name, colg_status } = req.body
-      if (!mjcat_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { mjcat_id, subcat_id, mjcat_status } = req.body
+      if (!mjcat_id || !subcat_id || !mjcat_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -91,7 +90,7 @@ EmpjobcatController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await empjobcatService.getCollegeDetails(mjcat_id, colg_status, _start, _limit)
+      const totalAccess = await empjobcatService.getCollegeDetails(mjcat_id, mjcat_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -120,8 +119,6 @@ EmpjobcatController.update = async (req, res) => {
       }
 
       const founded = await empjobcatService.findByPk(mjcat_id)
-      if (!founded) throw createError.NotFound()
-
       const update = await empjobcatService.update(founded.mjcat_id, obj)
 
       if (update == 1) {

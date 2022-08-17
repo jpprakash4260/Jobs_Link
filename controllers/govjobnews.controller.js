@@ -22,11 +22,10 @@ GovjobnewsController.create = async (req, res) => {
       }
 
       const created = await govjobnewsService.create(obj)
-      const founded = await govjobnewsService.findByPk(created.gnews_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -78,8 +77,8 @@ GovjobnewsController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { gnews_id, colg_name, colg_status } = req.body
-      if (!gnews_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { gnews_id, gnews_name, gnews_status } = req.body
+      if (!gnews_id || !gnews_name || !gnews_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -91,7 +90,7 @@ GovjobnewsController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await govjobnewsService.getCollegeDetails(gnews_id, colg_status, _start, _limit)
+      const totalAccess = await govjobnewsService.getCollegeDetails(gnews_id, gnews_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -120,7 +119,7 @@ GovjobnewsController.update = async (req, res) => {
       }
 
       const founded = await govjobnewsService.findByPk(gnews_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await govjobnewsService.update(founded.gnews_id, obj)
 

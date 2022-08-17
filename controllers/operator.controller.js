@@ -26,7 +26,7 @@ OperatorController.create = async (req, res) => {
       const created = await operatorService.create(obj)
       const founded = await operatorService.findByPk(created.op_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
          return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
       }
@@ -80,8 +80,8 @@ OperatorController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { op_id, op_type, colg_status } = req.body
-      if (!op_id || !op_type || !colg_status) throw createError.BadRequest()
+      const { op_id, op_type, op_status } = req.body
+      if (!op_id || !op_type || !op_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -93,7 +93,7 @@ OperatorController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await operatorService.getCollegeDetails(op_id, colg_status, _start, _limit)
+      const totalAccess = await operatorService.getCollegeDetails(op_id, op_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -124,7 +124,7 @@ OperatorController.update = async (req, res) => {
       }
 
       const founded = await operatorService.findByPk(op_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await operatorService.update(founded.op_id, obj)
 

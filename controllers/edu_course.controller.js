@@ -14,19 +14,21 @@ Edu_CourseController.create = async (req, res) => {
    try {
 
       let obj = {
+         pid: req.body.pid,
+         ecatid_sub: req.body.ecatid_sub,
+         ecat_type: req.body.ecat_type,
          ecat_name: req.body.ecat_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
+         ecat_slug: req.body.ecat_slug,
+         ecat_pos: req.body.ecat_pos,
          ecat_status: req.body.ecat_status,
-         colg_date: new Date(req.body.colg_date)
+         ecat_dt: new Date(req.body.ecat_dt)
       }
 
       const created = await edu_courseService.create(obj)
-      const founded = await edu_courseService.findByPk(created.ecat_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -112,16 +114,17 @@ Edu_CourseController.update = async (req, res) => {
       if (!ecat_id) throw createError.BadRequest()
 
       let obj = {
+         pid: req.body.pid,
+         ecatid_sub: req.body.ecatid_sub,
+         ecat_type: req.body.ecat_type,
          ecat_name: req.body.ecat_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
+         ecat_slug: req.body.ecat_slug,
+         ecat_pos: req.body.ecat_pos,
          ecat_status: req.body.ecat_status,
-         colg_date: new Date(req.body.colg_date)
+         ecat_dt: new Date(req.body.ecat_dt)
       }
 
       const founded = await edu_courseService.findByPk(ecat_id)
-      if (!founded) throw createError.NotFound()
-
       const update = await edu_courseService.update(founded.ecat_id, obj)
 
       if (update == 1) {

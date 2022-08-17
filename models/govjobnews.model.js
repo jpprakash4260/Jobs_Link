@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
             values: ["Y", "N", "D"]
          },
          gnews_date: {
-            type: DataTypes.STRING,
+            type: DataTypes.DATE,
             allowNull: false
          }
       },

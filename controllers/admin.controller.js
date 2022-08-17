@@ -28,11 +28,10 @@ AdminController.create = async (req, res) => {
       }
 
       const created = await adminService.create(obj)
-      const founded = await adminService.findByPk(created.admin_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -74,7 +73,6 @@ AdminController.getByPk = async (req, res) => {
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
    }
    catch (error) {
-      console.log(error)
       logger.error(loggerMessage.errorInFindAllMatch)
       return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, error, responseMessage.errorInFindAllMatch)
    }
@@ -104,7 +102,6 @@ AdminController.getAdminDetails = async (req, res) => {
       return response.success(req, res, statusCodes.HTTP_OK, totalAccess, responseMessage.getDataSuccess)
    }
    catch (error) {
-      console.log(error);
       logger.error(loggerMessage.errorInFindAllMatch)
       return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, error, responseMessage.errorInFindAllMatch)
    }
@@ -156,7 +153,6 @@ AdminController.update = async (req, res) => {
       }
    }
    catch (error) {
-      console.log(error)
       logger.error(loggerMessage.errorInUpdating)
       return response.success(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, error, responseMessage.errorInUpdating)
    }
@@ -185,7 +181,6 @@ AdminController.delete = async (req, res) => {
       }
    }
    catch (error) {
-      console.log(error)
       logger.error(loggerMessage.errorInDeleting)
       return response.success(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, error, responseMessage.errorInDeleting)
    }

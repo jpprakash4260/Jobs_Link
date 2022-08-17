@@ -23,16 +23,16 @@ CollegeService.findAllAndCount = async (gnews_id) => {
    }
 }
 
-CollegeService.getCollegeDetails = async (gnews_id, colg_status, _start, _limit) => {
+CollegeService.getCollegeDetails = async (gnews_id, gnews_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__govjobnews as a 
                 where 
-                a.gnews_id=${gnews_id} and a.colg_status='${colg_status}'
+                a.gnews_id=${gnews_id} and a.gnews_status='${gnews_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )

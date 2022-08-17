@@ -24,7 +24,7 @@ GcmRegisterController.create = async (req, res) => {
       const created = await gcmregisterService.create(obj)
       const founded = await gcmregisterService.findByPk(created.id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
          return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
       }
@@ -78,8 +78,8 @@ GcmRegisterController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { id, colg_name, colg_status } = req.body
-      if (!id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { id, gcm_id, gcm_status } = req.body
+      if (!id || !gcm_id || !gcm_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -91,7 +91,7 @@ GcmRegisterController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await gcmregisterService.getCollegeDetails(id, colg_status, _start, _limit)
+      const totalAccess = await gcmregisterService.getCollegeDetails(id, gcm_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -120,8 +120,6 @@ GcmRegisterController.update = async (req, res) => {
       }
 
       const founded = await gcmregisterService.findByPk(id)
-      if (!founded) throw createError.NotFound()
-
       const update = await gcmregisterService.update(founded.id, obj)
 
       if (update == 1) {

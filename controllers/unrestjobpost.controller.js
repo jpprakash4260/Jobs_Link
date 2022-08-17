@@ -61,11 +61,10 @@ UnrestJobPostController.create = async (req, res) => {
       }
 
       const created = await unrestjobpostService.create(obj)
-      const founded = await unrestjobpostService.findByPk(created.unrst_jid)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -117,8 +116,8 @@ UnrestJobPostController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { unrst_jid, colg_name, colg_status } = req.body
-      if (!unrst_jid || !colg_name || !colg_status) throw createError.BadRequest()
+      const { unrst_jid, unrest_jname, posted_status } = req.body
+      if (!unrst_jid || !unrest_jname || !posted_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -130,7 +129,7 @@ UnrestJobPostController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await unrestjobpostService.getCollegeDetails(unrst_jid, colg_status, _start, _limit)
+      const totalAccess = await unrestjobpostService.getCollegeDetails(unrst_jid, posted_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -156,7 +155,6 @@ UnrestJobPostController.update = async (req, res) => {
          unrest_jcat: req.body.unrest_jcat,
          unrest_jsubcat: req.body.unrest_jsubcat,
          unrest_jcode: req.body.unrest_jcode,
-         verify: req.body.verify,
          unrest_jdesc: req.body.unrest_jdesc,
          unrest_jquali: req.body.unrest_jquali,
          unrest_jrequ: req.body.unrest_jrequ,
@@ -197,10 +195,9 @@ UnrestJobPostController.update = async (req, res) => {
          posted_date: new Date(req.body.posted_date)
       }
 
-      const founded = await unrestjobpostService.findByPk(conf_id)
-      if (!founded) throw createError.NotFound()
-
-      const update = await unrestjobpostService.update(founded.conf_id, obj)
+      const founded = await unrestjobpostService.findByPk(unrst_jid)
+      const update = await unrestjobpostService.update(founded.unrst_jid, obj)
+      console.log(update);
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -219,7 +216,6 @@ UnrestJobPostController.update = async (req, res) => {
          return response.success(req, res, statusCodes.HTTP_NOT_IMPLEMENTED, update, responseMessage.notUpdated)
       }
       else {
-         console.log(update);
          logger.error(loggerMessage.updateDataFailure)
          return response.success(req, res, statusCodes.HTTP_EXPECTATION_FAILED, update, responseMessage.updateDataFailure)
       }

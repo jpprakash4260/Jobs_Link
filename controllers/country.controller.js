@@ -14,19 +14,23 @@ CountryController.create = async (req, res) => {
    try {
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         id: req.body.id,
+         iso: req.body.iso,
+         country_name: req.body.country_name,
+         country_slug: req.body.country_slug,
+         nicename: req.body.nicename,
+         iso3: req.body.iso3,
+         numcode: req.body.numcode,
+         phonecode: req.body.phonecode,
+         country_status: req.body.country_status,
+         foot_status: req.body.foot_status
       }
 
       const created = await countryService.create(obj)
-      const founded = await countryService.findByPk(created.country_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -112,17 +116,20 @@ CountryController.update = async (req, res) => {
       if (!country_id) throw createError.BadRequest()
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         id: req.body.id,
+         iso: req.body.iso,
+         country_name: req.body.country_name,
+         country_slug: req.body.country_slug,
+         nicename: req.body.nicename,
+         iso3: req.body.iso3,
+         numcode: req.body.numcode,
+         phonecode: req.body.phonecode,
+         country_status: req.body.country_status,
+         foot_status: req.body.foot_status
       }
 
-      const founded = await collegeService.findByPk(conf_id)
-      if (!founded) throw createError.NotFound()
-
-      const update = await collegeService.update(founded.conf_id, obj)
+      const founded = await countryService.findByPk(country_id)
+      const update = await countryService.update(founded.country_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)

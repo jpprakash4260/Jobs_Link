@@ -21,11 +21,10 @@ StateController.create = async (req, res) => {
       }
 
       const created = await stateService.create(obj)
-      const founded = await stateService.findByPk(created.state_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -77,8 +76,8 @@ StateController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { state_id, colg_name, colg_status } = req.body
-      if (!state_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { state_id, state_name, state_status } = req.body
+      if (!state_id || !state_name || !state_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -90,7 +89,7 @@ StateController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await stateService.getCollegeDetails(state_id, colg_status, _start, _limit)
+      const totalAccess = await stateService.getCollegeDetails(state_id, state_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -118,7 +117,7 @@ StateController.update = async (req, res) => {
       }
 
       const founded = await stateService.findByPk(state_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await stateService.update(founded.state_id, obj)
 

@@ -56,15 +56,17 @@ AdminMenuService.findByPk = async (menu_id) => {
 AdminMenuService.update = async (menu_id, obj) => {
    try {
 
-      const ext_access = await db.AdminMenu.findOne({ where: obj })
-      const founded = await db.AdminMenu.findByPk(menu_id)
+      const ext_AdminMenu = await db.AdminMenu.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_AdminMenu && menu_id == ext_AdminMenu.menu_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
+      else if (!ext_AdminMenu || (ext_AdminMenu && menu_id != ext_AdminMenu.menu_id)) {
+
          const updateById = await db.AdminMenu.update(obj, { where: { menu_id: menu_id } })
          return updateById[0]
+
       }
       else return 'AdminMenu Not Found'
    }

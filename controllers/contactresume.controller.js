@@ -5,16 +5,16 @@ const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
 const { logger } = require('../helper')
 const { Op } = require('sequelize')
-const moment = require('moment')
 const createError = require('http-errors')
 
-class CollegeController { }
+class ContactResumeController { }
 
-CollegeController.create = async (req, res) => {
+ContactResumeController.create = async (req, res) => {
 
    try {
 
       let obj = {
+         emp_id: req.body.emp_id,
          cont_id: req.body.cont_id,
          comp_id: req.body.comp_id,
          cont_type: req.body.cont_type,
@@ -23,11 +23,10 @@ CollegeController.create = async (req, res) => {
       }
 
       const created = await contactresumeService.create(obj)
-      const founded = await contactresumeService.findByPk(created.cont_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, { founded, created }, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -40,7 +39,7 @@ CollegeController.create = async (req, res) => {
    }
 }
 
-CollegeController.get = async (req, res) => {
+ContactResumeController.get = async (req, res) => {
 
    try {
       let { cont_id } = req.query
@@ -57,7 +56,7 @@ CollegeController.get = async (req, res) => {
    }
 }
 
-CollegeController.getByPk = async (req, res) => {
+ContactResumeController.getByPk = async (req, res) => {
 
    try {
       let { cont_id } = req.params
@@ -75,7 +74,7 @@ CollegeController.getByPk = async (req, res) => {
    }
 }
 
-CollegeController.getCollegeDetails = async (req, res) => {
+ContactResumeController.getCollegeDetails = async (req, res) => {
 
    try {
 
@@ -105,7 +104,7 @@ CollegeController.getCollegeDetails = async (req, res) => {
    }
 }
 
-CollegeController.update = async (req, res) => {
+ContactResumeController.update = async (req, res) => {
 
    try {
 
@@ -121,7 +120,7 @@ CollegeController.update = async (req, res) => {
       }
 
       const founded = await contactresumeService.findByPk(cont_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await contactresumeService.update(founded.cont_id, obj)
 
@@ -154,7 +153,7 @@ CollegeController.update = async (req, res) => {
    }
 }
 
-CollegeController.delete = async (req, res) => {
+ContactResumeController.delete = async (req, res) => {
 
    try {
 
@@ -183,4 +182,4 @@ CollegeController.delete = async (req, res) => {
    }
 }
 
-module.exports = CollegeController
+module.exports = ContactResumeController

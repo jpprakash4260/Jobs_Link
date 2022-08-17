@@ -18,11 +18,11 @@ class QualificatioValidation {
 
    update(req, res, next) {
       const qualification_schema = Joi.object({
-         colg_name: Joi.string().min(1),
-         colg_slug: Joi.string().min(1),
-         colg_pos: Joi.number().min(1),
-         colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-         colg_date: Joi.date()
+         qual_name: Joi.string().min(1),
+         qual_slug: Joi.string().min(1),
+         qual_status: Joi.string().valid('Y', 'N', 'D').max(1),
+         qual_pos: Joi.number().min(1),
+         qual_dt: Joi.date().raw()
       })
 
       return BaseValidation.QualificationBody(req, res, next, qualification_schema)

@@ -23,16 +23,16 @@ IndustryTypeService.findAllAndCount = async (indust_id) => {
    }
 }
 
-IndustryTypeService.getCollegeDetails = async (indust_id, colg_status, _start, _limit) => {
+IndustryTypeService.getCollegeDetails = async (indust_id, indust_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__industrytype as a 
                 where 
-                a.indust_id=${indust_id} and a.colg_status='${colg_status}'
+                a.indust_id=${indust_id} and a.indust_status='${indust_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )

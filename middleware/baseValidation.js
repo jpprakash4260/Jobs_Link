@@ -156,9 +156,9 @@ class BaseValidation {
 		}
 	}
 
-	CityBody(req, res, next, edu_course_schema) {
+	CityBody(req, res, next, city_schema) {
 		try {
-			const { error } = edu_course_schema.validate(req.body)
+			const { error } = city_schema.validate(req.body)
 			if (error) return response.joierrors(req, res, error)
 			next()
 		} catch (error) {
@@ -187,6 +187,16 @@ class BaseValidation {
 	}
 
 	ContactResumeBody(req, res, next, contactresume_schema) {
+		try {
+			const { error } = contactresume_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	CourseBody(req, res, next, contactresume_schema) {
 		try {
 			const { error } = contactresume_schema.validate(req.body)
 			if (error) return response.joierrors(req, res, error)
@@ -227,7 +237,7 @@ class BaseValidation {
 		}
 	}
 
-	Empjobcat(req, res, next, empjobcat_schema) {
+	EmpJobcatBody(req, res, next, empjobcat_schema) {
 		try {
 			const { error } = empjobcat_schema.validate(req.body)
 			if (error) return response.joierrors(req, res, error)
@@ -237,9 +247,9 @@ class BaseValidation {
 		}
 	}
 
-	CollegeBody(req, res, next, edu_course_schema) {
+	EmpkskillsBody(req, res, next, empkskills_schema) {
 		try {
-			const { error } = edu_course_schema.validate(req.body)
+			const { error } = empkskills_schema.validate(req.body)
 			if (error) return response.joierrors(req, res, error)
 			next()
 		} catch (error) {
@@ -247,9 +257,9 @@ class BaseValidation {
 		}
 	}
 
-	CollegeBody(req, res, next, edu_course_schema) {
+	EmplocationBody(req, res, next, emplocat_schema) {
 		try {
-			const { error } = edu_course_schema.validate(req.body)
+			const { error } = emplocat_schema.validate(req.body)
 			if (error) return response.joierrors(req, res, error)
 			next()
 		} catch (error) {
@@ -257,9 +267,9 @@ class BaseValidation {
 		}
 	}
 
-	CollegeBody(req, res, next, edu_course_schema) {
+	EmpoffdetailsBody(req, res, next, e_schema) {
 		try {
-			const { error } = edu_course_schema.validate(req.body)
+			const { error } = e_schema.validate(req.body)
 			if (error) return response.joierrors(req, res, error)
 			next()
 		} catch (error) {
@@ -267,9 +277,9 @@ class BaseValidation {
 		}
 	}
 
-	CollegeBody(req, res, next, edu_course_schema) {
+	EnquiryBody(req, res, next, e_schema) {
 		try {
-			const { error } = edu_course_schema.validate(req.body)
+			const { error } = e_schema.validate(req.body)
 			if (error) return response.joierrors(req, res, error)
 			next()
 		} catch (error) {
@@ -277,9 +287,9 @@ class BaseValidation {
 		}
 	}
 
-	CollegeBody(req, res, next, edu_course_schema) {
+	EntrepreneurshipBody(req, res, next, e_schema) {
 		try {
-			const { error } = edu_course_schema.validate(req.body)
+			const { error } = e_schema.validate(req.body)
 			if (error) return response.joierrors(req, res, error)
 			next()
 		} catch (error) {
@@ -287,6 +297,291 @@ class BaseValidation {
 		}
 	}
 
+	ExperinceBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	GalleryBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	GcmRegisterBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	} GovCategory(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	} GovjobnewsBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	GovtJobPostBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	GovjobpostBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	GovtLevelBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	IndustryTyeBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	IntScheduleBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	JobAppliedBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	JobHistoryBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	JobPostingBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	JobsCategoryBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	JobTypeBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	KeySkillsBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	NotificationBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	OperatorBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	QualificationBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	ResumeScoreBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	SalaryBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	SeminarsBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	SpecializationBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	StateBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	SpecializationBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	SymposiumBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	UnrestJobPost_ExpBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	UnrestJobPostBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
+
+	WorkShopsBody(req, res, next, e_schema) {
+		try {
+			const { error } = e_schema.validate(req.body)
+			if (error) return response.joierrors(req, res, error)
+			next()
+		} catch (error) {
+			response.errors(req, res, statusCodes.HTTP_BAD_REQUEST, responseMessage.badRequest)
+		}
+	}
 
 }
 

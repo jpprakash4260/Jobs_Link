@@ -23,7 +23,7 @@ GcmRegisterService.findAllAndCount = async (id) => {
    }
 }
 
-GcmRegisterService.getCollegeDetails = async (id, colg_status, _start, _limit) => {
+GcmRegisterService.getCollegeDetails = async (id, gcm_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
@@ -32,7 +32,7 @@ GcmRegisterService.getCollegeDetails = async (id, colg_status, _start, _limit) =
                 from 
                     tbl__gcmregister as a 
                 where 
-                a.id=${id} and a.colg_status='${colg_status}'
+                a.id=${id} and a.gcm_status='${gcm_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )

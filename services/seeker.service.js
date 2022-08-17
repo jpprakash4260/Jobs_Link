@@ -5,7 +5,7 @@ class SeekerService { }
 
 SeekerService.create = async (obj) => {
    try {
-      const saved = await db.College.create(obj)
+      const saved = await db.Employee.create(obj)
       return saved
    }
    catch (error) {
@@ -13,9 +13,9 @@ SeekerService.create = async (obj) => {
    }
 }
 
-SeekerService.findAllAndCount = async (colg_id) => {
+SeekerService.findAllAndCount = async (emp_id) => {
    try {
-      const findAllandCount = await db.College.findAndCountAll({ where: { colg_id: colg_id } })
+      const findAllandCount = await db.Employee.findAndCountAll({ where: { emp_id: emp_id } })
       return findAllandCount
    }
    catch (err) {
@@ -23,16 +23,16 @@ SeekerService.findAllAndCount = async (colg_id) => {
    }
 }
 
-SeekerService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) => {
+SeekerService.getCollegeDetails = async (emp_id, emp_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__employee as a 
                 where 
-                a.colg_id=${colg_id} and a.colg_status='${colg_status}'
+                a.emp_id=${emp_id} and a.emp_status='${emp_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )
@@ -42,9 +42,9 @@ SeekerService.getCollegeDetails = async (colg_id, colg_status, _start, _limit) =
    }
 }
 
-SeekerService.findByPk = async (colg_id) => {
+SeekerService.findByPk = async (emp_id) => {
    try {
-      const findByPk = await db.College.findByPk(colg_id)
+      const findByPk = await db.Employee.findByPk(emp_id)
       return findByPk
    }
    catch (err) {
@@ -52,33 +52,33 @@ SeekerService.findByPk = async (colg_id) => {
    }
 }
 
-SeekerService.update = async (colg_id, obj) => {
+SeekerService.update = async (emp_id, obj) => {
    try {
 
-      const ext_conf = await db.Conference.findOne({ where: obj })
+      const ext_seeker = await db.Employee.findOne({ where: obj })
 
-      if (ext_conf && conf_id == ext_conf.conf_id) {
+      if (ext_seeker && emp_id == ext_seeker.emp_id) {
 
          return 'Exited Values'
       }
-      else if (!ext_conf || (ext_conf && conf_id != ext_conf.conf_id)) {
+      else if (!ext_seeker || (ext_seeker && emp_id != ext_seeker.emp_id)) {
 
-         const updateById = await db.Conference.update(obj, { where: { conf_id: conf_id } })
+         const updateById = await db.Employee.update(obj, { where: { emp_id: emp_id } })
          return updateById[0]
 
       }
-      else return 'Conference Not Found'
+      else return 'Employee Not Found'
    }
    catch (err) {
       return err
    }
 }
 
-SeekerService.delete = async (colg_id) => {
+SeekerService.delete = async (emp_id) => {
    try {
-      const founded = await db.College.findByPk(colg_id)
+      const founded = await db.Employee.findByPk(emp_id)
       if (founded) {
-         const deleted = await db.College.destroy({ where: { colg_id: colg_id } })
+         const deleted = await db.Employee.destroy({ where: { emp_id: emp_id } })
          return deleted
       }
       else {

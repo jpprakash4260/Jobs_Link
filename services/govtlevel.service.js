@@ -5,7 +5,7 @@ class GovtLevelService { }
 
 GovtLevelService.create = async (obj) => {
    try {
-      const saved = await db.GovernmenttLevel.create(obj)
+      const saved = await db.GovernmentLevel.create(obj)
       return saved
    }
    catch (error) {
@@ -15,7 +15,7 @@ GovtLevelService.create = async (obj) => {
 
 GovtLevelService.findAllAndCount = async (lev_id) => {
    try {
-      const findAllandCount = await db.GovernmenttLevel.findAndCountAll({ where: { lev_id: lev_id } })
+      const findAllandCount = await db.GovernmentLevel.findAndCountAll({ where: { lev_id: lev_id } })
       return findAllandCount
    }
    catch (err) {
@@ -30,7 +30,7 @@ GovtLevelService.getCollegeDetails = async (lev_id, lev_status, _start, _limit) 
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__govtlevel as a 
                 where 
                 a.lev_id=${lev_id} and a.lev_status='${lev_status}'
             limit ${_limit} 
@@ -44,7 +44,7 @@ GovtLevelService.getCollegeDetails = async (lev_id, lev_status, _start, _limit) 
 
 GovtLevelService.findByPk = async (lev_id) => {
    try {
-      const findByPk = await db.GovernmenttLevel.findByPk(lev_id)
+      const findByPk = await db.GovernmentLevel.findByPk(lev_id)
       return findByPk
    }
    catch (err) {
@@ -55,7 +55,7 @@ GovtLevelService.findByPk = async (lev_id) => {
 GovtLevelService.update = async (lev_id, obj) => {
    try {
 
-      const ext_govtLevel = await db.GovernmenttLevel.findOne({ where: obj })
+      const ext_govtLevel = await db.GovernmentLevel.findOne({ where: obj })
 
       if (ext_govtLevel && lev_id == ext_govtLevel.lev_id) {
 
@@ -63,11 +63,11 @@ GovtLevelService.update = async (lev_id, obj) => {
       }
       else if (!ext_govtLevel || (ext_govtLevel && lev_id != ext_govtLevel.lev_id)) {
 
-         const updateById = await db.GovernmenttLevel.update(obj, { where: { lev_id: lev_id } })
+         const updateById = await db.GovernmentLevel.update(obj, { where: { lev_id: lev_id } })
          return updateById[0]
 
       }
-      else return 'GovernmenttLevel Not Found'
+      else return 'GovernmentLevel Not Found'
    }
    catch (err) {
       return err
@@ -76,9 +76,9 @@ GovtLevelService.update = async (lev_id, obj) => {
 
 GovtLevelService.delete = async (lev_id) => {
    try {
-      const founded = await db.GovernmenttLevel.findByPk(lev_id)
+      const founded = await db.GovernmentLevel.findByPk(lev_id)
       if (founded) {
-         const deleted = await db.GovernmenttLevel.destroy({ where: { lev_id: lev_id } })
+         const deleted = await db.GovernmentLevel.destroy({ where: { lev_id: lev_id } })
          return deleted
       }
       else {

@@ -4,28 +4,27 @@ const BaseValidation = require("../middleware/baseValidation")
 
 class AccessValidation {
    create(req, res, next) {
-      const create_schema = Joi.object({
-         access_key: Joi.string().required(),
+      const access_schema = Joi.object({
+         access_key: Joi.string().min(1).required(),
          user_id: Joi.number().min(1).required(),
-         user_type: Joi.string().max(1).required(),
-         access_status: Joi.string().min(1),
+         user_type: Joi.string().valid('J', 'E').max(1).required(),
+         access_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
          access_expdt: Joi.date().raw().required(),
          access_dt: Joi.date().raw().required(),
       })
-      return BaseValidation.AccessBody(req, res, next, create_schema)
+      return BaseValidation.AccessBody(req, res, next, access_schema)
    }
 
    update(req, res, next) {
-      const update_schema = Joi.object({
-         access_key: Joi.string(),
-         user_id: Joi.string().min(1),
-         user_type: Joi.string().max(1),
-         access_status: Joi.string().min(1),
-         access_expdt: Joi.date().min(4),
-         access_dt: Joi.date().raw(),
-         access_ip: Joi.string().raw(),
+      const access_schema = Joi.object({
+         access_key: Joi.string().min(1),
+         user_id: Joi.number().min(1),
+         user_type: Joi.string().valid('J', 'E').max(1),
+         access_status: Joi.string().valid('Y', 'N', 'D').max(1),
+         access_expdt: Joi.date().raw(),
+         access_dt: Joi.date().raw()
       })
-      return BaseValidation.AccessBody(req, res, next, update_schema)
+      return BaseValidation.AccessBody(req, res, next, access_schema)
    }
 }
 

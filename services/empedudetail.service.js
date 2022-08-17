@@ -1,9 +1,9 @@
 'use strict'
 const db = require("../Models")
 
-class CollegeService { }
+class EmpEducationDetailsService { }
 
-CollegeService.create = async (obj) => {
+EmpEducationDetailsService.create = async (obj) => {
    try {
       const saved = await db.EmployeeEducationDetails.create(obj)
       return saved
@@ -13,7 +13,7 @@ CollegeService.create = async (obj) => {
    }
 }
 
-CollegeService.findAllAndCount = async (edu_id) => {
+EmpEducationDetailsService.findAllAndCount = async (edu_id) => {
    try {
       const findAllandCount = await db.EmployeeEducationDetails.findAndCountAll({ where: { edu_id: edu_id } })
       return findAllandCount
@@ -23,16 +23,16 @@ CollegeService.findAllAndCount = async (edu_id) => {
    }
 }
 
-CollegeService.getCollegeDetails = async (edu_id, colg_status, _start, _limit) => {
+EmpEducationDetailsService.getCollegeDetails = async (edu_id, colg_name, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__empedudetail as a 
                 where 
-                a.edu_id=${edu_id} and a.colg_status='${colg_status}'
+                a.edu_id=${edu_id} and a.colg_name='${colg_name}'
             limit ${_limit} 
             OFFSET ${_start}`
       )
@@ -42,7 +42,7 @@ CollegeService.getCollegeDetails = async (edu_id, colg_status, _start, _limit) =
    }
 }
 
-CollegeService.findByPk = async (edu_id) => {
+EmpEducationDetailsService.findByPk = async (edu_id) => {
    try {
       const findByPk = await db.EmployeeEducationDetails.findByPk(edu_id)
       return findByPk
@@ -52,7 +52,7 @@ CollegeService.findByPk = async (edu_id) => {
    }
 }
 
-CollegeService.update = async (edu_id, obj) => {
+EmpEducationDetailsService.update = async (edu_id, obj) => {
    try {
 
       const ext_eduDetail = await db.EmployeeEducationDetails.findOne({ where: obj })
@@ -74,7 +74,7 @@ CollegeService.update = async (edu_id, obj) => {
    }
 }
 
-CollegeService.delete = async (edu_id) => {
+EmpEducationDetailsService.delete = async (edu_id) => {
    try {
       const founded = await db.EmployeeEducationDetails.findByPk(edu_id)
       if (founded) {
@@ -90,4 +90,4 @@ CollegeService.delete = async (edu_id) => {
 }
 
 
-module.exports = CollegeService
+module.exports = EmpEducationDetailsService

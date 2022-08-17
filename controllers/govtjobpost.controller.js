@@ -7,9 +7,9 @@ const { logger } = require('../helper')
 const { Op } = require('sequelize')
 const createError = require('http-errors')
 
-class CollegeController { }
+class GovJobPostController { }
 
-CollegeController.create = async (req, res) => {
+GovJobPostController.create = async (req, res) => {
 
    try {
 
@@ -57,12 +57,14 @@ CollegeController.create = async (req, res) => {
          posted_date: new Date(req.body.posted_date)
       }
 
+      console.log(obj);
       const created = await govtjobpostService.create(obj)
-      const founded = await govtjobpostService.findByPk(created.unrst_jid)
+      console.log(created);
 
-      if (created && (typeof created) == 'object') {
+
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -75,7 +77,7 @@ CollegeController.create = async (req, res) => {
    }
 }
 
-CollegeController.get = async (req, res) => {
+GovJobPostController.get = async (req, res) => {
 
    try {
       let { unrst_jid } = req.query
@@ -92,7 +94,7 @@ CollegeController.get = async (req, res) => {
    }
 }
 
-CollegeController.getByPk = async (req, res) => {
+GovJobPostController.getByPk = async (req, res) => {
 
    try {
       let { unrst_jid } = req.params
@@ -110,12 +112,12 @@ CollegeController.getByPk = async (req, res) => {
    }
 }
 
-CollegeController.getCollegeDetails = async (req, res) => {
+GovJobPostController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { unrst_jid, colg_name, posted_status } = req.body
-      if (!unrst_jid || !colg_name || !posted_status) throw createError.BadRequest()
+      const { unrst_jid, unrest_jname, posted_status } = req.body
+      if (!unrst_jid || !unrest_jname || !posted_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -140,7 +142,7 @@ CollegeController.getCollegeDetails = async (req, res) => {
    }
 }
 
-CollegeController.update = async (req, res) => {
+GovJobPostController.update = async (req, res) => {
 
    try {
 
@@ -192,7 +194,7 @@ CollegeController.update = async (req, res) => {
       }
 
       const founded = await govtjobpostService.findByPk(unrst_jid)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await govtjobpostService.update(founded.unrst_jid, obj)
 
@@ -225,7 +227,7 @@ CollegeController.update = async (req, res) => {
    }
 }
 
-CollegeController.delete = async (req, res) => {
+GovJobPostController.delete = async (req, res) => {
 
    try {
 
@@ -254,4 +256,4 @@ CollegeController.delete = async (req, res) => {
    }
 }
 
-module.exports = CollegeController
+module.exports = GovJobPostController

@@ -1,3 +1,4 @@
+const { valid } = require('joi');
 const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
@@ -11,7 +12,7 @@ class AdminValidation {
          sitename: Joi.string().min(1).required(),
          set_url: Joi.string().min(1).required(),
          setting_fields: Joi.string().min(1).required(),
-         setting_operator: Joi.string().max(1).required(),
+         setting_operator: Joi.string().valid('Y', 'N').max(1).required(),
          setting_logo: Joi.string().min(1).required(),
          setting_banner: Joi.string().min(1).required(),
          type: Joi.string().min(1).required(),
@@ -28,7 +29,7 @@ class AdminValidation {
          sitename: Joi.string().min(1),
          set_url: Joi.string().min(1),
          setting_fields: Joi.string().min(1),
-         setting_operator: Joi.string().max(1),
+         setting_operator: Joi.string().valid('Y', 'N').max(1),
          setting_logo: Joi.string().min(1),
          setting_banner: Joi.string().min(1),
          type: Joi.string().min(1),

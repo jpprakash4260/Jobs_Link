@@ -30,7 +30,7 @@ GalleryService.getCollegeDetails = async (gal_id, gal_status, _start, _limit) =>
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__gallery as a 
                 where 
                 a.gal_id=${gal_id} and a.gal_status='${gal_status}'
             limit ${_limit} 
@@ -55,7 +55,7 @@ GalleryService.findByPk = async (gal_id) => {
 GalleryService.update = async (gal_id, obj) => {
    try {
 
-      const ext_gallery = await db.Conference.findOne({ where: obj })
+      const ext_gallery = await db.Gallery.findOne({ where: obj })
 
       if (ext_gallery && gal_id == ext_gallery.gal_id) {
 
@@ -63,11 +63,11 @@ GalleryService.update = async (gal_id, obj) => {
       }
       else if (!ext_gallery || (ext_gallery && gal_id != ext_gallery.gal_id)) {
 
-         const updateById = await db.Conference.update(obj, { where: { gal_id: gal_id } })
+         const updateById = await db.Gallery.update(obj, { where: { gal_id: gal_id } })
          return updateById[0]
 
       }
-      else return 'Conference Not Found'
+      else return 'Gallery Not Found'
    }
    catch (err) {
       return err

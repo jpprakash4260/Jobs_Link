@@ -14,19 +14,17 @@ CourseController.create = async (req, res) => {
    try {
 
       let obj = {
+         qual_id: req.body.qual_id,
          course_name: req.body.course_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
+         course_slug: req.body.course_slug,
          course_status: req.body.course_status,
-         colg_date: new Date(req.body.colg_date)
+         course_date: new Date(req.body.course_date)
       }
-
       const created = await courseService.create(obj)
-      const founded = await courseService.findByPk(created.course_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -112,17 +110,15 @@ CourseController.update = async (req, res) => {
       if (!course_id) throw createError.BadRequest()
 
       let obj = {
+         qual_id: req.body.qual_id,
          course_name: req.body.course_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
+         course_slug: req.body.course_slug,
          course_status: req.body.course_status,
-         colg_date: new Date(req.body.colg_date)
+         course_date: new Date(req.body.course_date)
       }
 
-      const founded = await conferenceService.findByPk(course_id)
-      if (!founded) throw createError.NotFound()
-
-      const update = await conferenceService.update(founded.course_id, obj)
+      const founded = await courseService.findByPk(course_id)
+      const update = await courseService.update(founded.course_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)

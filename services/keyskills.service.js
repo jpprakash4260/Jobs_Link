@@ -30,7 +30,7 @@ KeySkillsService.getCollegeDetails = async (keysk_id, keysk_status, _start, _lim
          `select 
                     COUNT(*) as total
                 from 
-                    tbl__colg as a 
+                    tbl__keyskills as a 
                 where 
                 a.keysk_id=${keysk_id} and a.keysk_status='${keysk_status}'
             limit ${_limit} 

@@ -2,10 +2,10 @@ const Joi = require('joi');
 
 const BaseValidation = require("../middleware/baseValidation")
 
-class CollegeValidation {
+class JobPostingValidation {
 
    create(req, res, next) {
-      const college_schema = Joi.object({
+      const jobposting_schema = Joi.object({
          job_code: Joi.string().min(1).required(),
          posted_by: Joi.number().min(1).required(),
          jcat_id: Joi.number().min(1).required(),
@@ -22,14 +22,14 @@ class CollegeValidation {
          job_status: Joi.string().valid('W', 'Y', 'N', 'D').max(1).required(),
          posted_type: Joi.string().min(1).required(),
          job_expdate: Joi.date().min(1).required(),
-         ipaddress: Joi.number().min(1).required()
+         ipaddress: Joi.string().min(1).required()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.JobPostingBody(req, res, next, jobposting_schema)
    }
 
    update(req, res, next) {
-      const college_schema = Joi.object({
+      const jobposting_schema = Joi.object({
          job_code: Joi.string().min(1),
          posted_by: Joi.number().min(1),
          jcat_id: Joi.number().min(1),
@@ -46,11 +46,11 @@ class CollegeValidation {
          job_status: Joi.string().valid('W', 'Y', 'N', 'D').max(1),
          posted_type: Joi.string().min(1),
          job_expdate: Joi.date().min(1),
-         ipaddress: Joi.number().min(1)
+         ipaddress: Joi.string().min(1)
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.JobPostingBody(req, res, next, jobposting_schema)
    }
 }
 
-module.exports = new CollegeValidation();
+module.exports = new JobPostingValidation();

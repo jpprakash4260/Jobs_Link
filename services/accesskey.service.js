@@ -57,15 +57,17 @@ AccessService.findByPk = async (access_id) => {
 AccessService.update = async (access_id, obj) => {
    try {
 
-      const ext_access = await db.Access.findOne({ where: obj })
-      const founded = await db.Access.findByPk(access_id)
+      const ext_acsess = await db.Access.findOne({ where: obj })
 
-      if (founded && ext_access) {
+      if (ext_acsess && access_id == ext_acsess.access_id) {
+
          return 'Exited Values'
       }
-      else if (!ext_access && founded) {
+      else if (!ext_acsess || (ext_acsess && access_id != ext_acsess.access_id)) {
+
          const updateById = await db.Access.update(obj, { where: { access_id: access_id } })
          return updateById[0]
+
       }
       else return 'Access Not Found'
    }

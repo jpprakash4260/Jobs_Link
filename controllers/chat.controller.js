@@ -28,13 +28,12 @@ ChatController.create = async (req, res) => {
          chat_date: req.body.chat_date,
          read_status: req.body.read_status,
          read_date: req.body.read_date,
-         ipaddr: req.body.ipaddr,
-         lastupdate: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+         ipaddr: req.body.ipaddr
       }
 
       const created = await chatService.create(obj)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
          return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }

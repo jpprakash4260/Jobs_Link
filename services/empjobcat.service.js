@@ -55,7 +55,7 @@ EmpjobcatService.findByPk = async (mjcat_id) => {
 EmpjobcatService.update = async (mjcat_id, obj) => {
    try {
 
-      const ext_empjobcat = await db.Conference.findOne({ where: obj })
+      const ext_empjobcat = await db.EmployeeJobCategory.findOne({ where: obj })
 
       if (ext_empjobcat && mjcat_id == ext_empjobcat.mjcat_id) {
 
@@ -63,11 +63,11 @@ EmpjobcatService.update = async (mjcat_id, obj) => {
       }
       else if (!ext_empjobcat || (ext_empjobcat && mjcat_id != ext_empjobcat.mjcat_id)) {
 
-         const updateById = await db.Conference.update(obj, { where: { mjcat_id: mjcat_id } })
+         const updateById = await db.EmployeeJobCategory.update(obj, { where: { mjcat_id: mjcat_id } })
          return updateById[0]
 
       }
-      else return 'Conference Not Found'
+      else return 'EmployeeJobCategory Not Found'
    }
    catch (err) {
       return err

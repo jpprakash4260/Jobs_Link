@@ -1,8 +1,8 @@
-//-------------------------- RecutComp Model Start ------------------------------//
+//-------------------------- Employer Model Start ------------------------------//
 
 module.exports = (sequelize, DataTypes) => {
-   const RecutComp = sequelize.define(
-      "RecutComp",
+   const Employer = sequelize.define(
+      "Employer",
       {
          recut_id: {
             type: DataTypes.INTEGER,
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
          },
          email_otp: {
             type: DataTypes.STRING,
-            allowNull: false
+            // allowNull: false
          },
          email_verify: {
             type: DataTypes.ENUM,
@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
          },
          mobile_otp: {
             type: DataTypes.STRING,
-            allowNull: false
+            // allowNull: false
          },
          mobile_verify: {
             type: DataTypes.ENUM,
@@ -129,7 +129,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__recutcomp" }
    );
-   return RecutComp;
+   return Employer;
 };
 
-//-------------------------- RecutComp Model End ------------------------------//
+//-------------------------- Employer Model End ------------------------------//

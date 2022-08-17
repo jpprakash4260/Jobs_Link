@@ -37,7 +37,7 @@ JobPostingController.create = async (req, res) => {
       const created = await jobpostingService.create(obj)
       const founded = await jobpostingService.findByPk(created.job_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
          return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
       }
@@ -91,8 +91,8 @@ JobPostingController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { job_id, colg_name, colg_status } = req.body
-      if (!job_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { job_id, cont_mail, job_status } = req.body
+      if (!job_id || !cont_mail || !job_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -104,7 +104,7 @@ JobPostingController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await jobpostingService.getCollegeDetails(job_id, colg_status, _start, _limit)
+      const totalAccess = await jobpostingService.getCollegeDetails(job_id, job_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -146,7 +146,7 @@ JobPostingController.update = async (req, res) => {
       }
 
       const founded = await jobpostingService.findByPk(job_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await jobpostingService.update(founded.job_id, obj)
 

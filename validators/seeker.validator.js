@@ -4,27 +4,32 @@ const BaseValidation = require("../middleware/baseValidation");
 
 class SeekerValidation {
 	create(req, res, next) {
-		const college_schema = Joi.object({
-			colg_name: Joi.string().min(1).required(),
-			colg_slug: Joi.string().min(1).required(),
-			colg_pos: Joi.number().min(1).required(),
-			colg_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
-			colg_date: Joi.date()
+		const seeker_schema = Joi.object({
+			emp_name: Joi.string().min(5).required(),
+			emp_email: Joi.string().email().required(),
+			emp_pass: Joi.string().min(6).required(),
+			emp_mobile: Joi.string().min(10).required(),
+			emp_country: Joi.string().min(2).required(),
+			emp_state: Joi.string().required(),
+			emp_city: Joi.string().required(),
+			agreechk: Joi.boolean().required()
 		})
 
-		return BaseValidation.CollegeBody(req, res, next, college_schema)
+		return BaseValidation.validateSeekerRegisterBody(req, res, next, seeker_schema)
 	}
 
 	update(req, res, next) {
-		const college_schema = Joi.object({
-			colg_name: Joi.string().min(1),
-			colg_slug: Joi.string().min(1),
-			colg_pos: Joi.number().min(1),
-			colg_status: Joi.string().valid('Y', 'N', 'D').max(1),
-			colg_date: Joi.date()
+		const seeker_schema = Joi.object({
+			emp_name: Joi.string().min(5),
+			emp_email: Joi.string().email(),
+			emp_pass: Joi.string().min(6),
+			emp_mobile: Joi.string().min(10),
+			emp_country: Joi.string().min(2),
+			emp_state: Joi.string(),
+			emp_city: Joi.string()
 		})
 
-		return BaseValidation.CollegeBody(req, res, next, college_schema)
+		return BaseValidation.validateSeekerRegisterBody(req, res, next, seeker_schema)
 	}
 
 	seekerRegister(req, res, next) {

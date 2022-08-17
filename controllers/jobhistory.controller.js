@@ -26,11 +26,10 @@ JobHistoryController.create = async (req, res) => {
       }
 
       const created = await jobhistoryService.create(obj)
-      const founded = await jobhistoryService.findByPk(created.id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -82,8 +81,8 @@ JobHistoryController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { id, colg_name, colg_status } = req.body
-      if (!id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { id, del_name, job_type } = req.body
+      if (!id || !del_name || !job_type) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -95,7 +94,7 @@ JobHistoryController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await jobhistoryService.getCollegeDetails(id, colg_status, _start, _limit)
+      const totalAccess = await jobhistoryService.getCollegeDetails(id, job_type, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -128,7 +127,7 @@ JobHistoryController.update = async (req, res) => {
       }
 
       const founded = await jobhistoryService.findByPk(id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await jobhistoryService.update(founded.id, obj)
 

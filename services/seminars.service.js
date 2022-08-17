@@ -23,7 +23,7 @@ SeminarsService.findAllAndCount = async (semi_id) => {
    }
 }
 
-SeminarsService.getCollegeDetails = async (semi_id, colg_status, _start, _limit) => {
+SeminarsService.getCollegeDetails = async (semi_id, semi_status, _start, _limit) => {
 
    try {
       const [totalAccess] = await db.sequelize.query(
@@ -32,7 +32,7 @@ SeminarsService.getCollegeDetails = async (semi_id, colg_status, _start, _limit)
                 from 
                     tbl__seminars as a 
                 where 
-                a.semi_id=${semi_id} and a.colg_status='${colg_status}'
+                a.semi_id=${semi_id} and a.semi_status='${semi_status}'
             limit ${_limit} 
             OFFSET ${_start}`
       )

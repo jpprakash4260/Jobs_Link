@@ -58,11 +58,10 @@ GovJobPost_expController.create = async (req, res) => {
       }
 
       const created = await govtjobpost_expService.create(obj)
-      const founded = await govtjobpost_expService.findByPk(created.unrst_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -78,10 +77,10 @@ GovJobPost_expController.create = async (req, res) => {
 GovJobPost_expController.get = async (req, res) => {
 
    try {
-      let { unrst_id } = req.query
-      if (!unrst_id) throw createError.BadRequest()
+      let { unrst_jid } = req.query
+      if (!unrst_jid) throw createError.BadRequest()
 
-      const { rows, count } = await govtjobpost_expService.findAllAndCount(unrst_id)
+      const { rows, count } = await govtjobpost_expService.findAllAndCount(unrst_jid)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -95,10 +94,10 @@ GovJobPost_expController.get = async (req, res) => {
 GovJobPost_expController.getByPk = async (req, res) => {
 
    try {
-      let { unrst_id } = req.params
-      if (!unrst_id) throw createError.BadRequest()
+      let { unrst_jid } = req.params
+      if (!unrst_jid) throw createError.BadRequest()
 
-      const founded = await govtjobpost_expService.findByPk(unrst_id)
+      const founded = await govtjobpost_expService.findByPk(unrst_jid)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -114,8 +113,8 @@ GovJobPost_expController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { unrst_id, colg_name, posted_status } = req.body
-      if (!unrst_id || !colg_name || !posted_status) throw createError.BadRequest()
+      const { unrst_jid, unrest_jname, posted_status } = req.body
+      if (!unrst_jid || !unrest_jname || !posted_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -127,7 +126,7 @@ GovJobPost_expController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await govtjobpost_expService.getCollegeDetails(unrst_id, posted_status, _start, _limit)
+      const totalAccess = await govtjobpost_expService.getCollegeDetails(unrst_jid, posted_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -144,8 +143,8 @@ GovJobPost_expController.update = async (req, res) => {
 
    try {
 
-      let { unrst_id } = req.params
-      if (!unrst_id) throw createError.BadRequest()
+      let { unrst_jid } = req.params
+      if (!unrst_jid) throw createError.BadRequest()
 
       let obj = {
          duplicate_from: req.body.duplicate_from,
@@ -191,10 +190,10 @@ GovJobPost_expController.update = async (req, res) => {
          posted_date: new Date(req.body.posted_date)
       }
 
-      const founded = await govtjobpost_expService.findByPk(unrst_id)
-      if (!founded) throw createError.NotFound()
+      const founded = await govtjobpost_expService.findByPk(unrst_jid)
 
-      const update = await govtjobpost_expService.update(founded.unrst_id, obj)
+
+      const update = await govtjobpost_expService.update(founded.unrst_jid, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -229,10 +228,10 @@ GovJobPost_expController.delete = async (req, res) => {
 
    try {
 
-      let { unrst_id } = req.query
-      if (!unrst_id) throw createError.BadRequest()
+      let { unrst_jid } = req.query
+      if (!unrst_jid) throw createError.BadRequest()
 
-      const deleted = await govtjobpost_expService.delete(unrst_id)
+      const deleted = await govtjobpost_expService.delete(unrst_jid)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)

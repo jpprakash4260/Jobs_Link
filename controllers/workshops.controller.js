@@ -27,11 +27,10 @@ WorkshopController.create = async (req, res) => {
       }
 
       const created = await workshopsService.create(obj)
-      const founded = await workshopsService.findByPk(created.work_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -83,8 +82,8 @@ WorkshopController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { work_id, colg_name, colg_status } = req.body
-      if (!work_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { work_id, work_title, work_status } = req.body
+      if (!work_id || !work_title || !work_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -96,7 +95,7 @@ WorkshopController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await workshopsService.getCollegeDetails(work_id, colg_status, _start, _limit)
+      const totalAccess = await workshopsService.getCollegeDetails(work_id, work_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -130,7 +129,7 @@ WorkshopController.update = async (req, res) => {
       }
 
       const founded = await workshopsService.findByPk(work_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await workshopsService.update(founded.work_id, obj)
 

@@ -3,7 +3,8 @@
 const { employerService, crudService } = require('../services');
 const { response } = require('../middleware');
 const { statusCodes, responseMessage, loggerMessage } = require('../constants');
-const { logger } = require('../helper');
+const { logger } = require('../helper')
+const createError = require('http-errors')
 
 class EmployerController { };
 
@@ -12,19 +13,26 @@ EmployerController.create = async (req, res) => {
    try {
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         comp_name: req.body.comp_name,
+         mail_id: req.body.mail_id,
+         mobile_no: req.body.mobile_no,
+         cont_person: req.body.cont_person,
+         indust_id: req.body.indust_id,
+         comp_pass: req.body.comp_pass,
+         pincode: req.body.pincode,
+         country_id: req.body.country_id,
+         state_id: req.body.state_id,
+         unrest_jloct: req.body.unrest_jloct,
+         recut_address: req.body.recut_address,
+         recut_desc: req.body.recut_desc,
+         ipaddress: req.ip
       }
 
       const created = await employerService.create(obj)
-      const founded = await employerService.findByPk(created.colg_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -40,10 +48,10 @@ EmployerController.create = async (req, res) => {
 EmployerController.get = async (req, res) => {
 
    try {
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { recut_id } = req.query
+      if (!recut_id) throw createError.BadRequest()
 
-      const { rows, count } = await employerService.findAllAndCount(colg_id)
+      const { rows, count } = await employerService.findAllAndCount(recut_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, { rows, count }, rows ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -57,10 +65,10 @@ EmployerController.get = async (req, res) => {
 EmployerController.getByPk = async (req, res) => {
 
    try {
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { recut_id } = req.params
+      if (!recut_id) throw createError.BadRequest()
 
-      const founded = await employerService.findByPk(colg_id)
+      const founded = await employerService.findByPk(recut_id)
 
       logger.info(loggerMessage.getDataSuccess)
       return response.success(req, res, statusCodes.HTTP_OK, founded, founded ? responseMessage.getDataSuccess : responseMessage.notFound)
@@ -76,8 +84,8 @@ EmployerController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { colg_id, colg_name, colg_status } = req.body
-      if (!colg_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { recut_id, comp_name, recut_status } = req.body
+      if (!recut_id || !comp_name || !recut_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -89,7 +97,7 @@ EmployerController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await employerService.getCollegeDetails(colg_id, colg_status, _start, _limit)
+      const totalAccess = await employerService.getCollegeDetails(recut_id, recut_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -106,21 +114,26 @@ EmployerController.update = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.params
-      if (!colg_id) throw createError.BadRequest()
+      let { recut_id } = req.params
+      if (!recut_id) throw createError.BadRequest()
 
       let obj = {
-         colg_name: req.body.colg_name,
-         colg_slug: req.body.colg_slug,
-         colg_pos: req.body.colg_pos,
-         colg_status: req.body.colg_status,
-         colg_date: new Date(req.body.colg_date)
+         comp_name: req.body.comp_name,
+         mail_id: req.body.mail_id,
+         mobile_no: req.body.mobile_no,
+         cont_person: req.body.cont_person,
+         indust_id: req.body.indust_id,
+         comp_pass: req.body.comp_pass,
+         pincode: req.body.pincode,
+         country_id: req.body.country_id,
+         state_id: req.body.state_id,
+         recut_address: req.body.recut_address,
+         recut_desc: req.body.recut_desc,
+         ipaddress: req.ip
       }
 
-      const founded = await employerService.findByPk(conf_id)
-      if (!founded) throw createError.NotFound()
-
-      const update = await employerService.update(founded.conf_id, obj)
+      const founded = await employerService.findByPk(recut_id)
+      const update = await employerService.update(founded.recut_id, obj)
 
       if (update == 1) {
          logger.info(loggerMessage.updateDataSuccess)
@@ -155,10 +168,10 @@ EmployerController.delete = async (req, res) => {
 
    try {
 
-      let { colg_id } = req.query
-      if (!colg_id) throw createError.BadRequest()
+      let { recut_id } = req.query
+      if (!recut_id) throw createError.BadRequest()
 
-      const deleted = await employerService.delete(colg_id)
+      const deleted = await employerService.delete(recut_id)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)

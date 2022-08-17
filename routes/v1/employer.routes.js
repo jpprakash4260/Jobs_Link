@@ -6,9 +6,9 @@ const { verifyToken } = require("../../middleware");
 
 employerRoutes.post("/", employer_validate.create, employerController.create)
 employerRoutes.get("/", employerController.get)
-employerRoutes.get("/:emp_id", employerController.getByPk)
+employerRoutes.get("/:recut_id", employerController.getByPk)
 employerRoutes.post("/Details", employerController.getCollegeDetails)
-employerRoutes.put("/:emp_id", employer_validate.update, employerController.update)
+employerRoutes.put("/:recut_id", employer_validate.update, employerController.update)
 employerRoutes.delete("/delete", employerController.delete)
 
 // Logged In USER

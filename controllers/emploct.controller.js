@@ -15,7 +15,7 @@ EmplocatController.create = async (req, res) => {
 
       let obj = {
          emp_id: req.body.emp_id,
-         emp_country: req.body.colg_slug,
+         emp_country: req.body.emp_country,
          emp_state: req.body.emp_state,
          emp_city: req.body.emp_city,
          locat_status: req.body.locat_status,
@@ -23,11 +23,10 @@ EmplocatController.create = async (req, res) => {
       }
 
       const created = await emploctService.create(obj)
-      const founded = await emploctService.findByPk(created.emplocat_id)
 
-      if (created && (typeof created) == 'object') {
+      if (created) {
          logger.error(loggerMessage.createdSuccess)
-         return response.success(req, res, statusCodes.HTTP_CREATED, founded, responseMessage.createdSuccess)
+         return response.success(req, res, statusCodes.HTTP_CREATED, created, responseMessage.createdSuccess)
       }
       else {
          logger.error(loggerMessage.notCreated)
@@ -79,8 +78,8 @@ EmplocatController.getCollegeDetails = async (req, res) => {
 
    try {
 
-      const { emplocat_id, colg_name, colg_status } = req.body
-      if (!emplocat_id || !colg_name || !colg_status) throw createError.BadRequest()
+      const { emplocat_id, emp_id, locat_status } = req.body
+      if (!emplocat_id || !emp_id || !locat_status) throw createError.BadRequest()
 
       let _start = req.body && req.body._start ? Number(req.body._start) : 0
       let _limit = req.body && req.body._limit ? Number(req.body._limit) : 10
@@ -92,7 +91,7 @@ EmplocatController.getCollegeDetails = async (req, res) => {
          }
       }
 
-      const totalAccess = await emploctService.getCollegeDetails(emplocat_id, colg_status, _start, _limit)
+      const totalAccess = await emploctService.getCollegeDetails(emplocat_id, locat_status, _start, _limit)
       if (totalAccess == null) throw createError.NotFound('total not found !!')
 
       logger.info(loggerMessage.getDataSuccess)
@@ -114,7 +113,7 @@ EmplocatController.update = async (req, res) => {
 
       let obj = {
          emp_id: req.body.emp_id,
-         emp_country: req.body.colg_slug,
+         emp_country: req.body.emp_country,
          emp_state: req.body.emp_state,
          emp_city: req.body.emp_city,
          locat_status: req.body.locat_status,
@@ -122,7 +121,7 @@ EmplocatController.update = async (req, res) => {
       }
 
       const founded = await emploctService.findByPk(emplocat_id)
-      if (!founded) throw createError.NotFound()
+
 
       const update = await emploctService.update(founded.emplocat_id, obj)
 
