@@ -1,9 +1,6 @@
 'use strict'
 const db = require("../Models");
-const crudService = require("./crud.service")
-
-class EmployerService { };
-
+class EmployerService { }
 
 EmployerService.create = async (obj) => {
    try {
@@ -12,6 +9,80 @@ EmployerService.create = async (obj) => {
    }
    catch (error) {
       return error
+   }
+}
+
+EmployerService.exited_email = async (req) => {
+   try {
+
+      const exited_email = await db.Employer.findOne({ where: { mail_id: req.body.mail_id, email_verify: 'Y' } })
+      return exited_email
+   }
+   catch (error) {
+      return error
+   }
+}
+
+EmployerService.exited_mobile = async (req) => {
+   try {
+
+      const exited_mobile = await db.Employer.findOne({ where: { mobile_no: req.body.mobile_no, mobile_verify: 'Y' } })
+      return exited_mobile
+   }
+   catch (error) {
+      return error
+   }
+}
+
+EmployerService.temp_email = async (req) => {
+   try {
+
+      const temp_email = await db.Employer.findOne({ where: { mail_id: req.body.mail_id, email_verify: 'N' } })
+      return temp_email
+   }
+   catch (error) {
+      return error
+   }
+}
+
+EmployerService.temp_mobile = async (req) => {
+   try {
+
+      const temp_mobile = await db.Employer.findOne({ where: { mobile_no: req.body.mobile_no, mobile_verify: 'N' } })
+      return temp_mobile
+   }
+   catch (error) {
+      return error
+   }
+}
+
+EmployerService.update_OTP = async (recut_id, email_OTP, mobile_OTP) => {
+   try {
+      const update_OTP = await db.Employer.update({ mobile_otp: mobile_OTP, email_otp: email_OTP }, { where: { recut_id: recut_id } })
+      return update_OTP[0]
+   }
+   catch (err) {
+      return err
+   }
+}
+
+EmployerService.Verified_Email = async (recut_id) => {
+   try {
+      const Verifed_email = await db.Employer.update({ email_verify: 'Y' }, { where: { recut_id: recut_id } })
+      return Verifed_email[0]
+   }
+   catch (err) {
+      return err
+   }
+}
+
+EmployerService.Verified_Mobile = async (recut_id) => {
+   try {
+      const Verified_Mobile = await db.Employer.update({ mobile_verify: 'Y' }, { where: { recut_id: recut_id } })
+      return Verified_Mobile[0]
+   }
+   catch (err) {
+      return err
    }
 }
 
@@ -91,33 +162,27 @@ EmployerService.delete = async (recut_id) => {
    }
 }
 
+EmployerService.deleteByMobile = async (temp_mobile) => {
 
-
-EmployerService.postJob = async (req, modelName) => {
    try {
-      const obj = req.body
-      const finded = await crudService.findOne(obj, modelName)
-      if (finded) {
-         let exitedJob_id = { unrst_jid: finded.unrst_jid };
-         return exitedJob_id
-      }
-      else {
-         let saved_seeker = await db[modelName].create(obj);
-         return saved_seeker
-      }
-   } catch (err) {
-      if (err.name == "SequelizeUniqueConstraintError" && err.errors[0].type == "unique violation"
-         && err.errors[0].validatorKey == "not_unique") {
-         let unique_err = {
-            error: "unique_error",
-            message: err.errors[0].message,
-            field: err.errors[0].path,
-         }
-         return unique_err;
-      } else {
-         return err;
-      }
 
+      const deleted = await db.Employer.destroy({ where: { mobile_no: temp_mobile.mobile_no } })
+      return deleted
+
+   } catch (err) {
+      return err
+   }
+}
+
+EmployerService.deleteByEmail = async (temp_email) => {
+
+   try {
+
+      const deleted = await db.Employer.destroy({ where: { mail_id: temp_email.mail_id } })
+      return deleted
+
+   } catch (err) {
+      return err
    }
 }
 

@@ -1,8 +1,12 @@
 const express = require("express");
 const employerRoutes = express.Router();
-const { employerController } = require("../../controllers");
+const { employerController, } = require("../../controllers");
 const { employer_validate } = require("../../validators");
 const { verifyToken } = require("../../middleware");
+
+
+
+// CRUD Routes
 
 employerRoutes.post("/", employer_validate.create, employerController.create)
 employerRoutes.get("/", employerController.get)

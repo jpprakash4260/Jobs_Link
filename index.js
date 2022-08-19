@@ -5,12 +5,11 @@ const http = require("http");
 const bodyParser = require("body-parser");
 const path = require("path");
 require("dotenv").config();
-const moment = require('moment')
 
 const routers = require("./routes");
 const db = require("./models");
-const dbConfig = require("./config/db.config");
-require('./config');
+const dbConfig = require("./config/db.config")
+require('./config')
 
 // Express Application
 const app = express();

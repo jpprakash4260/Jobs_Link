@@ -1,12 +1,12 @@
 'use strict'
 
-const { seekerService, crudService } = require('../services');
+const { seekerService } = require('../services');
 const { response } = require('../middleware');
 const { statusCodes, responseMessage, loggerMessage } = require('../constants');
 const { logger } = require('../helper');
 const createError = require('http-errors')
 
-class SeekerController { };
+class SeekerController { }
 
 SeekerController.create = async (req, res) => {
 
@@ -133,7 +133,7 @@ SeekerController.update = async (req, res) => {
          logger.warn(loggerMessage.alreadyExited)
          return response.success(req, res, statusCodes.HTTP_ALREADY_REPORTED, update, responseMessage.alreadyExited)
       }
-      else if (update == 'Access Not Found') {
+      else if (update == 'Seeker Not Found') {
          logger.error(loggerMessage.notFound)
          return response.success(req, res, statusCodes.HTTP_NOT_FOUND, update, responseMessage.notFound)
       }
@@ -142,7 +142,6 @@ SeekerController.update = async (req, res) => {
          return response.success(req, res, statusCodes.HTTP_NOT_IMPLEMENTED, update, responseMessage.notUpdated)
       }
       else {
-         console.log(update);
          logger.error(loggerMessage.updateDataFailure)
          return response.success(req, res, statusCodes.HTTP_EXPECTATION_FAILED, update, responseMessage.updateDataFailure)
       }
@@ -161,13 +160,13 @@ SeekerController.delete = async (req, res) => {
       let { emp_id } = req.query
       if (!emp_id) throw createError.BadRequest()
 
-      const deleted = await seekerService.delete(emp_id)
+      const deleted = await seekerService.deleteByPk(emp_id)
 
       if (deleted == 1) {
          logger.error(loggerMessage.deleteDataSuccess)
          return response.success(req, res, statusCodes.HTTP_OK, deleted, responseMessage.deletedData)
       }
-      else if (deleted == 'Access not found') {
+      else if (deleted == 'Seeker not found') {
          logger.error(loggerMessage.notFound)
          return response.success(req, res, statusCodes.HTTP_NOT_FOUND, deleted, responseMessage.notFound)
       }
@@ -186,97 +185,12 @@ SeekerController.delete = async (req, res) => {
 
 SeekerController.dashboard = async (req, res) => {
    try {
-      logger.info(loggerMessage.getDataSuccess);
-      return response.success(req, res, statusCodes.HTTP_OK, req.valid_user, responseMessage.dashboard);
+      logger.info(loggerMessage.getDataSuccess)
+      return response.success(req, res, statusCodes.HTTP_OK, req.seeker_id, responseMessage.dashboard)
    } catch (err) {
       return err
    }
 }
 
-SeekerController.search = async (req, res) => {
-   try {
-      const search = await crudService.search(req, 'Employee')
-      search ? search : search = ''
-      logger.info(loggerMessage.getDataSuccess);
-      return response.success(req, res, statusCodes.HTTP_OK, search, responseMessage.getDataSuccess);
-   } catch (err) {
-      return err
-   }
-}
-
-SeekerController.updateSeekerDetails = async (req, res) => {
-   try {
-      const updated = await crudService.updateSeeker_byId(req.seeker_id, req.body)
-      if (updated == 1) {
-         logger.info(loggerMessage.updateDataSuccess);
-         return response.success(req, res, statusCodes.HTTP_OK, updated, responseMessage.seekerUpdated);
-      } else if (updated == 2) {
-         logger.warn(loggerMessage.alreadyExited);
-         return response.errors(req, res, statusCodes.HTTP_ALREADY_REPORTED, updated, responseMessage.alreadyExited);
-      }
-      else {
-         logger.error(loggerMessage.updateDataFailure);
-         return response.errors(req, res, statusCodes.HTTP_NOT_MODIFIED, updated, responseMessage.seekerNotUpdated);
-      }
-   } catch (err) {
-      logger.error(loggerMessage.errorInUpdating);
-      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errorInUpdating);
-   }
-}
-
-SeekerController.updateKeySkills = async (req, res) => {
-   try {
-      const KeySkills = await crudService.createKeySkills(req, res)
-      console.log("KeysSkills : ", KeySkills.empkskil_id);
-      logger.info(loggerMessage.getDataSuccess);
-      return response.success(req, res, statusCodes.HTTP_OK, KeySkills, responseMessage.getDataSuccess);
-   } catch (err) {
-      logger.error(loggerMessage.errorInUpdating);
-      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errorInUpdating);
-   }
-}
-
-SeekerController.createEmployement = async (req, res) => {
-   try {
-      const createEmployement = await crudService.createEmployement(req, res)
-      // console.log("Employement : ", Employement);
-      logger.info(loggerMessage.createdSuccess);
-      return response.success(req, res, statusCodes.HTTP_OK, createEmployement, responseMessage.createdSuccess);
-   } catch (err) {
-      logger.error(loggerMessage.errInCreate);
-      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errInCreate);
-   }
-}
-
-SeekerController.getEmployement = async (req, res) => {
-   try {
-      const getEmployement = await crudService.getEmployement(req, res)
-      logger.info(loggerMessage.getDataSuccess);
-      return response.success(req, res, statusCodes.HTTP_OK, getEmployement[0], responseMessage.getDataSuccess);
-   } catch (err) {
-      logger.error(loggerMessage.errorInFindingAll);
-      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errorInFindOne);
-   }
-}
-
-SeekerController.update_byId = async (req, res) => {
-   try {
-      const updated = await crudService.update_byId(1, req.body)
-      if (updated == 1) {
-         logger.info(loggerMessage.updateDataSuccess);
-         return response.success(req, res, statusCodes.HTTP_OK, updated, responseMessage.seekerUpdated);
-      } else if (updated == 2) {
-         logger.warn(loggerMessage.alreadyExited);
-         return response.errors(req, res, statusCodes.HTTP_ALREADY_REPORTED, updated, responseMessage.alreadyExited);
-      }
-      else {
-         logger.error(loggerMessage.updateDataFailure);
-         return response.errors(req, res, statusCodes.HTTP_NOT_MODIFIED, updated, responseMessage.seekerNotUpdated);
-      }
-   } catch (err) {
-      logger.error(loggerMessage.errorInUpdating);
-      return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errorInUpdating);
-   }
-}
 
 module.exports = SeekerController

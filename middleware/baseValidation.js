@@ -563,9 +563,9 @@ class BaseValidation {
 		}
 	}
 
-	UnrestJobPostBody(req, res, next, e_schema) {
+	UnrestJobPostBody(req, res, next, UnrestJobPost_schema) {
 		try {
-			const { error } = e_schema.validate(req.body)
+			const { error } = UnrestJobPost_schema.validate(req.body)
 			if (error) return response.joierrors(req, res, error)
 			next()
 		} catch (error) {
@@ -573,9 +573,9 @@ class BaseValidation {
 		}
 	}
 
-	WorkShopsBody(req, res, next, e_schema) {
+	WorkShopsBody(req, res, next, workshops_schema) {
 		try {
-			const { error } = e_schema.validate(req.body)
+			const { error } = workshops_schema.validate(req.body)
 			if (error) return response.joierrors(req, res, error)
 			next()
 		} catch (error) {

@@ -9,7 +9,6 @@ const conferenceService = require('./conference.service')
 const contactresumeService = require('./contactresume.service')
 const countryService = require('./country.service')
 const courseService = require('./course.service')
-const crudService = require('./crud.service')
 const edu_courseService = require('./edu_course.service')
 const empedudetailService = require('./empedudetail.service')
 const empjobcatService = require('./empjobcat.service')
@@ -35,7 +34,7 @@ const jobpostingService = require('./jobposting.service')
 const jobscategoryService = require('./jobscategory.service')
 const jobtypeService = require('./jobtype.service')
 const keyskillsService = require('./keyskills.service')
-const loginRegisterService = require("./loginRegister.service")
+const helper = require("./helper.service")
 const notificationService = require('./notification.service')
 const operatorService = require('./operator.service')
 const qualificationService = require('./qualification.service')
@@ -50,6 +49,8 @@ const unrestjobpost_expService = require('./unrestjobpost_exp.service')
 const unrestjobpostService = require('./unrestjobpost.service')
 const workshopsService = require('./workshops.service')
 
+const joinqueryService = require('./joinquery.service')
+
 module.exports = {
    accessService,
    adminService,
@@ -62,7 +63,6 @@ module.exports = {
    contactresumeService,
    countryService,
    courseService,
-   crudService,
    edu_courseService,
    empedudetailService,
    empjobcatService,
@@ -87,7 +87,7 @@ module.exports = {
    jobscategoryService,
    jobtypeService,
    keyskillsService,
-   loginRegisterService,
+   helper,
    notificationService,
    operatorService,
    qualificationService,
@@ -102,4 +102,6 @@ module.exports = {
    unrestjobpostService,
    workshopsService,
    employerService,
+
+   joinqueryService,
 }

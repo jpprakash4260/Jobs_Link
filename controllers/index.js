@@ -40,6 +40,7 @@ const qualificationController = require('./qualification.controller')
 const resumescoreController = require('./resumescore.controller')
 const salaryController = require('./salary.controller')
 const seekerController = require("./seeker.controller")
+const Login_Register_Controller = require("./loginRegister.controller")
 const seminarsController = require('./seminars.controller')
 const specializationController = require('./specialization.controller')
 const stateController = require('./state.controller')
@@ -48,9 +49,9 @@ const unrestjobpost_exp = require('./unrestjobpost_exp.controller')
 const unrestjobpost = require('./unrestjobpost.controller')
 const workshopsController = require('./workshops.controller')
 
-
 const crudController = require('./crud.controller')
-const loginRegisterController = require("./loginRegister.controller")
+const joinqueryController = require('./joinquery.controller')
+
 
 
 
@@ -96,6 +97,7 @@ module.exports = {
    qualificationController,
    resumescoreController,
    seekerController,
+   Login_Register_Controller,
    salaryController,
    seminarsController,
    specializationController,
@@ -104,9 +106,8 @@ module.exports = {
    unrestjobpost_exp,
    unrestjobpost,
    workshopsController,
-
-
    crudController,
-   loginRegisterController
+   joinqueryController,
+
 
 }

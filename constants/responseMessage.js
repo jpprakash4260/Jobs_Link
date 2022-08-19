@@ -49,6 +49,9 @@ module.exports = {
 	otpNotSended: "OTP not sended",
 	otpNotUpdated: "OTP not Updated",
 	ext_email: "already exiting Email Id",
+	ext_account: "already exiting Account, Please Login",
 	ext_mobile: "already exiting Mobile Number",
+	ext_email_mobile: "already exiting Email Id and Mobile Number",
+
 
 };

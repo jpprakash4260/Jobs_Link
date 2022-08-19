@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 
 const response = require("./responses");
-const { crudService } = require("../services")
+const { seekerService } = require("../services")
 const { statusCodes, responseMessage, loggerMessage } = require('../constants');
 const { logger } = require('../helper');
 
@@ -19,12 +19,13 @@ class BaseValidation {
 				if (error) {
 					logger.error(loggerMessage.unauthorized);
 					response.errors(req, res, statusCodes.HTTP_UNAUTHORIZED, error, responseMessage.unauthorized);
-				} else {
-					let obj1 = { emp_email: decoded.email }; const seeker = await crudService.findOne(obj1, 'Employee')
-					let obj2 = { mail_id: decoded.email }; const employer = await crudService.findOne(obj2, 'RecutComp')
+				}
+				else {
+
+					const seeker = await seekerService.findByEmail(decoded.email)
 					req.valid_user = decoded
-					if(seeker) req.seeker_id = seeker.emp_id
-					else if(employer) req.employer_id = employer.recut_id	
+					req.seeker_id = seeker.emp_id
+					
 					logger.info(loggerMessage.tokenVerifed)
 					next()
 				}

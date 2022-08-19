@@ -1,21 +1,19 @@
-const express = require("express");
-const loginRegisterRoutes = express.Router();
-const { loginRegisterController } = require("../../controllers")
-const { verifyToken } = require("../../middleware");
-const { seeker_validate , employer_validate, upload } = require("../../validators");
+const express = require("express")
+const seekerRoutes = express.Router()
+const { Login_Register_Controller } = require("../../controllers")
+const { seeker_validate} = require("../../validators")
+const upload = require('../../validators/multer')
 
-// Register and Login Routes
+// Seeker Register Routes
+seekerRoutes.post('/register', seeker_validate.seekerRegister, upload.single("resume"), Login_Register_Controller.register)
+seekerRoutes.post('/verify-email', Login_Register_Controller.Verify_Email)
+seekerRoutes.post('/verify-mobile', Login_Register_Controller.Verify_Mobile)
+seekerRoutes.post('/register-education', seeker_validate.seekerRegEducation, Login_Register_Controller.add_education)
 
-loginRegisterRoutes.post('/seeker-register', seeker_validate.seekerRegister, upload.single("resume"), loginRegisterController.seeker_register)
-loginRegisterRoutes.post('/seeker-register-education',   seeker_validate.seekerRegEducation,          loginRegisterController.seeker_register_education)
-loginRegisterRoutes.post('/seeker-verify-email',         seeker_validate.seekerVerifyEmail,           loginRegisterController.seeker_Verify_Email)
-loginRegisterRoutes.post('/seeker-verify-mobile',        seeker_validate.seekerVerifyMobile,          loginRegisterController.seeker_Verify_Mobile)
-loginRegisterRoutes.post('/seeker-login',                seeker_validate.seekerLogin,                 loginRegisterController.seeker_login)
-loginRegisterRoutes.post('/seeker-forgot-password',      seeker_validate.seekerforgotPassword,        loginRegisterController.seeker_forgot_Password)
-loginRegisterRoutes.post('/employer-register',           employer_validate.employerRegister,          loginRegisterController.employer_register)
-loginRegisterRoutes.post('/employer-verify-email',       employer_validate.employerVerifyEmail,       loginRegisterController.employer_Verify_Email)
-loginRegisterRoutes.post('/employer-verify-mobile',      employer_validate.employerVerifyMobile,      loginRegisterController.employer_Verify_Mobile)
-loginRegisterRoutes.post('/employer-login',              employer_validate.employerLogin,             loginRegisterController.employer_login)
-loginRegisterRoutes.post('/emp-forgot-password',         employer_validate.empforgotPassword,         loginRegisterController.emp_forgot_Password)
+// Seeker Login Routes 
 
-module.exports = loginRegisterRoutes
+seekerRoutes.post('/login', seeker_validate.seekerLogin, Login_Register_Controller.login)
+seekerRoutes.post('/forgot-password', seeker_validate.seekerforgotPassword, Login_Register_Controller.forgot_Password)
+
+
+module.exports = seekerRoutes

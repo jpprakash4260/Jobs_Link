@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
          },
          email_otp: {
             type: DataTypes.INTEGER,
-            // allowNull: false
+            allowNull: false
          },
          email_verify: {
             type: DataTypes.ENUM,
@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
          },
          mobile_otp: {
             type: DataTypes.INTEGER,
-            // allowNull: false
+            allowNull: false
          },
          mobile_verify: {
             type: DataTypes.ENUM,
@@ -197,7 +197,7 @@ module.exports = (sequelize, DataTypes) => {
          },
          emp_date: {
             type: DataTypes.DATE,
-            // allowNull: false,
+            allowNull: false,
          }
       },
       { updatedAt: 'lastupdate', createdAt: false, tableName: "tbl__employee" }

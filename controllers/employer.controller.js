@@ -1,6 +1,6 @@
 'use strict'
 
-const { employerService, crudService } = require('../services');
+const { employerService } = require('../services');
 const { response } = require('../middleware');
 const { statusCodes, responseMessage, loggerMessage } = require('../constants');
 const { logger } = require('../helper')
@@ -206,18 +206,26 @@ EmployerController.dashboard = async (req, res) => {
 
 EmployerController.emp_change_Password = async (req, res) => {
    try {
-      const changed_Password = await crudService.updateEmp_byId(req.employer_id, { comp_pass: req.body.new_pass })
+
+      const changed_Password = await employerService.update(req.params.recut_id, { comp_pass: req.body.comp_pass })
+      
       if (changed_Password == 1) {
+
          logger.info(loggerMessage.changedPassword)
          return response.success(req, res, statusCodes.HTTP_OK, req.valid_user.email, responseMessage.changedPassword)
-      } else if (changed_Password == 2) {
+      }
+      else if (changed_Password == 2) {
+
          logger.error(loggerMessage.alreadyExited)
          return response.errors(req, res, statusCodes.HTTP_EXPECTATION_FAILED, req.valid_user.email, responseMessage.alreadyExited)
-      } else {
+      }
+      else {
+
          logger.error(loggerMessage.notchangedPass)
          return response.errors(req, res, statusCodes.HTTP_EXPECTATION_FAILED, req.valid_user.email, responseMessage.notchangedPass)
       }
-   } catch (err) {
+   }
+   catch (err) {
       logger.error(loggerMessage.errorInUpdating)
       return response.errors(req, res, statusCodes.HTTP_EXPECTATION_FAILED, req.employer_id, responseMessage.errorInUpdating)
    }
@@ -242,3 +250,4 @@ EmployerController.post_job = async (req, res) => {
 }
 
 module.exports = EmployerController
+

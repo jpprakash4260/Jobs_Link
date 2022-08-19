@@ -1,14 +1,14 @@
 'use strict'
-const db = require("../Models");
+const db = require("../Models")
 const upload = require("../validators/cloudinary.validator")
-const moment = require('moment');
-const { networkInterfaces } = require('os');
-const { sequelize } = require('sequelize')
+const moment = require('moment')
 
 class CrudService { };
-CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
+CrudService.createSeeker = async (req, email_OTP, mobile_OTP) => {
     try {
-        let resume = 'not Attached'
+
+        var resume = 'not Attached'
+
         if (req.file) if (req.file.path) resume = (await upload.uploader.upload(req.file.path)).secure_url
         const created_ = {
             emp_name: req.body.emp_name,
@@ -22,24 +22,16 @@ CrudService.createSeeker = async (req, res, email_OTP, mobile_OTP) => {
             agreechk: req.body.agreechk,
             mobile_otp: mobile_OTP,
             email_otp: email_OTP,
-            emp_date: moment().format(),
-            lastupdate: '',
-            ipaddress: await CrudService.get_IP()
+            emp_date: new Date(),
+            ipaddress: req.ip
         }
+        
         let saved_seeker = await db.Employee.create(created_)
-        return saved_seeker;
-    } catch (err) {
-        if (err.name == "SequelizeUniqueConstraintError" && err.errors[0].type == "unique violation" && err.errors[0].validatorKey == "not_unique") {
-            let unique_err = {
-                error: "unique_error",
-                message: err.errors[0].message,
-                field: err.errors[0].path,
-            }
-            return unique_err;
-        } else {
-            console.log("Error in catch : ", err);
-            return err;
-        }
+        return saved_seeker
+    }
+    catch (err) {
+        return err
+
     }
 }
 
@@ -287,7 +279,6 @@ CrudService.otp_emp = async (_id, mobile_otp, email_otp) => {
 
 CrudService.delete_User = async (obj, modelName) => {
     try {
-        // console.log('obj : ',obj, 'modelName : ', modelName);
         const deleted = await db[modelName].destroy({ where: obj })
         return deleted
     } catch (err) {
@@ -304,25 +295,7 @@ CrudService.Truncate = async (tableName) => {
     }
 }
 
-CrudService.get_IP = async () => {
-    try {
-        const nets = networkInterfaces();
-        const results = Object.create(null); // Or just '{}', an empty object
-
-        for (const name of Object.keys(nets)) {
-            for (const net of nets[name]) {
-                // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
-                if (net.family === 'IPv4' && !net.internal) {
-                    if (!results[name]) { results[name] = [] }
-                    results[name].push(net.address)
-                    return results.WiFi ? results.WiFi[0] : results
-                }
-            }
-        }
-    } catch (err) {
-        return err
-    }
-}
+CrudService
 
 CrudService.getEmployement = async (tableName) => {
     try {

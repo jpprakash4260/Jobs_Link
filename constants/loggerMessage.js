@@ -1,6 +1,7 @@
 module.exports = {
 	getDataSuccess: 'Get Data Successfully',
 	alreadyExited: "Already Exiting Value",
+	ext_Account: "Already Exiting Account, Please Login",
 	alreadyVerified: "Already Verifed",
 	alreadyExitedJob: "Already Exiting Job",
 	showedDataSuccess: "Seekers Showed",
@@ -58,5 +59,6 @@ module.exports = {
 	otpNotSended: "OTP not sended",
 	otpNotUpdated: "OTP not Updated",
 	ext_email: "already exiting Email Id",
+	ext_email_mobile: "already exiting Email Id and Mobile Number",
 	ext_mobile: "already exiting Mobile Number",
 };

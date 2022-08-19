@@ -1,5 +1,3 @@
-const moment = require('moment')
-
 module.exports = (sequelize, DataTypes) => {
    const AccessKey = sequelize.define(
       "Access",

@@ -44,21 +44,6 @@ class SeekerValidation {
 			agreechk: Joi.boolean().required()
 		});
 		return BaseValidation.validateSeekerRegisterBody(req, res, next, seeker_schema);
-	};
-	seekerVerifyEmail(req, res, next) {
-		const seeker_schema = Joi.object({
-			emp_email: Joi.string().email().required(),
-			email_otp: Joi.number().min(6).required()
-		});
-		return BaseValidation.validateSeekerVerifyBody(req, res, next, seeker_schema);
-	}
-
-	seekerVerifyMobile(req, res, next) {
-		const seeker_schema = Joi.object({
-			emp_email: Joi.string().email().required(),
-			mobile_otp: Joi.number().min(6).required()
-		});
-		return BaseValidation.validateSeekerVerifyBody(req, res, next, seeker_schema);
 	}
 
 	seekerRegEducation(req, res, next) {

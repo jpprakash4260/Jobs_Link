@@ -46,16 +46,15 @@ const initializeRoutes = (app) => {
     app.use('/api/v1/state', require('./v1/state.routes'));
     app.use('/api/v1/symposium', require('./v1/symposium.routes'));
     app.use('/api/v1/unrestjobpost_exp', require('./v1/unrestjobpost_exp.routes'));
-    app.use('/api/v1/unrestjobpost', require('./v1/unrestjobpost.routes'));
-    app.use('/api/v1/workshops', require('./v1/workshops.routes'));
+    app.use('/api/v1/unrestjobpost', require('./v1/unrestjobpost.routes'))
+    app.use('/api/v1/workshops', require('./v1/workshops.routes'))
+    app.use('/api/v1/seeker', require('./v1/seeker.routes'))
+    app.use('/api/v1/employer', require('./v1/employer.routes'))
+    app.use('/api/v1/seeker', require('./v1/loginregister.routes'))
+    app.use('/api/v1/employer', require('./v1/employerLogin.routes'))
+    app.use('/api/v1/crud', require('./v1/crud.routes'))
+    app.use('/api/v1/joinquery', require('./v1/joinquery.routes'))
 
-    app.use('/api/v1/seeker', require('./v1/seeker.routes'));
-    app.use('/api/v1/employer', require('./v1/employer.routes'));
-    app.use('/api/v1/', require('./v1/loginRegister.routes'));
-    app.use('/api/v1/crud', require('./v1/crud.routes'));
+}
 
-
-
-};
-
-module.exports = initializeRoutes;
+module.exports = initializeRoutes
