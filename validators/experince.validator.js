@@ -12,7 +12,7 @@ class ExperinceValidation {
          exp_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.ExperinceBody(req, res, next, experince_schema)
+      return BaseValidation.validateBody(req, res, next, experince_schema)
    }
 
    update(req, res, next) {
@@ -23,7 +23,7 @@ class ExperinceValidation {
          exp_date: Joi.date().raw()
       })
 
-      return BaseValidation.ExperinceBody(req, res, next, experince_schema)
+      return BaseValidation.validateBody(req, res, next, experince_schema)
    }
 }
 

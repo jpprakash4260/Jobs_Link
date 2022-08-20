@@ -22,7 +22,7 @@ class EntrepreneurshipValidation {
          added_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.EntrepreneurshipBody(req, res, next, entrepreneurship_schema)
+      return BaseValidation.validateBody(req, res, next, entrepreneurship_schema)
    }
 
    update(req, res, next) {
@@ -43,7 +43,7 @@ class EntrepreneurshipValidation {
          added_date: Joi.date().raw()
       })
 
-      return BaseValidation.EntrepreneurshipBody(req, res, next, entrepreneurship_schema)
+      return BaseValidation.validateBody(req, res, next, entrepreneurship_schema)
    }
 }
 

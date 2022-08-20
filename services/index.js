@@ -34,7 +34,6 @@ const jobpostingService = require('./jobposting.service')
 const jobscategoryService = require('./jobscategory.service')
 const jobtypeService = require('./jobtype.service')
 const keyskillsService = require('./keyskills.service')
-const helper = require("./helper.service")
 const notificationService = require('./notification.service')
 const operatorService = require('./operator.service')
 const qualificationService = require('./qualification.service')
@@ -87,7 +86,6 @@ module.exports = {
    jobscategoryService,
    jobtypeService,
    keyskillsService,
-   helper,
    notificationService,
    operatorService,
    qualificationService,

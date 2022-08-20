@@ -16,7 +16,7 @@ class EmpedudetailValidation {
          edudate: Joi.date().raw().required()
       })
 
-      return BaseValidation.EmpEduDetailBody(req, res, next, empedudetail_schema)
+      return BaseValidation.validateBody(req, res, next, empedudetail_schema)
    }
 
    update(req, res, next) {
@@ -31,7 +31,7 @@ class EmpedudetailValidation {
          edudate: Joi.date().raw()
       })
 
-      return BaseValidation.EmpEduDetailBody(req, res, next, empedudetail_schema)
+      return BaseValidation.validateBody(req, res, next, empedudetail_schema)
    }
 }
 

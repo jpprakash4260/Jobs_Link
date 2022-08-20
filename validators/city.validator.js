@@ -16,7 +16,7 @@ class CityValidation {
          foot_status: Joi.string().valid('Y', 'N').max(1).required()
       })
 
-      return BaseValidation.CityBody(req, res, next, city_schema)
+      return BaseValidation.validateBody(req, res, next, city_schema)
    }
 
    update(req, res, next) {
@@ -31,7 +31,7 @@ class CityValidation {
          foot_status: Joi.string().valid('Y', 'N').max(1).required()
       })
 
-      return BaseValidation.CityBody(req, res, next, city_schema)
+      return BaseValidation.validateBody(req, res, next, city_schema)
    }
 }
 

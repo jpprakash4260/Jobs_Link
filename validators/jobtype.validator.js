@@ -12,7 +12,7 @@ class JobTypeValidation {
          jtype_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.JobTypeBody(req, res, next, JobType_schema)
+      return BaseValidation.validateBody(req, res, next, JobType_schema)
    }
 
    update(req, res, next) {
@@ -23,7 +23,7 @@ class JobTypeValidation {
          jtype_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.JobTypeBody(req, res, next, JobType_schema)
+      return BaseValidation.validateBody(req, res, next, JobType_schema)
    }
 }
 

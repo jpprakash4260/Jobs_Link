@@ -1,8 +1,8 @@
 'use strict'
-const { helper, seekerService, employerService } = require('../services')
+const {  seekerService, employerService } = require('../services')
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
-const { logger } = require('../helper')
+const { logger, SMS_Sender, helper, Email_Sender } = require('../helper')
 const upload = require("../validators/cloudinary.validator")
 
 class Login_Register_Controller { }
@@ -54,7 +54,7 @@ Login_Register_Controller.register = async (req, res) => {
 
          if (temp_email.emp_id == temp_mobile.emp_id) {   // OTP resended for non Verifed Account
 
-            await Login_Register_Controller.seeker_resendOTP(req, res, temp_email)
+            await Login_Register_Controller.resendOTP(req, res, temp_email)
          }
          else {                                           // deleting non Verifed Account and Create new Account
 
@@ -125,16 +125,16 @@ Login_Register_Controller.register = async (req, res) => {
             mobile_otp: mobile_OTP,
             email_otp: email_OTP,
             emp_date: new Date(),
-            ipaddress: req.ip
+            ipaddress: await helper.get_IP()
          }
 
          const created = await seekerService.create(seeker)
 
          if (created) {
 
-            helper.sms_sender(req.body.emp_mobile, mobile_OTP)            // SMS OTP Sending
+            SMS_Sender(req.body.emp_mobile, mobile_OTP)            // SMS OTP Sending
 
-            helper.email_sender(req.body.emp_email, email_OTP)            // Email OTP Sending
+            Email_Sender(req.body.emp_email, email_OTP)            // Email OTP Sending
 
             var created_obj = {
                emp_id: created.emp_id,
@@ -154,6 +154,7 @@ Login_Register_Controller.register = async (req, res) => {
       }
    }
    catch (err) {
+      console.log("err in catch : ", err)
       logger.error(loggerMessage.errInCreate)
       return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errInCreate)
    }
@@ -169,12 +170,20 @@ Login_Register_Controller.resendOTP = async (req, res, temp_email) => {
 
       if (update_OTP == 1) {
 
-         helper.sms_sender(req.body.emp_mobile, mobile_OTP)
+         SMS_Sender(req.body.emp_mobile, mobile_OTP)                      // SMS OTP Sending
 
-         helper.email_sender(req.body.emp_email, email_OTP)
+         Email_Sender(req.body.emp_email, email_OTP)                      // Email OTP Sending
+
+         var created_obj = {
+            emp_id: temp_email.emp_id,
+            emp_email: temp_email.emp_email,
+            emp_mobile: temp_email.emp_mobile,
+            email_otp: email_OTP,
+            mobile_otp: mobile_OTP
+         }
 
          logger.info(loggerMessage.otpResended)
-         return response.success(req, res, statusCodes.HTTP_OK, { email_OTP, mobile_OTP }, responseMessage.otpResended)
+         return response.success(req, res, statusCodes.HTTP_OK, created_obj, responseMessage.otpResended)
       }
       else {
          logger.error(loggerMessage.updateDataFailure)
@@ -182,6 +191,7 @@ Login_Register_Controller.resendOTP = async (req, res, temp_email) => {
       }
    }
    catch (err) {
+      console.log(err)
       logger.error(loggerMessage.errorInUpdating)
       return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, err, responseMessage.errorInUpdating)
    }
@@ -342,7 +352,7 @@ Login_Register_Controller.forgot_Password = async (req, res) => {
             password: exited_email.password
          }
 
-         helper.email_sender(exited_email.emp_email, null, forgot_Password)  // Sending Password through UserName and  Email
+         Email_Sender(exited_email.emp_email, null, forgot_Password)  // Sending Password through UserName and  Email
 
          logger.info(loggerMessage.passwordsended)
          return response.success(req, res, statusCodes.HTTP_ACCEPTED, exited_email.emp_email, responseMessage.passwordsended)
@@ -460,7 +470,7 @@ Login_Register_Controller.employer_register = async (req, res) => {
          const email_OTP = await helper.gen_otp()
          const mobile_OTP = await helper.gen_otp()
 
-         const seeker = {
+         const employer = {
             comp_name: req.body.comp_name,
             mail_id: req.body.mail_id,
             mobile_no: req.body.mobile_no,
@@ -475,16 +485,16 @@ Login_Register_Controller.employer_register = async (req, res) => {
             recut_desc: req.body.recut_desc,
             email_otp: email_OTP,
             mobile_otp: mobile_OTP,
-            ipaddress: req.ip
+            ipaddress: await helper.get_IP()
          }
 
-         const created = await employerService.create(seeker)
+         const created = await employerService.create(employer)
 
          if (created) {
 
-            helper.sms_sender(req.body.mobile_no, mobile_OTP)            // SMS OTP Sending
+            SMS_Sender(req.body.mobile_no, mobile_OTP)            // SMS OTP Sending
 
-            helper.email_sender(req.body.mail_id, email_OTP)            // Email OTP Sending
+            Email_Sender(req.body.mail_id, email_OTP)            // Email OTP Sending
 
             var created_obj = {
                emp_id: created.recut_id,
@@ -519,12 +529,20 @@ Login_Register_Controller.employer_resendOTP = async (req, res, temp_email) => {
 
       if (update_OTP == 1) {
 
-         helper.sms_sender(req.body.mobile_no, mobile_OTP)
+         SMS_Sender(req.body.mobile_no, mobile_OTP)
 
-         helper.email_sender(req.body.mail_id, email_OTP)
+         Email_Sender(req.body.mail_id, email_OTP)
+
+         var created_obj = {
+            recut_id: temp_email.recut_id,
+            mail_id: temp_email.mail_id,
+            mobile_no: temp_email.mobile_no,
+            email_otp: email_OTP,
+            mobile_otp: mobile_OTP
+         }
 
          logger.info(loggerMessage.otpResended)
-         return response.success(req, res, statusCodes.HTTP_OK, { email_OTP , mobile_OTP}, responseMessage.otpResended)
+         return response.success(req, res, statusCodes.HTTP_OK, created_obj, responseMessage.otpResended)
       }
       else {
          logger.error(loggerMessage.updateDataFailure)
@@ -662,7 +680,7 @@ Login_Register_Controller.emp_forgot_Password = async (req, res) => {
             password: exited_email.comp_pass
          }
 
-         helper.email_sender(exited_email.mail_id, null, forgot_Password)  // Sending Password through UserName and  Email
+         Email_Sender(exited_email.mail_id, null, forgot_Password)  // Sending Password through UserName and  Email
 
          logger.info(loggerMessage.passwordsended)
          return response.success(req, res, statusCodes.HTTP_ACCEPTED, exited_email.mail_id, responseMessage.passwordsended)

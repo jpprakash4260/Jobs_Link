@@ -15,7 +15,7 @@ class IntScheduleValidation {
          mail_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.IntScheduleBody(req, res, next, intschedule_schema)
+      return BaseValidation.validateBody(req, res, next, intschedule_schema)
    }
 
    update(req, res, next) {
@@ -29,7 +29,7 @@ class IntScheduleValidation {
          mail_date: Joi.date().raw()
       })
 
-      return BaseValidation.IntScheduleBody(req, res, next, intschedule_schema)
+      return BaseValidation.validateBody(req, res, next, intschedule_schema)
    }
 }
 

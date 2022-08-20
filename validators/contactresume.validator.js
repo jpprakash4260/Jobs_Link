@@ -12,7 +12,7 @@ class ContactresumeValidation {
          cont_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.ContactResumeBody(req, res, next, contactresume_schema)
+      return BaseValidation.validateBody(req, res, next, contactresume_schema)
    }
 
    update(req, res, next) {
@@ -23,7 +23,7 @@ class ContactresumeValidation {
          cont_date: Joi.date().raw()
       })
 
-      return BaseValidation.ContactResumeBody(req, res, next, contactresume_schema)
+      return BaseValidation.validateBody(req, res, next, contactresume_schema)
    }
 }
 

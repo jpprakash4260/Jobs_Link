@@ -49,7 +49,7 @@ class CollegeValidation {
          posted_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.GovjobpostBody(req, res, next, govjobpost_schema)
+      return BaseValidation.validateBody(req, res, next, govjobpost_schema)
    }
 
    update(req, res, next) {
@@ -97,7 +97,7 @@ class CollegeValidation {
          posted_date: Joi.date().raw()
       })
 
-      return BaseValidation.GovjobpostBody(req, res, next, govjobpost_schema)
+      return BaseValidation.validateBody(req, res, next, govjobpost_schema)
    }
 }
 

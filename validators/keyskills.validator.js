@@ -14,7 +14,7 @@ class KeySkillsValidation {
          keysk_dt: Joi.date().raw().required()
       })
 
-      return BaseValidation.KeySkillsBody(req, res, next, keyskills_schema)
+      return BaseValidation.validateBody(req, res, next, keyskills_schema)
    }
 
    update(req, res, next) {
@@ -27,7 +27,7 @@ class KeySkillsValidation {
          keysk_dt: Joi.date().raw()
       })
 
-      return BaseValidation.KeySkillsBody(req, res, next, keyskills_schema)
+      return BaseValidation.validateBody(req, res, next, keyskills_schema)
    }
 }
 

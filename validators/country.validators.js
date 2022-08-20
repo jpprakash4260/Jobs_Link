@@ -18,7 +18,7 @@ class CountryValidation {
          foot_status: Joi.string().valid('Y', 'N').max(1).required()
       })
 
-      return BaseValidation.CountryBody(req, res, next, country_schema)
+      return BaseValidation.validateBody(req, res, next, country_schema)
    }
 
    update(req, res, next) {
@@ -35,7 +35,7 @@ class CountryValidation {
          foot_status: Joi.string().valid('Y', 'N').max(1)
       })
 
-      return BaseValidation.CountryBody(req, res, next, country_schema)
+      return BaseValidation.validateBody(req, res, next, country_schema)
    }
 }
 

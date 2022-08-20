@@ -15,7 +15,7 @@ class SeminarsValidation {
          added_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.SeminarsBody(req, res, next, seminars_schema)
+      return BaseValidation.validateBody(req, res, next, seminars_schema)
    }
 
    update(req, res, next) {
@@ -29,7 +29,7 @@ class SeminarsValidation {
          added_date: Joi.date().raw()
       })
 
-      return BaseValidation.SeminarsBody(req, res, next, seminars_schema)
+      return BaseValidation.validateBody(req, res, next, seminars_schema)
    }
 }
 

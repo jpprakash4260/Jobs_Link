@@ -15,7 +15,7 @@ class GalleryValidation {
          gal_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.GalleryBody(req, res, next, gallery_schema)
+      return BaseValidation.validateBody(req, res, next, gallery_schema)
    }
 
    update(req, res, next) {
@@ -29,7 +29,7 @@ class GalleryValidation {
          gal_date: Joi.date().raw()
       })
 
-      return BaseValidation.GalleryBody(req, res, next, gallery_schema)
+      return BaseValidation.validateBody(req, res, next, gallery_schema)
    }
 }
 

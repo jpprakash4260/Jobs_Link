@@ -19,7 +19,7 @@ class EmployeeValidation {
          recut_desc: Joi.string().min(10).required()
       })
 
-      return BaseValidation.validateEmployeeRegisterBody(req, res, next, college_schema)
+      return BaseValidation.validateBody(req, res, next, college_schema)
    }
 
    update(req, res, next) {
@@ -38,7 +38,7 @@ class EmployeeValidation {
          recut_desc: Joi.string().min(10)
       })
 
-      return BaseValidation.validateEmployeeRegisterBody(req, res, next, college_schema)
+      return BaseValidation.validateBody(req, res, next, college_schema)
    }
 
    employerRegister(req, res, next) {
@@ -56,14 +56,14 @@ class EmployeeValidation {
          recut_address: Joi.string().min(5).required(),
          recut_desc: Joi.string().min(10).required()
       });
-      return BaseValidation.validateEmployeeRegisterBody(req, res, next, employer_schema);
+      return BaseValidation.validateBody(req, res, next, employer_schema);
    };
    employerVerifyEmail(req, res, next) {
       const employer_schema = Joi.object({
          mail_id: Joi.string().email().required(),
          email_otp: Joi.number().min(6).required()
       });
-      return BaseValidation.validateEmployeeVerifyBody(req, res, next, employer_schema);
+      return BaseValidation.validateBody(req, res, next, employer_schema);
    }
 
    employerVerifyMobile(req, res, next) {
@@ -71,7 +71,7 @@ class EmployeeValidation {
          mail_id: Joi.string().email().required(),
          mobile_otp: Joi.number().min(6).required()
       });
-      return BaseValidation.validateEmployeeVerifyBody(req, res, next, employer_schema);
+      return BaseValidation.validateBody(req, res, next, employer_schema);
    }
 
    employerLogin(req, res, next) {
@@ -79,14 +79,14 @@ class EmployeeValidation {
          mail_id: Joi.string().email().required(),
          comp_pass: Joi.string().min(6).required()
       });
-      return BaseValidation.validateEmployeeLoginBody(req, res, next, employer_schema);
+      return BaseValidation.validateBody(req, res, next, employer_schema);
    }
 
    empforgotPassword(req, res, next) {
       const employer_schema = Joi.object({
          mail_id: Joi.string().email().required()
       });
-      return BaseValidation.validateForgotPasswordBody(req, res, next, employer_schema);
+      return BaseValidation.validateBody(req, res, next, employer_schema);
    }
 
    empChangePassword(req, res, next) {
@@ -95,7 +95,7 @@ class EmployeeValidation {
          new_pass: Joi.string().min(6).required(),
          reNew_pass: Joi.string().min(6).required().valid(Joi.ref('new_pass'))
       });
-      return BaseValidation.validateChangePasswordBody(req, res, next, employer_schema);
+      return BaseValidation.validateBody(req, res, next, employer_schema);
    }
 
    empPostJob(req, res, next) {
@@ -122,7 +122,7 @@ class EmployeeValidation {
          unrest_landline: Joi.string().min(1),
          key_skills: Joi.string().min(1)
       });
-      return BaseValidation.validateChangePasswordBody(req, res, next, employer_schema);
+      return BaseValidation.validateBody(req, res, next, employer_schema);
    }
 }
 

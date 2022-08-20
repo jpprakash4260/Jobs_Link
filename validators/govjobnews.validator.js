@@ -13,7 +13,7 @@ class CollegeValidation {
          gnews_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.GovjobnewsBody(req, res, next, govjobnews_schema)
+      return BaseValidation.validateBody(req, res, next, govjobnews_schema)
    }
 
    update(req, res, next) {
@@ -25,7 +25,7 @@ class CollegeValidation {
          gnews_date: Joi.date().raw()
       })
 
-      return BaseValidation.GovjobnewsBody(req, res, next, govjobnews_schema)
+      return BaseValidation.validateBody(req, res, next, govjobnews_schema)
    }
 }
 

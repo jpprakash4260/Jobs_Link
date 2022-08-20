@@ -18,7 +18,7 @@ class WorkShopValidation {
          exp_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.WorkShopsBody(req, res, next, Workshop_schema)
+      return BaseValidation.validateBody(req, res, next, Workshop_schema)
    }
 
    update(req, res, next) {
@@ -35,7 +35,7 @@ class WorkShopValidation {
          exp_date: Joi.date().raw()
       })
 
-      return BaseValidation.WorkShopsBody(req, res, next, Workshop_schema)
+      return BaseValidation.validateBody(req, res, next, Workshop_schema)
    }
 }
 

@@ -13,7 +13,7 @@ class CourseValidation {
          course_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.CourseBody(req, res, next, course_schema)
+      return BaseValidation.validateBody(req, res, next, course_schema)
    }
 
    update(req, res, next) {
@@ -25,7 +25,7 @@ class CourseValidation {
          course_date: Joi.date().raw()
       })
 
-      return BaseValidation.CourseBody(req, res, next, course_schema)
+      return BaseValidation.validateBody(req, res, next, course_schema)
    }
 }
 

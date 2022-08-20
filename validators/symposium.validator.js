@@ -16,7 +16,7 @@ class SymposiumValidation {
          added_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.SymposiumBody(req, res, next, symposium_schema)
+      return BaseValidation.validateBody(req, res, next, symposium_schema)
    }
 
    update(req, res, next) {
@@ -31,7 +31,7 @@ class SymposiumValidation {
          added_date: Joi.date().raw()
       })
 
-      return BaseValidation.SymposiumBody(req, res, next, symposium_schema)
+      return BaseValidation.validateBody(req, res, next, symposium_schema)
    }
 }
 

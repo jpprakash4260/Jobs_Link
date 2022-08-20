@@ -15,7 +15,7 @@ class SeekerValidation {
 			agreechk: Joi.boolean().required()
 		})
 
-		return BaseValidation.validateSeekerRegisterBody(req, res, next, seeker_schema)
+		return BaseValidation.validateBody(req, res, next, seeker_schema)
 	}
 
 	update(req, res, next) {
@@ -29,7 +29,7 @@ class SeekerValidation {
 			emp_city: Joi.string()
 		})
 
-		return BaseValidation.validateSeekerRegisterBody(req, res, next, seeker_schema)
+		return BaseValidation.validateBody(req, res, next, seeker_schema)
 	}
 
 	seekerRegister(req, res, next) {
@@ -43,7 +43,7 @@ class SeekerValidation {
 			emp_city: Joi.string().required(),
 			agreechk: Joi.boolean().required()
 		});
-		return BaseValidation.validateSeekerRegisterBody(req, res, next, seeker_schema);
+		return BaseValidation.validateBody(req, res, next, seeker_schema);
 	}
 
 	seekerRegEducation(req, res, next) {
@@ -57,7 +57,7 @@ class SeekerValidation {
 			high_pass_yr: Joi.string().required(),
 			exp_type: Joi.string().required()
 		});
-		return BaseValidation.validateSeekerRegEduBody(req, res, next, seeker_schema);
+		return BaseValidation.validateBody(req, res, next, seeker_schema);
 	};
 
 	seekerLogin(req, res, next) {
@@ -65,14 +65,14 @@ class SeekerValidation {
 			emp_email: Joi.string().email().required(),
 			emp_pass: Joi.string().min(6).required()
 		});
-		return BaseValidation.validateSeekerLoginBody(req, res, next, seeker_schema);
+		return BaseValidation.validateBody(req, res, next, seeker_schema);
 	}
 
 	seekerforgotPassword(req, res, next) {
 		const seeker_schema = Joi.object({
 			emp_email: Joi.string().email().required()
 		});
-		return BaseValidation.validateSeekerLoginBody(req, res, next, seeker_schema);
+		return BaseValidation.validateBody(req, res, next, seeker_schema);
 	}
 
 	seekerPersonalDetails(req, res, next) {

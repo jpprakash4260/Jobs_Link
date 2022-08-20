@@ -13,7 +13,7 @@ class IndustryTypeValidation {
          indust_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.IndustryTyeBody(req, res, next, industryType_schema)
+      return BaseValidation.validateBody(req, res, next, industryType_schema)
    }
 
    update(req, res, next) {
@@ -25,7 +25,7 @@ class IndustryTypeValidation {
          indust_date: Joi.date().raw()
       })
 
-      return BaseValidation.IndustryTyeBody(req, res, next, industryType_schema)
+      return BaseValidation.validateBody(req, res, next, industryType_schema)
    }
 }
 

@@ -25,7 +25,7 @@ class JobPostingValidation {
          ipaddress: Joi.string().min(1).required()
       })
 
-      return BaseValidation.JobPostingBody(req, res, next, jobposting_schema)
+      return BaseValidation.validateBody(req, res, next, jobposting_schema)
    }
 
    update(req, res, next) {
@@ -49,7 +49,7 @@ class JobPostingValidation {
          ipaddress: Joi.string().min(1)
       })
 
-      return BaseValidation.JobPostingBody(req, res, next, jobposting_schema)
+      return BaseValidation.validateBody(req, res, next, jobposting_schema)
    }
 }
 

@@ -14,7 +14,7 @@ class SpecializationValidation {
          speclz_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.SpecializationBody(req, res, next, specialization_schema)
+      return BaseValidation.validateBody(req, res, next, specialization_schema)
    }
 
    update(req, res, next) {
@@ -27,7 +27,7 @@ class SpecializationValidation {
          speclz_date: Joi.date().raw()
       })
 
-      return BaseValidation.SpecializationBody(req, res, next, specialization_schema)
+      return BaseValidation.validateBody(req, res, next, specialization_schema)
    }
 }
 

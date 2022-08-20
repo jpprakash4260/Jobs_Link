@@ -13,7 +13,7 @@ class EmpkSkillsValidation {
          empkskil_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.EmpkskillsBody(req, res, next, empkskills_schema)
+      return BaseValidation.validateBody(req, res, next, empkskills_schema)
    }
 
    update(req, res, next) {
@@ -25,7 +25,7 @@ class EmpkSkillsValidation {
          empkskil_date: Joi.date().raw()
       })
 
-      return BaseValidation.EmpkskillsBody(req, res, next, empkskills_schema)
+      return BaseValidation.validateBody(req, res, next, empkskills_schema)
    }
 }
 

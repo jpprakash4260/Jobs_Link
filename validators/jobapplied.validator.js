@@ -15,7 +15,7 @@ class JobAppliedValidation {
          applied_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.JobAppliedBody(req, res, next, jobapplied_schema)
+      return BaseValidation.validateBody(req, res, next, jobapplied_schema)
    }
 
    update(req, res, next) {
@@ -29,7 +29,7 @@ class JobAppliedValidation {
          applied_date: Joi.date().raw()
       })
 
-      return BaseValidation.JobAppliedBody(req, res, next, jobapplied_schema)
+      return BaseValidation.validateBody(req, res, next, jobapplied_schema)
    }
 }
 

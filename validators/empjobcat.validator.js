@@ -13,7 +13,7 @@ class EmpjobcatValidation {
          mjcat_date: Joi.date().min(1).required()
       })
 
-      return BaseValidation.EmpJobcatBody(req, res, next, empjobcat_schema)
+      return BaseValidation.validateBody(req, res, next, empjobcat_schema)
    }
 
    update(req, res, next) {
@@ -25,7 +25,7 @@ class EmpjobcatValidation {
          mjcat_date: Joi.date().min(1)
       })
 
-      return BaseValidation.EmpJobcatBody(req, res, next, empjobcat_schema)
+      return BaseValidation.validateBody(req, res, next, empjobcat_schema)
    }
 }
 

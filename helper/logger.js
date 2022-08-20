@@ -1,6 +1,5 @@
-const winston = require('winston');
-const DailyRotateFile = require('winston-daily-rotate-file');
-const moment = require('moment')
+const winston = require('winston')
+const DailyRotateFile = require('winston-daily-rotate-file')
 
 const timezoned = () => {
     return new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
@@ -28,4 +27,5 @@ const logger = winston.createLogger({
         new winston.transports.Console()
     ]
 })
+
 module.exports = logger

@@ -13,7 +13,7 @@ class GcmRegisterValidation {
          gcm_dt: Joi.date().raw().required()
       })
 
-      return BaseValidation.GcmRegisterBody(req, res, next, gcmregister_schema)
+      return BaseValidation.validateBody(req, res, next, gcmregister_schema)
    }
 
    update(req, res, next) {
@@ -25,7 +25,7 @@ class GcmRegisterValidation {
          gcm_dt: Joi.date().raw()
       })
 
-      return BaseValidation.GcmRegisterBody(req, res, next, gcmregister_schema)
+      return BaseValidation.validateBody(req, res, next, gcmregister_schema)
    }
 }
 

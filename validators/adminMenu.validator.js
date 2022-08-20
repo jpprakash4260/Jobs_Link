@@ -14,7 +14,7 @@ class AdminMenuValidation {
          menu_pos: Joi.number().min(1).required(),
          menu_status: Joi.string().valid('Y', 'N', 'D').max(1).required()
       })
-      return BaseValidation.AdminMenuBody(req, res, next, adminMenu_schema)
+      return BaseValidation.validateBody(req, res, next, adminMenu_schema)
    }
 
    update(req, res, next) {
@@ -28,7 +28,7 @@ class AdminMenuValidation {
          menu_pos: Joi.number().min(1),
          menu_status: Joi.string().valid('Y', 'N', 'D').max(1)
       })
-      return BaseValidation.AdminMenuBody(req, res, next, adminMenu_schema)
+      return BaseValidation.validateBody(req, res, next, adminMenu_schema)
    }
 }
 

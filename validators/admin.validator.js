@@ -18,7 +18,7 @@ class AdminValidation {
          type: Joi.string().min(1).required(),
          explanation: Joi.string().min(1).required()
       })
-      return BaseValidation.AdminBody(req, res, next, admin_schema)
+      return BaseValidation.validateBody(req, res, next, admin_schema)
    }
 
    update(req, res, next) {
@@ -35,7 +35,7 @@ class AdminValidation {
          type: Joi.string().min(1),
          explanation: Joi.string().min(1)
       })
-      return BaseValidation.AdminBody(req, res, next, admin_schema)
+      return BaseValidation.validateBody(req, res, next, admin_schema)
    }
 }
 

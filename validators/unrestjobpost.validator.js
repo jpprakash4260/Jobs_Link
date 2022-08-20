@@ -51,7 +51,7 @@ class UnrestJobPostValidation {
          posted_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.UnrestJobPostBody(req, res, next, unrestjobpost_schema)
+      return BaseValidation.validateBody(req, res, next, unrestjobpost_schema)
    }
 
    update(req, res, next) {
@@ -101,7 +101,7 @@ class UnrestJobPostValidation {
          posted_date: Joi.date().raw()
       })
 
-      return BaseValidation.UnrestJobPostBody(req, res, next, unrestjobpost_schema)
+      return BaseValidation.validateBody(req, res, next, unrestjobpost_schema)
    }
 }
 

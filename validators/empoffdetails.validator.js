@@ -22,7 +22,7 @@ class EmpofficialDetailsValidation {
          wrk_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.EmpoffdetailsBody(req, res, next, empoffdetails_schema)
+      return BaseValidation.validateBody(req, res, next, empoffdetails_schema)
    }
 
    update(req, res, next) {
@@ -43,7 +43,7 @@ class EmpofficialDetailsValidation {
          wrk_date: Joi.date().raw()
       })
 
-      return BaseValidation.EmpoffdetailsBody(req, res, next, empoffdetails_schema)
+      return BaseValidation.validateBody(req, res, next, empoffdetails_schema)
    }
 }
 

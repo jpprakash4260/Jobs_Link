@@ -17,7 +17,7 @@ class CampusValidation {
          camp_status: Joi.string().valid('Y', 'N', 'D').max(1).required(),
          added_date: Joi.date().raw().required()
       })
-      return BaseValidation.CampusBody(req, res, next, campus_schema)
+      return BaseValidation.validateBody(req, res, next, campus_schema)
    }
 
    update(req, res, next) {
@@ -34,7 +34,7 @@ class CampusValidation {
          camp_status: Joi.string().valid('Y', 'N', 'D').max(1),
          added_date: Joi.date().raw()
       })
-      return BaseValidation.CampusBody(req, res, next, campus_schema)
+      return BaseValidation.validateBody(req, res, next, campus_schema)
    }
 }
 

@@ -14,7 +14,7 @@ class EmplocationValidation {
          locat_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.EmplocationBody(req, res, next, emplocat_schema)
+      return BaseValidation.validateBody(req, res, next, emplocat_schema)
    }
 
    update(req, res, next) {
@@ -27,7 +27,7 @@ class EmplocationValidation {
          locat_date: Joi.date().raw()
       })
 
-      return BaseValidation.EmplocationBody(req, res, next, emplocat_schema)
+      return BaseValidation.validateBody(req, res, next, emplocat_schema)
    }
 }
 

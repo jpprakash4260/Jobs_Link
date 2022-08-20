@@ -16,7 +16,7 @@ class Edu_CourseValidation {
          ecat_dt: Joi.date().raw().required()
       })
 
-      return BaseValidation.Edu_CourseBody(req, res, next, edu_course_schema)
+      return BaseValidation.validateBody(req, res, next, edu_course_schema)
    }
 
    update(req, res, next) {
@@ -31,7 +31,7 @@ class Edu_CourseValidation {
          ecat_dt: Joi.date().raw()
       })
 
-      return BaseValidation.Edu_CourseBody(req, res, next, edu_course_schema)
+      return BaseValidation.validateBody(req, res, next, edu_course_schema)
    }
 }
 

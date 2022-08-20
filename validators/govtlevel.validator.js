@@ -12,7 +12,7 @@ class GovtLevelValidation {
          lev_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.GovtLevelBody(req, res, next, govtlevel_schema)
+      return BaseValidation.validateBody(req, res, next, govtlevel_schema)
    }
 
    update(req, res, next) {
@@ -23,7 +23,7 @@ class GovtLevelValidation {
          lev_date: Joi.date().raw()
       })
 
-      return BaseValidation.GovtLevelBody(req, res, next, govtlevel_schema)
+      return BaseValidation.validateBody(req, res, next, govtlevel_schema)
    }
 }
 

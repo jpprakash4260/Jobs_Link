@@ -13,7 +13,7 @@ class CollegeValidation {
          colg_date: Joi.date()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.validateBody(req, res, next, college_schema)
    }
 
    update(req, res, next) {
@@ -25,7 +25,7 @@ class CollegeValidation {
          colg_date: Joi.date()
       })
 
-      return BaseValidation.CollegeBody(req, res, next, college_schema)
+      return BaseValidation.validateBody(req, res, next, college_schema)
    }
 }
 

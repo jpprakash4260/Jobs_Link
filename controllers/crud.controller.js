@@ -133,18 +133,23 @@ CrudController.truncate = async (req, res) => {
     try {
         var tableName = req.params
         const truncate = await crudService.Truncate(tableName.tableName)
-        if (truncate[0] && truncate[0].fieldCount == 0 && truncate[0].affectedRows == 0 && truncate[0].insertId == 0 && truncate[0].info == '' && truncate[0].serverStatus == 2 && truncate[0].warningStatus == 0) {
-            logger.info(loggerMessage.deleteDataSuccess);
-            return response.success(req, res, statusCodes.HTTP_OK, truncate[0], responseMessage.deletedData);
-        } else {
-            logger.warn(loggerMessage.deleteDataFailure);
-            return response.errors(req, res, statusCodes.HTTP_NO_CONTENT, truncate, responseMessage.notDeleted);
+
+        if (truncate[0] && truncate[0].fieldCount == 0 && truncate[0].affectedRows == 0 && truncate[0].insertId == 0
+            && truncate[0].info == '' && truncate[0].serverStatus == 2 && truncate[0].warningStatus == 0) {
+            
+            logger.info(loggerMessage.truncateSuccess)
+            return response.success(req, res, statusCodes.HTTP_OK, truncate[0], responseMessage.truncateSuccess)
         }
-    } catch (err) {
-        logger.error(loggerMessage.deleteDataFailure);
-        return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, responseMessage.errorInDeleting);
+        else {
+            logger.warn(loggerMessage.truncateFailure)
+            return response.errors(req, res, statusCodes.HTTP_NO_CONTENT, truncate, responseMessage.tuncateFailure)
+        }
     }
-};
+    catch (err) {
+        logger.warn(loggerMessage.errorInDeleting)
+        return response.errors(req, res, statusCodes.HTTP_INTERNAL_SERVER_ERROR, responseMessage.errorInDeleting)
+    }
+}
 
 CrudController.findOnesome = async (req, res) => {
     try {

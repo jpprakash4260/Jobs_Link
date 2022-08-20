@@ -19,7 +19,7 @@ class JobsCategoryValidation {
          jcat_dt: Joi.date().raw().required()
       })
 
-      return BaseValidation.JobsCategoryBody(req, res, next, jobscategory_schema)
+      return BaseValidation.validateBody(req, res, next, jobscategory_schema)
    }
 
    update(req, res, next) {
@@ -37,7 +37,7 @@ class JobsCategoryValidation {
          jcat_dt: Joi.date().raw()
       })
 
-      return BaseValidation.JobsCategoryBody(req, res, next, jobscategory_schema)
+      return BaseValidation.validateBody(req, res, next, jobscategory_schema)
    }
 }
 

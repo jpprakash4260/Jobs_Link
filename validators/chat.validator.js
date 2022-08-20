@@ -20,7 +20,7 @@ class ChatValidation {
          read_date: Joi.date().raw().required(),
          ipaddr: Joi.string().min(1).required()
       })
-      return BaseValidation.ChatBody(req, res, next, chat_schema)
+      return BaseValidation.validateBody(req, res, next, chat_schema)
    }
 
    update(req, res, next) {
@@ -40,7 +40,7 @@ class ChatValidation {
          read_date: Joi.date().raw(),
          ipaddr: Joi.string().min(1)
       })
-      return BaseValidation.ChatBody(req, res, next, chat_schema)
+      return BaseValidation.validateBody(req, res, next, chat_schema)
    }
 }
 

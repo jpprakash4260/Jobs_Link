@@ -17,7 +17,7 @@ class JobHistoryValidation {
          del_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.JobHistoryBody(req, res, next, jobhistory_schema)
+      return BaseValidation.validateBody(req, res, next, jobhistory_schema)
    }
 
    update(req, res, next) {
@@ -33,7 +33,7 @@ class JobHistoryValidation {
          del_date: Joi.date().raw()
       })
 
-      return BaseValidation.JobHistoryBody(req, res, next, jobhistory_schema)
+      return BaseValidation.validateBody(req, res, next, jobhistory_schema)
    }
 }
 

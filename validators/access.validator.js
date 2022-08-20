@@ -12,7 +12,7 @@ class AccessValidation {
          access_expdt: Joi.date().raw().required(),
          access_dt: Joi.date().raw().required(),
       })
-      return BaseValidation.AccessBody(req, res, next, access_schema)
+      return BaseValidation.validateBody(req, res, next, access_schema)
    }
 
    update(req, res, next) {
@@ -24,7 +24,7 @@ class AccessValidation {
          access_expdt: Joi.date().raw(),
          access_dt: Joi.date().raw()
       })
-      return BaseValidation.AccessBody(req, res, next, access_schema)
+      return BaseValidation.validateBody(req, res, next, access_schema)
    }
 }
 

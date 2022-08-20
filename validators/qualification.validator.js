@@ -13,7 +13,7 @@ class QualificatioValidation {
          qual_dt: Joi.date().raw().required()
       })
 
-      return BaseValidation.QualificationBody(req, res, next, qualification_schema)
+      return BaseValidation.validateBody(req, res, next, qualification_schema)
    }
 
    update(req, res, next) {
@@ -25,7 +25,7 @@ class QualificatioValidation {
          qual_dt: Joi.date().raw()
       })
 
-      return BaseValidation.QualificationBody(req, res, next, qualification_schema)
+      return BaseValidation.validateBody(req, res, next, qualification_schema)
    }
 }
 

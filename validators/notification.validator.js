@@ -19,7 +19,7 @@ class NotificationValidation {
          noti_read: Joi.string().valid('Y', 'N').max(1).required(),
       })
 
-      return BaseValidation.NotificationBody(req, res, next, notification_schema)
+      return BaseValidation.validateBody(req, res, next, notification_schema)
    }
 
    update(req, res, next) {
@@ -38,7 +38,7 @@ class NotificationValidation {
          noti_read: Joi.string().valid('Y', 'N').max(1).required()
       })
 
-      return BaseValidation.NotificationBody(req, res, next, notification_schema)
+      return BaseValidation.validateBody(req, res, next, notification_schema)
    }
 }
 

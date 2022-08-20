@@ -15,7 +15,7 @@ class OperatorValidation {
          op_status: Joi.string().valid('Y', 'N', 'D').max(1).required()
       })
 
-      return BaseValidation.OperatorBody(req, res, next, operator_schema)
+      return BaseValidation.validateBody(req, res, next, operator_schema)
    }
 
    update(req, res, next) {
@@ -29,7 +29,7 @@ class OperatorValidation {
          op_status: Joi.string().valid('Y', 'N', 'D').max(1)
       })
 
-      return BaseValidation.OperatorBody(req, res, next, operator_schema)
+      return BaseValidation.validateBody(req, res, next, operator_schema)
    }
 }
 

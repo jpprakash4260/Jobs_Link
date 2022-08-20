@@ -19,7 +19,7 @@ class ConferenceValidation {
          added_date: Joi.date().raw().required()
       })
 
-      return BaseValidation.ConferenceBody(req, res, next, conference_schema)
+      return BaseValidation.validateBody(req, res, next, conference_schema)
    }
 
    update(req, res, next) {
@@ -37,7 +37,7 @@ class ConferenceValidation {
          added_date: Joi.date().raw()
       })
 
-      return BaseValidation.ConferenceBody(req, res, next, conference_schema)
+      return BaseValidation.validateBody(req, res, next, conference_schema)
    }
 }
 

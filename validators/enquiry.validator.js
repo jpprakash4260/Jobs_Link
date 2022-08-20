@@ -19,7 +19,7 @@ class EnquiryValidation {
          enq_loc: Joi.string().min(1).required()
       })
 
-      return BaseValidation.EnquiryBody(req, res, next, enquiry_schema)
+      return BaseValidation.validateBody(req, res, next, enquiry_schema)
    }
 
    update(req, res, next) {
@@ -37,7 +37,7 @@ class EnquiryValidation {
          enq_loc: Joi.string().min(1)
       })
 
-      return BaseValidation.EnquiryBody(req, res, next, enquiry_schema)
+      return BaseValidation.validateBody(req, res, next, enquiry_schema)
    }
 }
 

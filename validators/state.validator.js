@@ -12,7 +12,7 @@ class StateValidation {
          state_status: Joi.string().valid('Y', 'N', 'D').max(1).required()
       })
 
-      return BaseValidation.StateBody(req, res, next, state_schema)
+      return BaseValidation.validateBody(req, res, next, state_schema)
    }
 
    update(req, res, next) {
@@ -24,7 +24,7 @@ class StateValidation {
          colg_date: Joi.date()
       })
 
-      return BaseValidation.StateBody(req, res, next, state_schema)
+      return BaseValidation.validateBody(req, res, next, state_schema)
    }
 }
 
