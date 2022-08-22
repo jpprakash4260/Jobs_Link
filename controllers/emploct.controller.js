@@ -14,7 +14,7 @@ EmplocatController.create = async (req, res) => {
    try {
 
       let obj = {
-         emp_id: req.body.emp_id,
+         emp_id: req.seeker_id,
          emp_country: req.body.emp_country,
          emp_state: req.body.emp_state,
          emp_city: req.body.emp_city,

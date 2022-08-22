@@ -45,6 +45,7 @@ module.exports = {
 	Verified: "Verifed Successfully",
 	registerAlready: "Already Register",
 	invalidOTP: "Invalid OTP",
+	invalidToken: "Invalid Token Given",
 	alreadyVerified: "Already Verifed",
 	giveInput: "Give the all Input",
 	unauthorized: "Unauthorized Request",

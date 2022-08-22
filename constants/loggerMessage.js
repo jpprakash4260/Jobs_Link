@@ -11,6 +11,7 @@ module.exports = {
 	notUpdated: "Not updated",
 	updateDataSuccess: "Update Data Successfully",
 	Verified: 'Verifed Successfully',
+	seekerVerified: 'Seeker Verifed Successfully',
 	deleteDataSuccess: "Delete Data Successfuly",
 	deleteDataFailure: "Delete Data Failure",
 	truncateSuccess: 'Truncate Table Successfully',

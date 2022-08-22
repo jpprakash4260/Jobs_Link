@@ -14,7 +14,7 @@ JobAppliedController.create = async (req, res) => {
    try {
 
       let obj = {
-         emp_id: req.body.emp_id,
+         emp_id: req.seeker_id,
          job_id: req.body.job_id,
          company_id: req.body.company_id,
          job_type: req.body.job_type,

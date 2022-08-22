@@ -15,7 +15,7 @@ IntscheduleController.create = async (req, res) => {
 
       let obj = {
          applied_id: req.body.applied_id,
-         emp_id: req.body.emp_id,
+         emp_id: req.seeker_id,
          company_id: req.body.company_id,
          mail_title: req.body.mail_title,
          mail_content: req.body.mail_content,

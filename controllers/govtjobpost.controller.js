@@ -59,8 +59,6 @@ GovJobPostController.create = async (req, res) => {
 
       console.log(obj);
       const created = await govtjobpostService.create(obj)
-      console.log(created);
-
 
       if (created) {
          logger.error(loggerMessage.createdSuccess)
