@@ -2,7 +2,7 @@ const winston = require('winston')
 const DailyRotateFile = require('winston-daily-rotate-file')
 
 const timezoned = () => {
-    return new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
+    return new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', formatMatcher: 'basic', localeMatcher: 'lookup' })
 }
 
 const logFormat = winston.format.combine(

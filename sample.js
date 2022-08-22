@@ -86,11 +86,11 @@
 
 
 
-var dt = new Date();
-var x = dt.toLocaleString();
-console.log(x);
-var y = x.replace('/,/', '-')
-console.log(y);
+// var dt = new Date();
+// var x = dt.toLocaleString();
+// console.log(x);
+// var y = x.replace('/,/', '-')
+// console.log(y);
 // console.log("length : " + x.length);
 // var arr = x.split("/");
 // console.log(arr);
@@ -98,3 +98,4 @@ console.log(y);
 
 
 
+// console.log(' currentTime : ', new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }))
