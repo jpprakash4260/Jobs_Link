@@ -15,7 +15,7 @@ JobPostingController.create = async (req, res) => {
 
       let obj = {
          job_code: req.body.job_code,
-         posted_by: req.body.posted_by,
+         posted_by: req.seeker_id,
          jcat_id: req.body.jcat_id,
          jsub_id: req.body.jsub_id,
          cont_mail: req.body.cont_mail,

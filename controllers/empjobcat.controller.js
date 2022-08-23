@@ -14,7 +14,7 @@ EmpjobcatController.create = async (req, res) => {
    try {
 
       let obj = {
-         emp_id: req.body.emp_id,
+         emp_id: req.seeker_id,
          cat_id: req.body.cat_id,
          subcat_id: req.body.subcat_id,
          mjcat_status: req.body.mjcat_status,

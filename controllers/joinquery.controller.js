@@ -1,7 +1,7 @@
 'use strict'
 
 const db = require('../Models')
-const { joinqueryService, qualificationService, courseService, specializationService, collegeService } = require('../services')
+const { joinqueryService } = require('../services')
 /*
 const { response } = require('../middleware')
 const { statusCodes, responseMessage, loggerMessage } = require('../constants')
@@ -19,6 +19,19 @@ JoinQueryController.emploct = async (req, res) => {
       const [emploct] = await joinqueryService.emploct(emp_id)
 
       res.json(emploct)
+   }
+   catch (error) {
+      res.json(error)
+   }
+}
+
+JoinQueryController.course = async (req, res) => {
+   try {
+      const course_id = 1
+
+      const [course] = await joinqueryService.course(course_id)
+
+      res.json(course)
    }
    catch (error) {
       res.json(error)

@@ -3,6 +3,59 @@ const db = require("../Models")
 
 class joinqueryService { }
 
+joinqueryService.course = async (course_id) => {
+   try {
+
+      const course = db.sequelize.query(`
+      
+      SELECT 
+      
+      a.course_id as course_id,
+      a.course_name as course_name,
+      b.qual_name as qual_name
+
+      FROM tbl__course as a
+      
+      LEFT JOIN tbl__qualification as b 
+      ON b.qual_id = a.qual_id
+      
+      where a.course_id = '${course_id}'
+      
+      `)
+
+      return course
+   }
+   catch (error) {
+      return error
+   }
+}
+
+joinqueryService.empkskills = async (empkskil_id) => {
+   try {
+
+      const empkskills = db.sequelize.query(`
+      
+      SELECT 
+      
+      a.empkskil_id as emp_key_skills,
+      b.keysk_name as keysk_name 
+
+      FROM tbl__empkskills as a
+      
+      LEFT JOIN tbl__keyskills as b 
+      ON b.keysk_id = a.keysk_id
+      
+      where a.empkskil_id = '${ empkskil_id }'
+      
+      `)
+
+      return empkskills
+   }
+   catch (error) {
+      return error
+   }
+}
+
 joinqueryService.emploct = async (emp_id) => {
    try {
 
@@ -92,6 +145,53 @@ joinqueryService.employee_min_salary = async (emp_id) => {
    }
 }
 
+joinqueryService.jobPosting = async (job_id) => {
+   try {
+
+      const jobPosting = db.sequelize.query(`
+      
+      SELECT 
+      
+      a.job_id as job_applied_id,
+      a.jcat_id as jcat_id,
+      a.jsub_id as jsub_id,
+      d.indust_name as indust_name,
+      e.user_type as user_type,
+      f.high_qualif as high_qualif,
+      f.high_course as high_course,
+      f.colg_name as college_name,
+      f.high_pass_yr as passing_year,
+      g.exp_yr as Experince_years,
+      h.speclz_name as speclz_name
+
+      FROM tbl__jobposting as a
+      
+      LEFT JOIN tbl__industrytype as d 
+      ON d.indust_id = a.indust_id
+
+      LEFT JOIN tbl__employee as e 
+      ON e.user_type = a.empl_type
+
+      LEFT JOIN tbl__empedudetail as f 
+      ON f.edu_id = a.emp_educ
+      
+      LEFT JOIN tbl__empoffdetails as g
+      ON g.wrk_id = a.emp_exp
+
+      LEFT JOIN tbl__specialization as h 
+      ON h.speclz_id = a.emp_specal
+      
+      where a.job_id = '${job_id}'
+      
+      `)
+
+      return jobPosting
+   }
+   catch (error) {
+      return error
+   }
+}
+
 joinqueryService.emp_get_all_details = async (emp_id) => {
    try{
 
@@ -147,7 +247,7 @@ joinqueryService.emp_get_all_details = async (emp_id) => {
    }
 }
 
-joinqueryService.all_unrest_jobpost = async (emp_id) => {
+joinqueryService.all_unrest_jobpost = async (unrst_jid) => {
    try{
 
       const [emp_get_all_details] = await db.sequelize.query(`
@@ -156,42 +256,33 @@ joinqueryService.all_unrest_jobpost = async (emp_id) => {
 
       a.*
 
-      /*
+      FROM tbl__unrestjobpost as a
 
-      a.emp_id as emp_id, 
-      a.emp_name as emp_name, 
-      b.country_name as country, 
-      c.state_name as state, 
-      d.city_name as city,
-      e.high_qualif as high_qual,
-      e.high_course as high_course,
-      e.high_special as high_special,
-      e.high_college as high_college,
-      e.colg_name as college_name,
-      f.min_sal as min_sal,
-      f.max_sal as max_sal
-      
-      */
+      LEFT JOIN tbl__qualification as b 
+      ON b.qual_id = a.high_qualif
 
-      FROM tbl__employee as a
+      LEFT JOIN tbl__course as c
+      ON c.course_id = a.high_course
 
-      LEFT JOIN tbl__country as b 
-      ON b.id = a.emp_country 
-      
-      LEFT JOIN tbl__state as c 
-      ON a.emp_state = c.state_id and a.emp_country = c.country_id 
-      
-      LEFT JOIN tbl__city as d 
-      ON c.state_id = d.state_id and a.emp_city = d.city_id and a.city_name = d.city_name 
+      LEFT JOIN tbl__specialization as d
+      ON d.speclz_id = a.high_special
 
-      LEFT JOIN tbl__empedudetail as e
-      ON a.emp_id = e.emp_id
+      LEFT JOIN tbl__country as e
+      ON e.country_id = a.country_id
 
-      LEFT JOIN tbl__salary as f
-      ON a.min_sal = f.sal_id
+      LEFT JOIN tbl__state as f
+      ON f.state_id = a.state
 
+      LEFT JOIN tbl__emploct as g
+      ON g.emplocat_id = a.unrest_jloct
 
-      WHERE a.emp_id = '${emp_id}'
+      LEFT JOIN tbl__jobscategory as h
+      ON h.job_id = a.posted_id
+
+      LEFT JOIN tbl__country as i
+      ON i.country_id = a.country_id
+
+      WHERE a.unrst_jid = '${unrst_jid}'
 
       `)
 
